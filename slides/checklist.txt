@@ -1,6 +1,6 @@
 - venue updated on title slide
 - date updated on title slide
-- title synched in <title>, title slide, title-and-abstract.txt
+- title synched in <title>, title slide
 - check out margins with hacked CSS -- then un-hack CSS!
 - PDF version created:
 
@@ -11,8 +11,8 @@
 - phone silent
 - pockets emptied
 - popup blocker disabled
-- presenter console opened!
+- presenter console opened! (Press 's'.)
 
 
-NOTE: background looks funky in Chrome but prints to PDF correctly. Title page
-footer CSS needed some futzing to work out OK.
+NOTE: title-slide background looks funky in Chrome but prints to PDF
+correctly. Title page footer CSS needed some futzing to work out OK.
