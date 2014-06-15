@@ -191,18 +191,33 @@ body {
     max-width: 100%;
 }
 
+/* Standard <ul>s are generously-spaced bullet lists. I can't find a better
+   way to set the bullet style than what's done below! <ol>s are
+   tighter-spaced since that's what makes sense when it's an actual ordered
+   list of steps or whatever. Extra padding makes nested lists look good.*/
+
 .reveal ul, .reveal ol {
     margin-left: 2em;
-    margin-bottom: 10px; /* same as <p> */
+    margin-top: 0.2em; /* same as <p> */
+    margin-bottom: 1em;
     width: calc(100% - 2em); /* sigh, anything better? */
 }
 
 .reveal ul {
-    /* no better way to set the UL list bullet style nicely??? (next rule, too) */
     list-style-type: none;
 }
 
-.reveal ul li:before {
+.reveal ul > li {
+    margin-bottom: 0.8em;
+    line-height: 1em;
+}
+
+.reveal ol > li {
+    margin-bottom: 0em;
+    line-height: 1em;
+}
+
+.reveal ul > li:before {
     content: "•";
     display: block;
     height: 0;
@@ -211,9 +226,8 @@ body {
     left: -0.7em;
 }
 
-.reveal ul li, .reveal ol li {
-    margin-bottom: 0.8em;
-    line-height: 1em;
+.reveal ul > li > ol, .reveal ul > li > ul {
+    padding-left: 1em;
 }
 
 /* Custom helper classes for layout */
