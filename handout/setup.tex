@@ -1,0 +1,48 @@
+% Basic packages
+\usepackage{dblfloatfix,fixltx2e,graphicx}
+\usepackage[breaklinks,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+
+
+% Page setup
+\usepackage[margin=0.5in,bottom=1in]{geometry}
+
+
+% Font; Gyre Pagella is nice and it has math.
+% Suchow's choices: see
+% https://github.com/suchow/Dissertate/blob/master/Dissertate.cls#L76
+\usepackage{fontspec}
+\newfontfeature{Microtype}{protrusion=default;expansion=default;}
+\setmainfont[Microtype,Ligatures=TeX]{EB Garamond}
+%\setsansfont[Scale=MatchLowercase, BoldFont={Lato Bold}]{Lato Regular}
+\setmonofont[Scale=MatchLowercase,Ligatures=TeX]{Source Code Pro}
+
+%% \newfontfeature{Microtype}{protrusion=default;expansion=default;}
+%% \setmainfont[Microtype,Ligatures=TeX]{TeX Gyre Pagella}
+%% \setmathfont[Scale=MatchLowercase]{TeX Gyre Pagella Math}
+%% \setsansfont[Microtype,Ligatures=TeX]{TeX Gyre Heros}
+%% \setmonofont[Ligatures=TeX]{TeX Gyre Cursor}
+
+
+% Sectioning
+\usepackage{titlesec}
+\titleformat{\section} {\normalfont\large\bfseries}{\thesection}{1ex}{}
+\titleformat{\subsection} {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection} {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\titlespacing*{\section} {0pt}{2.5ex plus 1ex minus 0.2ex}{1ex plus 0.2ex}
+\titlespacing*{\subsection} {0pt}{2ex plus 0.8ex minus 0.2ex}{1ex plus 0.1ex}
+\titlespacing*{\subsubsection} {0pt}{3.25ex plus 1ex minus 0.2ex}{1.5ex plus 0.2ex}
+
+
+% Title formatting
+\usepackage{titling}
+\pretitle{\begin{center}\Huge}
+\posttitle{\end{center}}
+
+% Lists
+%% \usepackage{enumitem}
+%% \setitemize{noitemsep,topsep=6pt,parsep=0pt,partopsep=0pt,leftmargin=*}
+%% \setenumerate{noitemsep,topsep=6pt,parsep=0pt,partopsep=0pt,leftmargin=*}
+
+
+% Standard macros
+\newcommand\git{\textsf{git}}
