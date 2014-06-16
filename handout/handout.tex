@@ -13,24 +13,24 @@
 Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
 of this awesome tool by walking you through some exercises that demonstrate
 its everyday functionality. Along the way we'll discuss some of its underlying
-principles and demonstrate some basic Linux shell skills too. We should note
+principles and demonstrate some basic Unix shell skills too. We should note
 that we're assuming that you've already been given a broad overview of what
 \git\ is, and why you might want to use it.
 
 Learning \git\ is like learning an instrument, or a language. There are
 certain concepts to master, but there's also just a lot of practice involved:
 repeating certain motions so that they become automatic. When it comes to
-computers, Linux pros talk about \i{finger memory}: I can type out \t{git
+computers, Unix pros talk about \i{finger memory}: I can type out \t{git
   commit -am} in my sleep. Of course, there's also the deeper appreciation of
 the underlying concepts and esoteric possibilities that you gain as you use a
 tool more and more. My assertion to you is that \i{time spent practicing
   \git\ will more than repay itself in the future}. If you're just starting
 out as a programmer (\ie, you've written less than 100,000 lines of code or
 so), some of its advantages won't be immediately obvious; for what it's worth,
-I've been doing this for 20 years, and if \git\ disappeared tomorrow the first
-thing I'd do is start recreating it. The developer site
-\href{https://github.com/}{GitHub} has more than 4.5 million users and 6
-million \git\ repositories.
+the developer site \href{https://github.com/}{GitHub} has more than 4.5
+million users and 6 million \git\ repositories. I've been doing this for 20
+years, and if \git\ disappeared tomorrow the first thing I'd do is start
+recreating it.
 
 \i{This lab is best done with a partner.} Real-deal education research shows
 that it's much faster for you to learn something when talking it over with a
@@ -69,12 +69,12 @@ thusly:
 Well, that's all the preliminaries. Let's get started!
 
 
-\segment{\textsf{git clone}}
+\segment{git clone}
 
 The first task is to set up a \i{git repository} to play with. This is the
 directory containing your actual content (\ie, files) as well as \git's
-supporting data. There are two commands to set up a repository: \t{git init},
-which creates a new, empty repository; and \t{git clone}, which duplicates an
+supporting data. There are two commands to set up a repository: \t{git~init},
+which creates a new, empty repository; and \t{git~clone}, which duplicates an
 existing one. We'll use the latter so that we have some files to work with
 right off the bat.
 
@@ -94,11 +94,14 @@ ls & Examine files again. \\
 ls -la & Detailed listing of files.
 \end{typeme}
 
+By the way, in the final command above, the letter after the dash is an ell,
+not a one.
+
 \fillme{0.4in}{Where do you think \git's supporting data are stored?}
 
-You can see the gory details of \git's housekeeping files with:
+You can see a gory listing of \git's housekeeping files with:
 
-\typeone{find -print}{Print all file names.}
+\typeone{find . -print}{Print all file names.}
 
 Here, \t{find} is a Unix command that you may not be familiar with; there will
 likely be more in the coming pages. If you'd like to learn more about a
@@ -111,16 +114,76 @@ man man & Learn about \t{man}.
 
 \ldots\ although Unix manual pages are notoriously uneven in their
 helpfulness. (This is especially true regarding \git\ itself, unfortunately.)
-Google is often a better source of information for beginners. The information
-on the \href{http://stackexchange.com/}{StackExchange.com} websites is often
+Google is often a better resource for beginners. The information on the
+\href{http://stackexchange.com/}{StackExchange.com} websites is often
 particularly relevant.
 
 
-\segment{\textsf{git log}}
+\segment{git log}
 
+At its core, \git\ just stores a bunch of files, and remembers the changes
+made to them. Unsurprisingly, one of the fundamental \git\ commands lets you
+see those changes. It's called \t{git~log}. You're not very likely to use this
+command frequently in your early days, but it can be helpful for orienting
+yourself if you've just downloaded an unfamiliar codebase.
 
+\typeone{git log}{Show log of changes.}
+
+When you run \t{git~log}, you enter a special subprogram called the \i{pager}.
+The pager is a tool for navigating lengthy textual output that offers more
+features than your terminal, and \git\ uses it extensively. Under default
+settings, your pager is a Unix command called \t{less}, which is mainly
+controlled by commands that are single keystrokes. Among them are:
+
+\begin{center}
+\begin{tabular}{>{\ttfamily}cl}
+\rmfamily\i{Key} & \i{Effect} \\ \hline
+q & Quit. \\
+\rmfamily(Arrow keys) & Navigate as you'd expect. \\
+< & Go to the top. \\
+> & Go to the bottom. \\
+/ & Search (type in query, then hit Enter). \\
+n & Go to next search result. \\
+N & Go to previous search result. \\
+? & Print help information.
+\end{tabular}
+\end{center}
+
+As a side note, the search command above uses a special formalism called
+\i{regular expressions} or \i{regexes} for matching text. In general, you can
+just type what you're looking for and the right thing will happen. You will
+find that \i{many} Unix tools use regexes; they are just one of the many
+interlocking technologies that constitute the overall Unix ecosystem.
+
+\fillme{0.4in}{On what date was the very first commit made in this
+  repository?}
+
+You'll see that the output of \t{git~log} is a series of \i{commits}, each
+associated with an author, a date, and a \i{commit message}. Each commit also
+has a \i{commit identifier}, which is the 40-character string of gibberish.
+
+\fillme{0.4in}{Find a commit whose message contains the word ``consuming.'' On
+  what date was it made?}
+
+An important aspect of \git\ is that every distinct commit in the universe has
+a unique identifier.
+
+\fillme{1.5in}{(Optional.) Commit identifiers are 40-character hexadecimal
+  strings, with each character having 16 possible values (0--9, a--f). If you
+  made one new commit every second, about how many Hubble times would need to
+  elapse before you used all possible identifiers? The Hubble time is about
+  $4.3 \times 10^{17}$~s, and $2^{10} \approx 10^3$.}
+
+The \t{git~log} command can also show you which files were changed in each
+commit. It presents this information in a compact form called a \i{diffstat}
+that we'll see more of later. It shows how many lines were added and removed
+from each file.
+
+% NOTE that we have to do something funky for the double dash! We can't just
+% auto-verbatim the command since I want to use things like my \p{} macro.
+\typeone{git log -{}-stat}{Show log, with change statistics.}
+
+\fillme{0.4in}{In the most recent commit to modify the file \t{INSTRUCTIONS},
+  how many lines were added? How many removed?}
 
 \end{document}
-
-
-

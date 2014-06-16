@@ -27,7 +27,7 @@
 \newfontfeature{Microtype}{protrusion=default;expansion=default;}
 \setmainfont[Microtype,Ligatures=TeX]{EB Garamond}
 %\setsansfont[Scale=MatchLowercase, BoldFont={Lato Bold}]{Lato Regular}
-%\setmonofont[Scale=MatchLowercase,Ligatures=TeX]{Source Code Pro}
+\setmonofont[Scale=MatchLowercase,Ligatures=TeX]{Source Code Pro}
 
 %% \newfontfeature{Microtype}{protrusion=default;expansion=default;}
 %% \setmainfont[Microtype,Ligatures=TeX]{TeX Gyre Pagella}
@@ -38,7 +38,7 @@
 
 % Sectioning
 \usepackage{titlesec}
-\titleformat{\section} {\sffamily\Large\bfseries}{Exercise \thesection:}{1ex}{}
+\titleformat{\section} {\sffamily\Large\bfseries}{Topic \thesection:}{1ex}{}
 \titleformat{\subsection} {\sffamily\large\bfseries}{\thesubsection}{1em}{}
 \titleformat{\subsubsection} {\sffamily\normalsize\bfseries}{\thesubsubsection}{1em}{}
 \titlespacing*{\section} {0pt}{2.5ex plus 1ex minus 0.2ex}{1ex plus 0.2ex}
@@ -68,7 +68,6 @@
 \newcommand\ie{\i{i.e.}}
 
 \newcommand\segment[1]{%
-  \clearpage
   \section{#1}%
 }
 
