@@ -126,6 +126,85 @@ often a better resource for beginners. The information on the
 \href{http://stackexchange.com/}{StackExchange.com} family of websites is
 usually very helpful.
 
+Finally, let's verify that your Python setup is functional. If you run the
+following command, you should get a report about whether certain words are in
+the dictionary. You should \i{not} get any big honking error messages.
+
+\typeone{./indict barn bern birn born burn}{Check reality of words.}
+
+For now, we're going to ignore how this program works. If you have extra time
+and are curious, read the file \t{bloom.py}.
+
+
+\section{git status, git checkout}
+
+Fundamentally, all \git\ does is track changes to the files in your repository
+directory. It does this by comparing the files on disk, the \i{working tree},
+with a recent snapshot of their contents. \git\ stores many of these
+snapshots, each of which is called a \i{commit}. The most ``recent'' snapshot,
+in a sense, is known as the \i{HEAD} commit or just HEAD. Now, in some
+circumstances HEAD isn't chronologically the most recent, but for now that's
+the best way to think about it. Anyway, let's modify one of the files that
+\git's tracking in the working tree:
+
+\begin{typeme}
+\p{edit `indict' and modify the ``MIGHT BE'' message} & Make a change. \\
+./indict barn bern birn born burn & Check that change stuck. \\
+git status & Check modification status.
+\end{typeme}
+
+\git\ should highlight that \t{indict} has been modified. It should also tell
+you how to discard your changes if you decide you don't like them:
+
+\begin{typeme}
+git checkout indict & Discard changes to indict. \\
+./indict barn bern birn born burn & Check that change is gone. \\
+git status & Check modification status.
+\end{typeme}
+
+Your change should be gone, and \git\ should report that your working
+directory is \i{clean}. (If it's not, then it is, appropriately, \i{dirty}.)
+
+Let's pause for a second here. \i{The ability to discard your changes is in
+  fact profoundly important and immensely powerful.} A \i{huge} amount of
+progress in programming and scientific research stems from one basic
+operation: ``Let's try this and see if it works.'' If you have something that
+already works, the chief enemy of progress is the fear of breaking what you do
+have. \textit{Git makes it safe to try things.} You can make any insane kind
+of change to a file in a \git\ repository, and if you decide you don't like
+it, all you need to do is \t{git~checkout}. You will truly have mastered the
+Zen of Git when you gleefully shred your most precious files without a care in
+the world.
+
+These snapshots also mean that \git\ is a nearly disaster-proof backup tool.
+
+\begin{typeme}
+rm dictbf.dat.gz & Blow away important file. \\
+./indict barn bern birn born burn & Check that program fails. \\
+git status & Check modification status. \\
+git checkout dictbf.dat.gz & Restore deleted file. \\
+./indict barn bern birn born burn & Check that program is healed. \\
+rm -rf * & Blow away everything. \\
+ls -la & Well, not quite everything. \\
+git checkout . & Bring it all back. \\
+ls -la & Huzzah!
+\end{typeme}
+
+The snapshots in the \t{.git} directory guard against many kinds of blunders.
+When you add in \git's ability to synchronize repositories between different
+computers, you get almost complete invulnerability to loss of the data stored
+in the repository.
+
+Of course, \git\ needs to be tracking any file that you want to protect in
+this way. This doesn't happen automatically:
+
+\begin{typeme}
+echo hello >mynewfile & Create a new file. \\
+git status & Check modification status. \\
+rm mynewfile & Blow it away. \\
+git checkout mynewfile & There's no saving that one.
+\end{typeme}
+
 
 \section{git log}
 
