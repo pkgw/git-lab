@@ -99,6 +99,14 @@ not a one.
 
 \fillme{0.4in}{Where do you think \git's supporting data are stored?}
 
+It's worth emphasizing that this cloned repository is both self-contained and
+self-sufficient. You can do anything you want to it without having to talk to
+\textsf{GitHub} again (without even needing an internet connection, in fact),
+and nothing you do will affect the \textsf{GitHub} version unless you
+explicitly attempt to synchronize the two. (Which is a vitally important
+process for collaborative work, but not something that we're going to worry
+about for a little while.)
+
 You can see a gory listing of \git's housekeeping files with:
 
 \typeone{find . -print}{Print all file names.}
@@ -108,15 +116,15 @@ likely be more in the coming pages. If you'd like to learn more about a
 command, you can try reading its manual page:
 
 \begin{typeme}
-man ls & Learn about \t{ls}. \\
+man find & Learn about \t{find}. \\
 man man & Learn about \t{man}.
 \end{typeme}
 
-\ldots\ although Unix manual pages are notoriously uneven in their
-helpfulness. (This is especially true regarding \git\ itself, unfortunately.)
-Google is often a better resource for beginners. The information on the
-\href{http://stackexchange.com/}{StackExchange.com} websites is often
-particularly relevant.
+\ldots\ although Unix manual pages are notoriously uneven in their quality.
+(This is especially true regarding \git\ itself, unfortunately.) Google is
+often a better resource for beginners. The information on the
+\href{http://stackexchange.com/}{StackExchange.com} family of websites is
+usually very helpful.
 
 
 \segment{git log}
@@ -185,5 +193,6 @@ from each file.
 
 \fillme{0.4in}{In the most recent commit to modify the file \t{INSTRUCTIONS},
   how many lines were added? How many removed?}
+
 
 \end{document}
