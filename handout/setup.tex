@@ -12,12 +12,9 @@
 \usepackage[letterpaper,includehead,margin=1in,top=0.5in,headheight=15pt]{geometry}
 \usepackage{fancyhdr}
 \pagestyle{fancyplain}
-\lhead[\fancyplain{\thepage}{\thepage}]{\fancyplain{}{\rightmark}}
-\rhead[\fancyplain{}{\leftmark}]{\fancyplain{\thepage}{\thepage}}
-\chead{}
-\cfoot{}
-\lfoot{}
-\rfoot{}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO,RE]{\textsf{\leftmark}}
 
 % Font; Gyre Pagella is nice and it has math.
 % Suchow's choices: see
@@ -44,6 +41,8 @@
 \titlespacing*{\section} {0pt}{2.5ex plus 1ex minus 0.2ex}{1ex plus 0.2ex}
 \titlespacing*{\subsection} {0pt}{2ex plus 0.8ex minus 0.2ex}{1ex plus 0.1ex}
 \titlespacing*{\subsubsection} {0pt}{3.25ex plus 1ex minus 0.2ex}{1.5ex plus 0.2ex}
+
+\renewcommand\sectionmark[1]{\markboth{#1}{}} % needed for good headers.
 
 
 % Title formatting
