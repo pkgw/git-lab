@@ -1,4 +1,4 @@
-\documentclass[letterpaper,11pt,titlepage]{article}
+\documentclass[letterpaper,12pt,titlepage]{article}
 \input setup
 
 \title{A Laboratory Introduction to \git}
@@ -8,6 +8,64 @@
 \begin{document}
 \maketitle
 
-This is the document.
+\section*{Introduction}
+
+Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
+of this awesome tool by walking you through some exercises that demonstrate
+its everyday functionality. Along the way we'll discuss some of its underlying
+principles and demonstrate some basic Unix shell skills too.
+
+\i{This lab is best done with a partner.} Real-deal education research shows
+that it's much faster for you to learn something when talking it over with a
+partner rather than just staring at it by yourself. If you and your partner
+get stuck on something, trying asking the group next to you, or Google. Your
+lab assistants are happy to help you out, of course, but you'll learn more if
+you spend some time trying to solve problems on your own. That being said,
+with computers sometimes things go wrong even if you've done everything right
+--- if you see a truly strange error message, particularly one associated with
+a non-\git\ command, it's probably best to summon the lab assistants sooner
+rather than later.
+
+
+
+Notation: important terminology will be introduced in \i{italics}. Computer-y
+words will be written in a monospace font \t{like this}. Commands that you
+should type in are presented this way:
+
+\begin{typeme}
+echo hello world & Say hello.
+\end{typeme}
+
+\noindent (You shouldn't type the leading dollar sign, which is just meant to
+indicate a generic terminal prompt.) Along the way we'll introduce a few Unix
+commands that you may not be familiar with; if you'd like to learn more about
+one, you can try reading its manual page:
+
+\begin{typeme}
+man ls & Learn about \t{ls} \\
+man git & Learn about \t{git} \\
+man man & Learn about \t{man}
+\end{typeme}
+
+\ldots\ although Unix manual pages are notoriously uneven in their
+helpfulness. (This is especially true regarding \git\ itself, unfortunately.)
+
+
+\segment{\textsf{git clone}}
+
+The first task is to set up a \i{git repository} to play with. This is the
+directory containing your actual content (\ie, files) as well as \git's
+supporting data, which are stored in a hidden subdirectory called
+``\t{.git}''. There are two commands to set up a repository: \t{git init},
+which creates a new, empty repository; and \t{git clone}, which duplicates an
+existing one. We'll use the latter so that we have some files to work with
+right off the bat.
+
+\begin{typeme}
+cd & Go to home directory. \\
+mkdir gitlab & Create work directory. \\
+cd gitlab & Move into it. \\
+git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository.
+\end{typeme}
 
 \end{document}
