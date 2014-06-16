@@ -26,11 +26,9 @@ the underlying concepts and esoteric possibilities that you gain as you use a
 tool more and more. My assertion to you is that \i{time spent practicing
   \git\ will more than repay itself in the future}. If you're just starting
 out as a programmer (\ie, you've written less than 100,000 lines of code or
-so), some of its advantages won't be immediately obvious; for what it's worth,
-the developer site \href{https://github.com/}{GitHub} has more than 4.5
-million users and 6 million \git\ repositories. I've been doing this for 20
-years, and if \git\ disappeared tomorrow the first thing I'd do is start
-recreating it.
+so), some of its advantages are a bit hard to grasp; for what it's worth, the
+developer site \href{https://github.com/}{GitHub} has more than 4.5 million
+users and 6 million \git\ repositories.
 
 \i{This lab is best done with a partner.} Real-deal education research shows
 that it's much faster for you to learn something when talking it over with a
@@ -44,7 +42,9 @@ but you'll learn more if you spend some time trying to solve problems on your
 own. That being said, with computers sometimes things go wrong even if you've
 done everything right --- if you see a truly strange error message,
 particularly one associated with a non-\git\ command, it's probably better to
-summon the lab assistants sooner rather than later.
+summon the lab assistants sooner rather than later. Deeper conceptual
+questions (``why'' rather than ``how'') are also good to bring to the
+assistants.
 
 
 \subsection*{Notation in this manual}
@@ -64,14 +64,45 @@ generic terminal prompt, or the braces. The exercises are interspersed with
 questions so that you can check your understanding. They're represented
 thusly:
 
-\fillme{0.4in}{What is your name?}
+\fillme{0.4in}{What is your name? What is your quest?}
 
-Well, that's all the preliminaries. Let's get started!
+There's one more bit of preliminary work to do before we get started in
+earnest.
+
+
+\section{.gitconfig}
+
+Before we proceed, each participant in the lab should set up a file named
+\t{.gitconfig} in her or his home directory to set up a few important
+parameters:
+
+\begin{typeme}
+cd & Move to your home directory. \\
+\p{edit the file .gitconfig} & Set up \t{.gitconfig}.
+\end{typeme}
+
+The file should look like this:
+
+\begin{adjustwidth}{2.5em}{0pt}
+\ttfamily
+[user]\\
+name = \p{your name}\\
+email = \p{your email}\\
+\\{}
+[color]\\
+ui = auto\\
+\\{}
+[alias]\\
+ci = commit\\
+s = status
+\end{adjustwidth}
+
+Now we can get started for real!
 
 
 \section{git clone}
 
-The first task is to set up a \i{git repository} to play with. This is the
+We'll get started by setting up a \i{git repository} to play with. This is the
 directory containing your actual content (\ie, files) as well as \git's
 supporting data. There are two commands to set up a repository: \t{git~init},
 which creates a new, empty repository; and \t{git~clone}, which duplicates an
@@ -97,7 +128,7 @@ ls -la & Detailed listing of files.
 By the way, in the final command above, the letter after the dash is an ell,
 not a one.
 
-\fillme{0.4in}{Where do you think \git's supporting data are stored?}
+\fillme{0.4in}{Where do \git's supporting data seem to be stored?}
 
 It's worth emphasizing that this cloned repository is both self-contained and
 self-sufficient. You can do anything you want to it without having to talk to
@@ -133,7 +164,8 @@ the dictionary. You should \i{not} get any big honking error messages.
 \typeone{./indict barn bern birn born burn}{Check reality of words.}
 
 For now, we're going to ignore how this program works. If you have extra time
-and are curious, read the file \t{bloom.py}.
+and are curious, read the file \t{bloom.py}. (The program name is as in ``in
+dictionary?'', not criminal charges.)
 
 
 \section{git status, git checkout}
@@ -153,17 +185,22 @@ the best way to think about it. Anyway, let's modify one of the files that
 git status & Check modification status.
 \end{typeme}
 
-\git\ should highlight that \t{indict} has been modified. It should also tell
-you how to discard your changes if you decide you don't like them:
+The \t{git~status} command will print out several pieces of information ---
+ignore most of it for now. You should see \git\ highlight that \t{indict} has
+been modified. It should also tell you how to discard your changes if you
+decide you don't like them:
 
 \begin{typeme}
 git checkout indict & Discard changes to indict. \\
-./indict barn bern birn born burn & Check that change is gone. \\
+./indict \p{some words} & Check that change is gone. \\
 git status & Check modification status.
 \end{typeme}
 
 Your change should be gone, and \git\ should report that your working
 directory is \i{clean}. (If it's not, then it is, appropriately, \i{dirty}.)
+
+\fillme{0.4in}{Does \git\ go so far as to restore the modification timestamp
+  of \t{indict}? You can use \t{ls -l} to check.}
 
 Let's pause for a second here. \i{The ability to discard your changes is in
   fact profoundly important and immensely powerful.} A \i{huge} amount of
@@ -184,7 +221,8 @@ rm dictbf.dat.gz & Blow away important file. \\
 git status & Check modification status. \\
 git checkout dictbf.dat.gz & Restore deleted file. \\
 ./indict barn bern birn born burn & Check that program is healed. \\
-rm -rf * & Blow away everything. \\
+pwd & Check your directory. \\
+rm -rf * & Blow away everything! \\
 ls -la & Well, not quite everything. \\
 git checkout . & Bring it all back. \\
 ls -la & Huzzah!
@@ -206,21 +244,131 @@ git checkout mynewfile & There's no saving that one.
 \end{typeme}
 
 
+\section{git add, git commit}
+
+It looks like we ought to learn how to make commits. As you might guess,
+broadly speaking you have to tell \git\ to make a snapshot of the files you
+have in your working directory. This is actually a two-step process, however,
+for reasons that we won't go into right now. First, you have to identify which
+changes you want to commit by \i{staging} them with the \t{git~add}. Then you
+actually create the new commit with \t{git~commit}.
+
+\begin{typeme}
+\p{edit `indict' and modify the ``MIGHT BE'' message} & Make a change. \\
+./indict barn bern birn born burn & ``Test'' your change. \\
+git status & Check modification status. \\
+git add indict & Stage the change. \\
+git status & Note change in output. \\
+git commit & Commit the staged changes.
+\end{typeme}
+
+When you run \t{git~commit} you will be prompted to write a \i{commit
+  message}. There are no rules about the message contents, but every commit
+must have one. Generally speaking, more sophisticated and organized projects
+will have more detailed policies about what should go in each message. For the
+kinds of projects you'll be working on, I suggest a one-line message of this
+form:
+
+\hspace{3em}\t{Chapter 2: Update the section on calibration}
+
+I've found it helpful to identify the section or subsystem that the commit
+most strongly affects (that's the bit before the colon), as well as a terse
+summary of what you did.
+
+You also use \t{git~add} to tell \git\ to start keeping track of a new file.
+
+\begin{typeme}
+date >mynewfile & Create a new file. \\
+git status & Check modification status. \\
+git add mynewfile & Register it. \\
+git status & Note change in output. \\
+git commit -m "\p{your message}" & Commit the staged changes.
+\end{typeme}
+
+Here we've used the \t{-m} option to \t{git~commit}, which lets you write the
+commit message right on the command line. You'll probably be mostly writing
+short messages, so the \t{-m} option can be a big convenience.
+
+\fillme{1.0in}{Say you had done the above steps through \t{git add newfile}
+  and then decided you actually didn't want to commit the new file. What
+  command would you run to reset things? What happens to \t{newfile} in this
+  case?}
+
+There are a couple of other ways to stage changes to be committed. For
+instance, if we decide we don't want to keep \t{mynewfile} around anymore, we
+need to use \t{git~rm} to register the deletion:
+
+\begin{typeme}
+rm mynewfile & Delete our file. \\
+git status & Check modification status. \\
+git rm mynewfile & Tell \git\ we want to delete it. \\
+git status & Note change in output. \\
+git commit -m "\p{deletion message}" & Commit the staged changes.
+\end{typeme}
+
+An important point is that \i{\git\ never forgets anything, so even if you
+  delete a file from a repository, its contents are still stored and
+  recoverable}. This is important if you, say, accidentally commit a password
+into a repository: even if you make a commit to remove the information, anyone
+with a clue can still get it back. There are ways to fully delete such
+information, but we won't get into them here.
+
+There's also a \t{git~mv} command that is the equivalent of an \t{add} and an
+\t{rm} together. Both this and \t{git~rm} will perform the specified moves
+and/or deletions on relevant working-tree files if they haven't already
+happened.
+
+Finally, \t{git~commit} has an important \t{-a} option to automatically do the
+equivalent of \t{git~add} on all of your modified files. It does \i{not}
+auto-add untracked files in your working tree. Using the standard Unix syntax
+for combining command-line options, we get a very important pattern,
+exemplified here:
+
+\begin{typeme}
+date >>README & Modify the README. \\
+git commit -am "README: add a timestamp" & Add and commit.
+\end{typeme}
+
+I truly recommend just making sure to run this command at least a few times
+each day until you don't even have to think about typing it.
+
+\subsection*{Commentary: Commit Sizes and Messages}
+
+Most people starting out with coding and \git'ing tend to evolve towards
+writing shorter and shorter messages for larger and larger commits, usually
+converging in one large commit made at the end of the day labeled ``Update.''
+I \i{strongly, strongly urge} you to try to get into the habit of committing
+in small chunks with thought-out log messages, even if it may take a while for
+the payoff to become clear.
+
+The fundamental reason is that smaller commits are easier to understand. By
+breaking your work into smaller pieces, it's easier to reason about its
+correctness and overall design. This is true both as you write new code, and
+as you evaluate old code --- every experienced programmer can tell you about
+revisiting \i{their own} year-old work and having no idea what they were
+thinking when they wrote it.
+
+This path also goes both ways: the effort that you spend reasoning about how
+to break down your code into commits will help deepen your understanding of
+how to structure software in general. The more you do it, the easier it will
+get, and the better programmer you'll be. One a more mundane level, as I've
+emphasized, this is also true of the mechanical act of typing
+\t{git~ci~-am~"\ldots"} and composing a decent commit message.
+
+
 \section{git log}
 
-At its core, \git\ just stores a bunch of files, and remembers the changes
-made to them. Unsurprisingly, one of the fundamental \git\ commands lets you
-see those changes. It's called \t{git~log}. You're not very likely to use this
-command frequently in your early days, but it can be helpful for orienting
-yourself if you've just downloaded an unfamiliar codebase.
+If you do find yourself wanting to review your previous commits, \t{git~log}
+is the command to use.
 
 \typeone{git log}{Show log of changes.}
 
 When you run \t{git~log}, you enter a special subprogram called the \i{pager}.
 The pager is a tool for navigating lengthy textual output that offers more
-features than your terminal, and \git\ uses it extensively. Under default
-settings, your pager is a Unix command called \t{less}, which is mainly
-controlled by commands that are single keystrokes. Among them are:
+features than your terminal, and \git\ (along with many other Unix tools) uses
+it extensively. Under default settings, your pager is a Unix command called
+\t{less}, which is mainly controlled by commands that are single keystrokes.
+Among them are:
 
 \begin{center}
 \begin{tabular}{>{\ttfamily}cl}
@@ -232,6 +380,7 @@ q & Quit. \\
 / & Search (type in query, then hit Enter). \\
 n & Go to next search result. \\
 N & Go to previous search result. \\
+\& & Filter (type in query, then hit Enter). \\
 ? & Print help information.
 \end{tabular}
 \end{center}
@@ -266,9 +415,7 @@ commit. It presents this information in a compact form called a \i{diffstat}
 that we'll see more of later. It shows how many lines were added and removed
 from each file.
 
-% NOTE that we have to do something funky for the double dash! We can't just
-% auto-verbatim the command since I want to use things like my \p{} macro.
-\typeone{git log -{}-stat}{Show log, with change statistics.}
+\typeone{git log --stat}{Show log, with change statistics.}
 
 \fillme{0.4in}{In the most recent commit to modify the file \t{INSTRUCTIONS},
   how many lines were added? How many removed?}
