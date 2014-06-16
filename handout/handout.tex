@@ -46,30 +46,25 @@ done everything right --- if you see a truly strange error message,
 particularly one associated with a non-\git\ command, it's probably better to
 summon the lab assistants sooner rather than later.
 
-Notation: important terminology will be introduced in \i{italics}. Computer-y
-words will be written in a monospace font \t{like this}. Commands that you
-should type in are presented this way:
+
+\subsection*{Notation in this manual}
+
+Important terminology will be introduced in \i{italics}. Computer-y words will
+be written in a monospace font \t{like this}. Commands that you should type in
+are presented with commentary this way, sometimes with parameters that you
+need to figure out for yourself:
 
 \begin{typeme}
-echo hello world & Say hello.
+echo hello world & Say hello. \\
+echo \p{your name} & Say your name.
 \end{typeme}
 
-\noindent You shouldn't type the leading dollar sign, which is just meant to
-indicate a generic terminal prompt. Along the way we'll introduce a few Unix
-commands that you may not be familiar with; if you'd like to learn more about
-one, you can try reading its manual page:
+You shouldn't type the leading dollar sign, which is just meant to indicate a
+generic terminal prompt, or the braces. The exercises are interspersed with
+questions so that you can check your understanding. They're represented
+thusly:
 
-\begin{typeme}
-man ls & Learn about \t{ls} \\
-man git & Learn about \t{git} \\
-man man & Learn about \t{man}
-\end{typeme}
-
-\ldots\ although Unix manual pages are notoriously uneven in their
-helpfulness. (This is especially true regarding \git\ itself, unfortunately.)
-Google is often a better source of information for beginners. The information
-on the \href{http://stackexchange.com/}{StackExchange.com} websites is often
-particularly relevant.
+\fillme{0.4in}{What is your name?}
 
 Well, that's all the preliminaries. Let's get started!
 
@@ -78,8 +73,7 @@ Well, that's all the preliminaries. Let's get started!
 
 The first task is to set up a \i{git repository} to play with. This is the
 directory containing your actual content (\ie, files) as well as \git's
-supporting data, which are stored in a hidden subdirectory called
-``\t{.git}''. There are two commands to set up a repository: \t{git init},
+supporting data. There are two commands to set up a repository: \t{git init},
 which creates a new, empty repository; and \t{git clone}, which duplicates an
 existing one. We'll use the latter so that we have some files to work with
 right off the bat.
@@ -91,4 +85,42 @@ cd gitlab & Move into it. \\
 git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository.
 \end{typeme}
 
+Let's see what just happened:
+
+\begin{typeme}
+ls & Examine files. \\
+cd \p{dirname} & Enter repository directory. \\
+ls & Examine files again. \\
+ls -la & Detailed listing of files.
+\end{typeme}
+
+\fillme{0.4in}{Where do you think \git's supporting data are stored?}
+
+You can see the gory details of \git's housekeeping files with:
+
+\typeone{find -print}{Print all file names.}
+
+Here, \t{find} is a Unix command that you may not be familiar with; there will
+likely be more in the coming pages. If you'd like to learn more about a
+command, you can try reading its manual page:
+
+\begin{typeme}
+man ls & Learn about \t{ls}. \\
+man man & Learn about \t{man}.
+\end{typeme}
+
+\ldots\ although Unix manual pages are notoriously uneven in their
+helpfulness. (This is especially true regarding \git\ itself, unfortunately.)
+Google is often a better source of information for beginners. The information
+on the \href{http://stackexchange.com/}{StackExchange.com} websites is often
+particularly relevant.
+
+
+\segment{\textsf{git log}}
+
+
+
 \end{document}
+
+
+

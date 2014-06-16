@@ -38,7 +38,7 @@
 
 % Sectioning
 \usepackage{titlesec}
-\titleformat{\section} {\sffamily\large\bfseries}{\thesection}{1ex}{}
+\titleformat{\section} {\sffamily\Large\bfseries}{Exercise \thesection:}{1ex}{}
 \titleformat{\subsection} {\sffamily\large\bfseries}{\thesubsection}{1em}{}
 \titleformat{\subsubsection} {\sffamily\normalsize\bfseries}{\thesubsubsection}{1em}{}
 \titlespacing*{\section} {0pt}{2.5ex plus 1ex minus 0.2ex}{1ex plus 0.2ex}
@@ -57,7 +57,8 @@
 %% \setenumerate{noitemsep,topsep=6pt,parsep=0pt,partopsep=0pt,leftmargin=*}
 
 
-% Macros etc.
+% Miscellaneous small macros.
+
 \let\b=\textbf
 \let\i=\textit
 \let\s=\textsf
@@ -71,6 +72,22 @@
   \section{#1}%
 }
 
+
+% The question-to-answer environment. Derived from leftbar environment
+% of framed package. We just make the rule thinner.
+
+\usepackage{framed}
+
+\newcommand\fillme[2]{%
+  \bigskip%
+  \begingroup%
+  \def\FrameCommand{\vrule width 1pt \hspace{10pt}}%
+  \MakeFramed {\advance\hsize-\width \FrameRestore}%
+  \i{#2}\rule[-#1]{0in}{#1}%
+  \endMakeFramed%
+}
+
+
 % The commands-to-type environment. Wow. Much magic.
 
 \newenvironment{typeme}{%
@@ -78,3 +95,12 @@
 }{%
   \endtabularx%
 }
+
+\newcommand\typeone[2]{%
+  \begin{typeme}%
+  #1 & #2%
+  \end{typeme}%
+}
+
+\newcommand\fillinparam[1]{\textsf{\textbf{\{#1\}}}}
+\let\p=\fillinparam
