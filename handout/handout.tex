@@ -13,20 +13,38 @@
 Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
 of this awesome tool by walking you through some exercises that demonstrate
 its everyday functionality. Along the way we'll discuss some of its underlying
-principles and demonstrate some basic Unix shell skills too.
+principles and demonstrate some basic Linux shell skills too. We should note
+that we're assuming that you've already been given a broad overview of what
+\git\ is, and why you might want to use it.
+
+Learning \git\ is like learning an instrument, or a language. There are
+certain concepts to master, but there's also just a lot of practice involved:
+repeating certain motions so that they become automatic. When it comes to
+computers, Linux pros talk about \i{finger memory}: I can type out \t{git
+  commit -am} in my sleep. Of course, there's also the deeper appreciation of
+the underlying concepts and esoteric possibilities that you gain as you use a
+tool more and more. My assertion to you is that \i{time spent practicing
+  \git\ will more than repay itself in the future}. If you're just starting
+out as a programmer (\ie, you've written less than 100,000 lines of code or
+so), some of its advantages won't be immediately obvious; for what it's worth,
+I've been doing this for 20 years, and if \git\ disappeared tomorrow the first
+thing I'd do is start recreating it. The developer site
+\href{https://github.com/}{GitHub} has more than 4.5 million users and 6
+million \git\ repositories.
 
 \i{This lab is best done with a partner.} Real-deal education research shows
 that it's much faster for you to learn something when talking it over with a
-partner rather than just staring at it by yourself. If you and your partner
-get stuck on something, trying asking the group next to you, or Google. Your
-lab assistants are happy to help you out, of course, but you'll learn more if
-you spend some time trying to solve problems on your own. That being said,
-with computers sometimes things go wrong even if you've done everything right
---- if you see a truly strange error message, particularly one associated with
-a non-\git\ command, it's probably best to summon the lab assistants sooner
-rather than later.
+partner rather than just staring at it by yourself. Getting back to the finger
+memory thing, though, please try to switch off between who's ``driving'' the
+keyboard and who's watching and commenting. It really does make a difference!
 
-
+If you and your partner get stuck on something, trying asking the group next
+to you, or Google. Your lab assistants are happy to help you out, of course,
+but you'll learn more if you spend some time trying to solve problems on your
+own. That being said, with computers sometimes things go wrong even if you've
+done everything right --- if you see a truly strange error message,
+particularly one associated with a non-\git\ command, it's probably better to
+summon the lab assistants sooner rather than later.
 
 Notation: important terminology will be introduced in \i{italics}. Computer-y
 words will be written in a monospace font \t{like this}. Commands that you
@@ -36,8 +54,8 @@ should type in are presented this way:
 echo hello world & Say hello.
 \end{typeme}
 
-\noindent (You shouldn't type the leading dollar sign, which is just meant to
-indicate a generic terminal prompt.) Along the way we'll introduce a few Unix
+\noindent You shouldn't type the leading dollar sign, which is just meant to
+indicate a generic terminal prompt. Along the way we'll introduce a few Unix
 commands that you may not be familiar with; if you'd like to learn more about
 one, you can try reading its manual page:
 
@@ -49,6 +67,11 @@ man man & Learn about \t{man}
 
 \ldots\ although Unix manual pages are notoriously uneven in their
 helpfulness. (This is especially true regarding \git\ itself, unfortunately.)
+Google is often a better source of information for beginners. The information
+on the \href{http://stackexchange.com/}{StackExchange.com} websites is often
+particularly relevant.
+
+Well, that's all the preliminaries. Let's get started!
 
 
 \segment{\textsf{git clone}}
