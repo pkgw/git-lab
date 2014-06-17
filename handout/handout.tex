@@ -162,11 +162,10 @@ Finally, let's verify that your Python setup is functional. If you run the
 following command, you should get a report about whether certain words are in
 the dictionary. You should \i{not} get any big honking error messages.
 
-\typeone{./indict barn bern birn born burn}{Check reality of words.}
+\typeone{./chkdict barn bern birn born burn}{Check reality of words.}
 
 For now, we're going to ignore how this program works. If you have extra time
-and are curious, read the file \t{bloom.py}. (The program name is as in ``in
-dictionary?'', not criminal charges.)
+and are curious, read the file \t{bloom.py}.
 
 
 \section{git status, git checkout}
@@ -181,19 +180,19 @@ the best way to think about it. Anyway, let's modify one of the files that
 \git's tracking in the working tree:
 
 \begin{typeme}
-\p{edit `indict' and modify the ``MIGHT BE'' message} & Make a change. \\
-./indict barn bern birn born burn & Check that change stuck. \\
+\p{edit `chkdict' and modify the ``MIGHT BE'' message} & Make a change. \\
+./chkdict barn bern birn born burn & Check that change stuck. \\
 git status & Check modification status.
 \end{typeme}
 
 The \cmd{status} command will print out several pieces of information ---
-ignore most of it for now. You should see \git\ highlight that \t{indict} has
+ignore most of it for now. You should see \git\ highlight that \t{chkdict} has
 been modified. It should also tell you how to discard your changes if you
 decide you don't like them:
 
 \begin{typeme}
-git checkout indict & Discard changes to indict. \\
-./indict \p{some words} & Check that change is gone. \\
+git checkout chkdict & Discard changes to chkdict. \\
+./chkdict \p{some words} & Check that change is gone. \\
 git status & Check modification status.
 \end{typeme}
 
@@ -201,7 +200,7 @@ Your change should be gone, and \git\ should report that your working
 directory is \i{clean}. (If it's not, then it is, appropriately, \i{dirty}.)
 
 \fillme{0.4in}{Does \git\ go so far as to restore the modification timestamp
-  of \t{indict}? You can use \t{ls -l} to check.}
+  of \t{chkdict}? You can use \t{ls -l} to check.}
 
 Let's pause for a second here. \i{The ability to discard your changes is in
   fact profoundly important and immensely powerful.} A \i{huge} amount of
@@ -221,10 +220,10 @@ right directory and that you mean it.
 
 \begin{typeme}
 rm dictbf.dat.gz & Blow away important file. \\
-./indict barn bern birn born burn & Check that program fails. \\
+./chkdict barn bern birn born burn & Check that program fails. \\
 git status & Check modification status. \\
 git checkout dictbf.dat.gz & Restore deleted file. \\
-./indict barn bern birn born burn & Check that program is healed. \\
+./chkdict barn bern birn born burn & Check that program is healed. \\
 pwd & Check your directory. \\
 rm -rf * & Type carefully! \\
 ls -la & Well, not quite everything. \\
@@ -258,10 +257,10 @@ identify which changes you want to commit by \i{staging} them with the
 \cmd{add}. Then you actually create the new commit with \cmd{commit}.
 
 \begin{typeme}
-\p{edit `indict' and modify the ``MIGHT BE'' message} & Make a change. \\
-./indict barn bern birn born burn & ``Test'' your change. \\
+\p{edit `chkdict' and modify the ``MIGHT BE'' message} & Make a change. \\
+./chkdict barn bern birn born burn & ``Test'' your change. \\
 git status & Check modification status. \\
-git add indict & Stage the change. \\
+git add chkdict & Stage the change. \\
 git status & Note change in output. \\
 git commit & Commit the staged changes.
 \end{typeme}
@@ -460,16 +459,16 @@ difference between your working tree and \i{the staged set of changes} ---
 (For the sake of pedagogy, please run through the following commands exactly
 as presented your first time through this section.)
 
-If you examine the \t{indict} program, you see that it computes a
+If you examine the \t{chkdict} program, you see that it computes a
 false-positive rate for the technique it's using, which is called a ``Bloom
-filter.'' Let's modify \t{indict} to print out this number before it reports
+filter.'' Let's modify \t{chkdict} to print out this number before it reports
 the filter results for each word.
 
 \begin{typeme}
-\p{edit `indict' and make it print out \t{fp}} & Print false-positive rate. \\
-./indict \p{some words} & Check everything works. \\
+\p{edit `chkdict' and make it print out \t{fp}} & Print false-positive rate. \\
+./chkdict \p{some words} & Check everything works. \\
 git diff & Review unstaged changes. \\
-git add indict & Stage for committing. \\
+git add chkdict & Stage for committing. \\
 git diff & Review unstaged changes.
 \end{typeme}
 
@@ -488,7 +487,7 @@ is clear.
 \begin{typeme}
 git grep fprate & Locate instances of ``fprate''. \\
 \p{edit buggy file} & Fix the bug. \\
-./indict \p{some words} & Check everything works.
+./chkdict \p{some words} & Check everything works.
 \end{typeme}
 
 \fillme{0.4in}{What is the correct false-positive rate?}
@@ -500,7 +499,7 @@ git grep fprate & Locate instances of ``fprate''. \\
 
 The next set of commands will work through some of the permutations of having
 both staged and unstaged modifications in your working tree --- recall that
-above we ran \cmd{add} on our changes to \t{indict}, but didn't run
+above we ran \cmd{add} on our changes to \t{chkdict}, but didn't run
 \cmd{commit}.
 
 \begin{typeme}
@@ -523,14 +522,14 @@ git status & Check modification status.
 \end{typeme}
 
 If everything has gone well, you'll have a clean working tree, a new feature
-in \t{indict}, and a fixed bug. You can now muck about with the working tree
+in \t{chkdict}, and a fixed bug. You can now muck about with the working tree
 however you want, confident that your important fixes won't be lost.
 
 \begin{typeme}
 pwd & Double-check your directory. \\
 rm -rf * & Type carefully! \\
 git checkout . & Bring it all back. \\
-./indict \p{some words} & Verify correct FP rate is produced.
+./chkdict \p{some words} & Verify correct FP rate is produced.
 \end{typeme}
 
 
@@ -608,10 +607,10 @@ that resets your working tree to the pristine files you originally cloned.
 \begin{typeme}
 git branch take2 82c765 & Make new branch pointing to original files. \\
 git status & Check modification status. \\
-\p{Clean up any dirtiness in your tree} & Prep for branch switch. \\
+\p{clean up any dirtiness in your tree} & Prep for branch switch. \\
 git checkout take2 & Switch to \t{take2} branch. \\
 git branch & List branches. \\
-./indict \p{some words} & Verify that FP rate is not printed.
+./chkdict \p{some words} & Verify that FP rate is not printed.
 \end{typeme}
 
 \fillme{0.4in}{(Optional.) Use \cmd{log} to verify that \t{82c765} is the name
@@ -628,14 +627,14 @@ Let's create a commit on this new branch. Because the active branch is now
 \s{take2}, that's the one that will be updated, not \s{master}.
 
 \begin{typeme}
-\p{Edit the top of \t{indict} to print your name.} & Make a change. \\
-\p{Review and commit your change.} & Commit it. \\
+\p{edit the top of \t{chkdict} to print your name} & Make a change. \\
+\p{review and commit your change} & Commit it. \\
 git log --oneline & Summarize history for current branch. \\
 git log --oneline master & Summarize history for master branch. \\
 git checkout master & Switch to master. \\
-./indict \p{some words} & Verify that FP rate is printed. \\
+./chkdict \p{some words} & Verify that FP rate is printed. \\
 git checkout take2 & Switch to take2. \\
-./indict \p{some words} & Verify that your name is printed.
+./chkdict \p{some words} & Verify that your name is printed.
 \end{typeme}
 
 You should see that the two branches start out with the same history (at the
@@ -675,7 +674,7 @@ of development into master:
 \begin{typeme}
 git checkout master & Switch to master. \\
 git merge take2 & Merge the two. \\
-./indict \p{some words} & Verify that your name and FP rate are printed.
+./chkdict \p{some words} & Verify that your name and FP rate are printed.
 \end{typeme}
 
 The \cmd{merge} will prompt you to write a message for the merge commit;
