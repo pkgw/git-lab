@@ -13,9 +13,9 @@
 Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
 of this awesome tool by walking you through some exercises that demonstrate
 its everyday functionality. Along the way we'll discuss some of its underlying
-principles and demonstrate some basic Unix shell skills too. We should note
-that we're assuming that you've already been given a broad overview of what
-\git\ is, and why you might want to use it.
+principles and its connection to the rest of the Unix ecosystem too. We should
+note that we're assuming that you've already been given a broad overview of
+what \git\ is, and why you might want to use it.
 
 Learning \git\ is like learning an instrument, or a language. There are
 certain concepts to master, but there's also just a lot of practice involved:
@@ -50,9 +50,9 @@ assistants.
 \subsection*{Notation in this manual}
 
 Important terminology will be introduced in \i{italics}. Computer-y words will
-be written in a monospace font \t{like this}. Commands that you should type in
-are presented with commentary this way, sometimes with parameters that you
-need to figure out for yourself:
+be written in a monospace font \t{like} \t{this}. Commands that you should
+type in are presented with commentary this way, sometimes with parameters that
+you need to figure out for yourself:
 
 \begin{typeme}
 echo hello world & Say hello. \\
@@ -111,7 +111,7 @@ duplicates an existing one. We'll use the latter so that we have some files to
 work with right off the bat.
 
 \begin{typeme}
-cd & Go to home directory. \\
+cd & Move to home directory. \\
 mkdir gitlab & Create work directory. \\
 cd gitlab & Move into it. \\
 git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository.
@@ -517,13 +517,18 @@ git commit & Commit staged changes.
 \begin{typeme}
 git diff & Review unstaged changes. \\
 git add \p{remaining file(s)} & Stage for committing. \\
+git diff --staged & Review staged changes. \\
 git commit & Commit staged changes. \\
 git status & Check modification status.
 \end{typeme}
 
-If everything has gone well, you'll have a clean working tree, a new feature
-in \t{chkdict}, and a fixed bug. You can now muck about with the working tree
-however you want, confident that your important fixes won't be lost.
+Here, \cmd{diff -{}-staged} is a different mode that examines the differences
+between the \i{staged changes} and {HEAD}, while, as we've seen, plain
+\cmd{diff} examines the differences between the \i{working tree} and the
+\i{staged changes}. If everything has gone well, you'll have a clean working
+tree, a new feature in \t{chkdict}, and a fixed bug. You can now muck about
+with the working tree however you want, confident that your important fixes
+won't be lost.
 
 \begin{typeme}
 pwd & Double-check your directory. \\
@@ -586,7 +591,7 @@ When you run \cmd{commit}, a new commit is recorded, and the information for
 the current branch is updated to point to that new commit. That's all you need
 to do to move the branch forward, and by induction that's still all we need to
 reconstruct the entire history. It's literally that simple, with the branch's
-commit pointer being stored in a simple text file:
+head pointer being stored in a simple text file:
 
 \begin{typeme}
 cat .git/refs/heads/master & Manually print the master branch commit id. \\
@@ -605,10 +610,10 @@ working tree files with information in the repository. We'll make a new branch
 that resets your working tree to the pristine files you originally cloned.
 
 \begin{typeme}
-git branch take2 \demohead & Make new branch pointing to original files. \\
+git branch improved \demohead & Make new branch pointing to original files. \\
 git status & Check modification status. \\
 \p{clean up any dirtiness in your tree} & Prep for branch switch. \\
-git checkout take2 & Switch to \t{take2} branch. \\
+git checkout improved & Switch to \t{improved} branch. \\
 git branch & List branches. \\
 ./chkdict \p{some words} & Verify that FP rate is not printed.
 \end{typeme}
@@ -618,13 +623,13 @@ git branch & List branches. \\
   repository.}
 
 Here, \cmd{checkout} has done two things: it's updated information to say that
-the current branch is now \s{take2}, not \s{master}, and it's synchronized
-your working tree to match \s{take2}. If you had any uncommitted changes,
+the current branch is now \s{improved}, not \s{master}, and it's synchronized
+your working tree to match \s{improved}. If you had any uncommitted changes,
 \cmd{checkout} would have either preserved them or refused to run if it
 couldn't.
 
 Let's create a commit on this new branch. Because the active branch is now
-\s{take2}, that's the one that will be updated, not \s{master}.
+\s{improved}, that's the one that will be updated, not \s{master}.
 
 \begin{typeme}
 \p{edit the top of \t{chkdict} to print your name} & Make a change. \\
@@ -633,7 +638,7 @@ git log --oneline & Summarize history for current branch. \\
 git log --oneline master & Summarize history for master branch. \\
 git checkout master & Switch to master. \\
 ./chkdict \p{some words} & Verify that FP rate is printed. \\
-git checkout take2 & Switch to take2. \\
+git checkout improved & Switch to improved. \\
 ./chkdict \p{some words} & Verify that your name is printed.
 \end{typeme}
 
@@ -673,7 +678,7 @@ of development into master:
 
 \begin{typeme}
 git checkout master & Switch to master. \\
-git merge take2 & Merge the two. \\
+git merge improved & Merge the two. \\
 ./chkdict \p{some words} & Verify that your name and FP rate are printed.
 \end{typeme}
 
@@ -696,8 +701,8 @@ you go through them. We'll work through a merge using some secret branches
 that came along with our clone:
 
 \begin{typeme}
-git branch conflict origin/master & New branch with pristine files. \\
-git checkout conflict & Switch to \t{conflict} branch. \\
+git branch newstuff origin/master & New branch with pristine files. \\
+git checkout newstuff & Switch to \t{newstuff} branch. \\
 git show origin/goodbye-option & See changes in \t{goodbye-option} branch. \\
 git show origin/no-skipmisses-option & Likewise. \\
 git merge origin/no-skipmisses-option & Merge in \t{no-skipmisses-option}. \\
@@ -722,7 +727,7 @@ git commit & Commit the fix. \\
 git log & Review commit history.
 \end{typeme}
 
-\fillme{1.5in}{What does the commit history of the \t{conflict} branch look
+\fillme{1.5in}{What does the commit history of the \t{newstuff} branch look
   like, as a graph?}
 
 \subsection*{Commentary: Well-definedness of merges}
@@ -760,19 +765,34 @@ by a human that those files bear some useful relation to the ones found in the
 commits that came before.
 
 
-\section{git remote, git fetch, git pull, git push}
+\section{git remote, git fetch, git pull}
 
 Finally we get to the payoff. \i{The features of \git's branching system are
   sufficient to allow collaborative work on a project by a distributed,
   decentralized team.} Or, more prosaically, \git's ability to synchronize
 repositories between computers builds on its branching and merging
-infrastructure.
+infrastructure. So even if you're not planning on contributing to the Linux
+kernel any time soon, a solid understanding of the branching system is
+important for synchronizing your work between different machines and sharing
+your work with others.
 
 Each \git\ repository stores a list of other repositories that it knows about,
-known as \i{remotes}. Every cloned repository starts with a remote called
-\s{origin}, which you've probably been seeing mentioned by various tools over
-the course of the lab. You can learn about your remotes with, unsurprisingly,
-the \cmd{remote} command.
+known as \i{remotes}. These can be in a different directory on the same
+machine, or accessible over the network using any of several protocols. You
+can download updates from a remote and, as we'll see in the next section, also
+\i{push} updates to it. The simplest way to collaborate using \git\ is to set
+up a central repository on the network that everyone can push to --- which is
+exactly what \href{https://github.com/}{GitHub} does and why it's so popular.
+Other, less-centralized models are possible, but we won't discuss them here.
+It bear emphasizing, however, that a key advantage of \git\ is that if
+\href{https://github.com/}{GitHub} were to disappear tomorrow, we wouldn't
+lose any data, because each repository is self-sufficient, and by setting up
+new remotes we could start collaborating again almost seamlessly.
+
+Every cloned repository starts with a remote called \s{origin}, which you've
+probably been seeing mentioned by various tools over the course of the lab.
+You can learn about your remotes with, unsurprisingly, the \cmd{remote}
+command.
 
 \begin{typeme}
 git remote & List named remotes. \\
@@ -793,12 +813,13 @@ see is silence, indicating that there are no new commits:
 \typeone{git fetch origin}{Update remote branches for origin.}
 
 If there \i{were} new commits, what would you do? Well, you've got a branch
-that you're working on (\s{master}), and you've got one with commits that you
-want to import (\s{origin/master} --- note that the \s{remotes/} prefix isn't
-necessary). That sounds like time for a \cmd{merge}!
+that you're working on (generally \s{master}, or \s{newstuff} here), and
+you've got one with commits that you want to import (\s{origin/master} ---
+note that the \s{remotes/} prefix isn't necessary). That sounds like time for
+a \cmd{merge}!
 
 \begin{typeme}
-git checkout conflict & Make sure we're on the right branch. \\
+git checkout newstuff & Make sure we're on the right branch. \\
 git merge origin/master & Merge in (nonexistent) updates.
 \end{typeme}
 
@@ -806,5 +827,69 @@ The command \cmd{pull} essentially does a \cmd{fetch} followed by a
 \cmd{merge}, though it has a few bells and whistles. Generally speaking,
 \cmd{pull} should be your go-to pull-in-new-changes command.
 
+\typeone{git pull origin master}{Fetch and merge nonexistent updates, again.}
+
+
+\section{git push}
+
+Finally, there's the matter of \i{pushing} updates to a remote repository. In
+practice you'll generally be doing this by pushing updates to
+\href{https://github.com/}{GitHub}, but to keep the lab self-contained we're
+going to do everything on your local disk. \git\ does a good job of
+abstracting between different kinds of remotes, so the underlying steps are
+exactly the same in either case.
+
+\begin{typeme}
+mkdir ../sync.git & Create sync repo directory. \\
+cd ../sync.git & Move into it. \\
+git init --bare & Create push-able repo. \\
+ls & Examine files. \\
+cd ../bloomdemo & Back to working tree. \\
+git remote add localsync ../sync.git & Register the new repo. \\
+git push localsync improved & Publish our \t{improved} branch. \\
+git remote show localsync & Show details about \t{localsync}.
+\end{typeme}
+
+This sequence of commands creates a local repository that we can push to. The
+\t{sync.git} directory is a \i{bare repository}: it has commit data, branches,
+and a HEAD, but no actual working tree! You can't push to a repository with a
+working tree since \git\ would need to be able to rewrite all the working
+files, which it can't safely do if there happen to be local modifications. The
+files in the \t{sync.git} directory are the same as those in your working
+tree's \t{.git} directory. It's conventional to give bare repositories names
+ending with \t{.git} even though they're directories.
+
+The \cmd{push} command has somewhat-sophisticated syntax allowing you to remap
+branch names between repositories. For instance, to publish our \t{master}
+branch under the name \t{experiments} on \t{localsync}, you write:
+
+\begin{typeme}
+git branch -a & List all branches. \\
+git push localsync master:experiments & Publish \t{master} as \t{experiments}. \\
+git branch -a & List all branches. \\
+git remote show localsync & Show details about \t{localsync}. \\
+git push localsync :experiments & Delete \t{experiments} on \t{localsync}. \\
+git remote show localsync & Show details about \t{localsync}.
+\end{typeme}
+
+\fillme{0.4in}{What's different the second time you run \cmd{branch~-a}?}
+
+As we see above, the special syntax of pushing a blank branch name (``\t{git
+  push localsync :experiments}'') deletes the branch on the remote. Having
+successfully pushed our changes, we can now shred our files without worrying.
+
+\begin{typeme}
+cd .. & Move to \t{gitlab} directory. \\
+rm -rf bloomdemo & Destroy our work. \\
+ls -la & Confirm it's gone. \\
+git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository. \\
+cd bloomdemo & Move into it. \\
+git remote add localsync ../sync.git & Register our backup. \\
+git branch -a & List all branches. \\
+git fetch localsync & Fetch data from localsync. \\
+git branch -a & List all branches. \\
+git merge localsync/improved & Merge in our work. \\
+./chkdict \p{some words} & Confirm our bugfix.
+\end{typeme}
 
 \end{document}
