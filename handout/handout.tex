@@ -226,7 +226,7 @@ git checkout dictbf.dat.gz & Restore deleted file. \\
 ./chkdict barn bern birn born burn & Check that program is healed. \\
 pwd & Check your directory. \\
 rm -rf * & Type carefully! \\
-ls -la & Well, not quite everything. \\
+ls -la & Not quite everything gone. \\
 git checkout . & Bring it all back. \\
 ls -la & Huzzah!
 \end{typeme}
@@ -706,7 +706,7 @@ git merge origin/goodbye-option & Likewise.
 
 At this point, you should run into a conflict. \git\ will edit the conflicted
 files to show the overlapping changes. Specifically, it will show a long row
-of ``\t{<<<<}'', the changes from one branch, then ``\t{====}'', the changes
+of ``\t{<<<<}'', the contents from one branch, then ``\t{====}'', the contents
 from the other branch, and finally ``\t{>>>>}''. It's up to you to find all
 instances of these conflicts and edit the files to somehow do what \i{both}
 commits were attempting. In the example above, the requisite merge isn't too
@@ -725,7 +725,7 @@ git log & Review commit history.
 \fillme{1.5in}{What does the commit history of the \t{conflict} branch look
   like, as a graph?}
 
-\subsection{Commentary: Well-definedness of merges}
+\subsection*{Commentary: Well-definedness of merges}
 
 Some merges are not semantically possible. If one branch of a command-line
 program adds an option called \t{-s} to sort output, and another adds an
@@ -753,9 +753,58 @@ Stepping back, the same general point is true of any kind of commit. Commits
 in a sequence are generally assumed to be related and not include enormous
 changes. But there's no reason that I can't make a single commit that deletes
 all of the source code to my project and replaces it with Doctor Who fan
-fiction. Fundamentally, any commit, whether it's a merge commit or not, is an
-assertion by a human that what follows bears some useful relation to what came
-before.
+fiction. Fundamentally, every \git\ commit both encodes something very precise
+and something very nebulous. The precise thing is an exact, reproducible
+snapshot of a set of files in a repository. The nebulous thing is an assertion
+by a human that those files bear some useful relation to the ones found in the
+commits that came before.
+
+
+\section{git remote, git fetch, git pull, git push}
+
+Finally we get to the payoff. \i{The features of \git's branching system are
+  sufficient to allow collaborative work on a project by a distributed,
+  decentralized team.} Or, more prosaically, \git's ability to synchronize
+repositories between computers builds on its branching and merging
+infrastructure.
+
+Each \git\ repository stores a list of other repositories that it knows about,
+known as \i{remotes}. Every cloned repository starts with a remote called
+\s{origin}, which you've probably been seeing mentioned by various tools over
+the course of the lab. You can learn about your remotes with, unsurprisingly,
+the \cmd{remote} command.
+
+\begin{typeme}
+git remote & List named remotes. \\
+git remote show origin & Show details about \t{origin}.
+\end{typeme}
+
+Each remote is associated with \i{remote branches}, which the \cmd{remote
+  show} command just listed for us. The \cmd{branch} command will also list
+them if you give it the \t{-a} (``all branches'') option:
+
+\typeone{git branch -a}{Show all branches.}
+
+You can't make commits on these branches yourself. However, you can download
+updates from the remote with the \cmd{fetch} command. We can run it here, but
+since I haven't craftily updated \s{origin} since this lab started, all you'll
+see is silence, indicating that there are no new commits:
+
+\typeone{git fetch origin}{Update remote branches for origin.}
+
+If there \i{were} new commits, what would you do? Well, you've got a branch
+that you're working on (\s{master}), and you've got one with commits that you
+want to import (\s{origin/master} --- note that the \s{remotes/} prefix isn't
+necessary). That sounds like time for a \cmd{merge}!
+
+\begin{typeme}
+git checkout conflict & Make sure we're on the right branch. \\
+git merge origin/master & Merge in (nonexistent) updates.
+\end{typeme}
+
+The command \cmd{pull} essentially does a \cmd{fetch} followed by a
+\cmd{merge}, though it has a few bells and whistles. Generally speaking,
+\cmd{pull} should be your go-to pull-in-new-changes command.
 
 
 \end{document}
