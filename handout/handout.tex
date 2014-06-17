@@ -692,6 +692,70 @@ modified to indicate where the conflicts are. You must decide how to resolve
 the conflicts, then mark them as dealt with using \cmd{add}, and then finally
 \cmd{commit} when everything is fixed. Things are a little bit simpler than
 you might fear since the various commands will tell you the necessary steps as
-you go through them.
+you go through them. We'll work through a merge using some secret branches
+that came along with our clone:
+
+\begin{typeme}
+git branch conflict origin/master & New branch with pristine files. \\
+git checkout conflict & Switch to \t{conflict} branch. \\
+git show origin/goodbye-option & See changes in \t{goodbye-option} branch. \\
+git show origin/no-skipmisses-option & Likewise. \\
+git merge origin/no-skipmisses-option & Merge in \t{no-skipmisses-option}. \\
+git merge origin/goodbye-option & Likewise.
+\end{typeme}
+
+At this point, you should run into a conflict. \git\ will edit the conflicted
+files to show the overlapping changes. Specifically, it will show a long row
+of ``\t{<<<<}'', the changes from one branch, then ``\t{====}'', the changes
+from the other branch, and finally ``\t{>>>>}''. It's up to you to find all
+instances of these conflicts and edit the files to somehow do what \i{both}
+commits were attempting. In the example above, the requisite merge isn't too
+complicated. By reviewing the histories of the relevant branches, you should
+be able to see what each commit was trying to accomplish, and find a way to
+accomplish both goals in the merged \t{chkdict}.
+
+\begin{typeme}
+git status & Report merge/conflict state. \\
+\p{edit affected file} & Fix the conflict. \\
+git add \p{affected file} & Stage the fix. \\
+git commit & Commit the fix. \\
+git log & Review commit history.
+\end{typeme}
+
+\fillme{1.5in}{What does the commit history of the \t{conflict} branch look
+  like, as a graph?}
+
+\subsection{Commentary: Well-definedness of merges}
+
+Some merges are not semantically possible. If one branch of a command-line
+program adds an option called \t{-s} to sort output, and another adds an
+option called \t{-s} to save inputs, there's just no way to merge the two
+branches while preserving their intent. When you make a merge commit, you're
+\i{asserting} to \git\ that it preserves the meanings of the two merged
+branches in some reasonable way, but it's impossible for \git, or any other
+objective analysis, to \i{prove} that this is the case. In fact, you could
+``resolve'' a merge conflict by replacing all the contents of every file in
+your project with the Doctor Who fan fiction.
+
+What underlies the way that \git's merge system works is an assumption that
+\i{modifications to different parts of different files are probably
+  independent} --- it will only flag a conflict if two commits modify the
+\i{same} part of the \i{same} file. But it's easy to construct cases where
+this assumption fails. For instance, I could merge two branches where one
+renames a variable in file \t{A}, while the other references the old variable
+name in file \t{B}. There's no way to detect the problem without running the
+code. More broadly speaking, \i{a merge is not a well-defined, mechanical
+  operation, and it can never be entirely automated}. Fortunately, in the real
+world, the different-places-means-independence assumption is generally true,
+and most merges can proceed mechanically.
+
+Stepping back, the same general point is true of any kind of commit. Commits
+in a sequence are generally assumed to be related and not include enormous
+changes. But there's no reason that I can't make a single commit that deletes
+all of the source code to my project and replaces it with Doctor Who fan
+fiction. Fundamentally, any commit, whether it's a merge commit or not, is an
+assertion by a human that what follows bears some useful relation to what came
+before.
+
 
 \end{document}
