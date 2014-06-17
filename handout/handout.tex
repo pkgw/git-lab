@@ -892,4 +892,59 @@ git merge localsync/improved & Merge in our work. \\
 ./chkdict \p{some words} & Confirm our bugfix.
 \end{typeme}
 
+
+\section*{Recap}
+
+That's the end of the lab! What should you take away from this all?
+
+\begin{itemize}
+\item From one angle, \git\ is an excellent \i{backup tool} for your files.
+\item From another, it's a \i{freedom tool} that lets you experiment in your
+  projects, secure in the knowledge that you can reset things to a known-good
+  state if you decide that you messed up.
+\item It's also an amazing \i{collaboration tool} that provides a tractable
+  way for groups of people to work together on projects in a decentralized
+  manner.
+\item It is also, admittedly, a \i{complicated tool} with many esoteric
+  features and a sophisticated underlying theoretical model. We've barely
+  scratched the surface of its capabilities.
+\end{itemize}
+
+If you don't want to be chained to a paper copy of this lab manual, is there
+an electronic form? There is, and it's tracked in \git, of course:
+
+\bigskip
+{\large\centering\url{https://github.com/pkgw/git-lab}\par}
+
+
+\section*{git Command Quick Reference}
+
+There are many commands that are not listed, and all of these commands can do
+much more than is given in the summaries below.
+
+\begin{center}
+\begin{tabular}{>{\ttfamily}ll}
+\rmfamily\i{Command} & \i{Purpose} \\ \hline
+git add \p{files} & Stage files for committing, or register new files. \\
+git branch \p{name} \p{initial} & Create a new branch pointing at \s{initial}. \\
+git checkout \p{branch} & Switch to a new branch. \\
+git checkout \p{file} & Restore a file to its HEAD state. \\
+git clone \p{URL or path} & Clone an existing repository. \\
+git commit & Make a new commit. \\
+git diff & Show changes between working tree and staged changes. \\
+git diff --staged & Show changes between staged changes and HEAD. \\
+git fetch & Fetch updates from a remote. \\
+git grep \p{regex} & Search for text in the repository contents. \\
+git init & Create a new empty repository. \\
+git log & Show commit logs. \\
+git merge \p{branch} & Merge another branch into the current one. \\
+git mv \p{old} \p{new} & Rename a file. \\
+git pull & Combination of \t{fetch} and \t{merge}. \\
+git push & Publish updates to a remote. \\
+git rm \p{file} & Delete a file. \\
+git show \p{commit} & Show the changes in a commit. \\
+git status & Report status of the working tree.
+\end{tabular}
+\end{center}
+
 \end{document}
