@@ -11,7 +11,7 @@ This tutorial is aimed at scientists. It brings up some mathematical concepts
 but tries not to assume much in the way of programming skills.
 
 The lab manual handout is available [as a pre-built PDF][handoutpdf].
-Freshness not gauranteed.
+Freshness not guaranteed.
 
 [handoutpdf]: http://newton.cx/~peter/files/git-lab-handout.pdf
 
