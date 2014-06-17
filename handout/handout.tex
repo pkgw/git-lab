@@ -214,6 +214,9 @@ Zen of Git when you gleefully shred your most precious files without a care in
 the world.
 
 These snapshots also mean that \git\ is a nearly disaster-proof backup tool.
+If you're not used to it, the ``\t{rm~-rf~*}'' below means ``delete everything
+here recursively'' -- only run it when you're very sure that you're in the
+right directory and that you mean it.
 
 \begin{typeme}
 rm dictbf.dat.gz & Blow away important file. \\
@@ -222,16 +225,16 @@ git status & Check modification status. \\
 git checkout dictbf.dat.gz & Restore deleted file. \\
 ./indict barn bern birn born burn & Check that program is healed. \\
 pwd & Check your directory. \\
-rm -rf * & Blow away everything! \\
+rm -rf * & Type carefully! \\
 ls -la & Well, not quite everything. \\
 git checkout . & Bring it all back. \\
 ls -la & Huzzah!
 \end{typeme}
 
-The snapshots in the \t{.git} directory guard against many kinds of blunders.
-When you add in \git's ability to synchronize repositories between different
-computers, you get almost complete invulnerability to loss of the data stored
-in the repository.
+The saved commits in the \t{.git} directory guard against many kinds of
+blunders. When you add in \git's ability to synchronize repositories between
+different computers, you get almost complete invulnerability to loss of the
+data stored in the repository.
 
 Of course, \git\ needs to be tracking any file that you want to protect in
 this way. This doesn't happen automatically:
@@ -247,11 +250,11 @@ git checkout mynewfile & There's no saving that one.
 \section{git add, git commit}
 
 It looks like we ought to learn how to make commits. As you might guess,
-broadly speaking you have to tell \git\ to make a snapshot of the files you
-have in your working directory. This is actually a two-step process, however,
-for reasons that we won't go into right now. First, you have to identify which
-changes you want to commit by \i{staging} them with the \t{git~add}. Then you
-actually create the new commit with \t{git~commit}.
+broadly speaking you have to tell \git\ to make a new commit based on the
+files you have in your working directory. This is actually a two-step process,
+however, for reasons that we won't go into right now. First, you have to
+identify which changes you want to commit by \i{staging} them with the
+\t{git~add}. Then you actually create the new commit with \t{git~commit}.
 
 \begin{typeme}
 \p{edit `indict' and modify the ``MIGHT BE'' message} & Make a change. \\
@@ -391,12 +394,13 @@ just type what you're looking for and the right thing will happen. You will
 find that \i{many} Unix tools use regexes; they are just one of the many
 interlocking technologies that constitute the overall Unix ecosystem.
 
+You'll see that the output of \t{git~log} is a series of commits, each
+associated with an author, date, and message. Each commit also has a \i{commit
+  identifier}, which is the string of 40 random-looking characters. You should
+see your own recent commits at the top of the output.
+
 \fillme{0.4in}{On what date was the very first commit made in this
   repository?}
-
-You'll see that the output of \t{git~log} is a series of \i{commits}, each
-associated with an author, a date, and a \i{commit message}. Each commit also
-has a \i{commit identifier}, which is the 40-character string of gibberish.
 
 \fillme{0.4in}{Find a commit whose message contains the word ``consuming.'' On
   what date was it made?}
@@ -419,6 +423,109 @@ from each file.
 
 \fillme{0.4in}{In the most recent commit to modify the file \t{INSTRUCTIONS},
   how many lines were added? How many removed?}
+
+
+\section{git show, git grep, git diff}
+
+To take a closer look at changes, you can use \t{git~show} and \t{git~diff}.
+The first of these will show the set of changes associated with any commit in
+\i{diff format}, which is yet another convention that shows up throughout the
+Unix ecosystem. The format should be fairly intuitive to grasp, especially
+with the helpful colorful highlighting that \git\ gives you:
+
+\begin{typeme}
+git show c16a09 & Show the named commit in the pager.
+\end{typeme}
+
+Above, we've named a commit based on the beginning of its hexadecimal
+identifier. In any given project, five or six hexadecimal digits is almost
+always enough to uniquely name a commit. You already know the name of another
+commit: HEAD.
+
+\begin{typeme}
+git show HEAD & Show your most recent commit.
+\end{typeme}
+
+The diff for this commit will be fairly simple since it was a trivial example
+you authored just a little while ago.
+
+\fillme{0.4in}{Use \t{git~log} to find the commit that adds support for
+  \s{gzip} compression of the data file and \t{git~show} to view the commit
+  diff. What Python module is needed to add \s{gzip} support?}
+
+Rather than showing an existing commit, the \t{git~diff} command shows the
+difference between your working tree and \i{the staged set of changes} ---
+\i{not} the most recent commit. We'll demonstrate this with a longer example.
+(For the sake of pedagogy, please run through the following commands exactly
+as presented your first time through this section.)
+
+If you examine the \t{indict} program, you see that it computes a
+false-positive rate for the technique it's using, which is called a ``Bloom
+filter.'' Let's modify \t{indict} to print out this number before it reports
+the filter results for each word.
+
+\begin{typeme}
+\p{edit `indict' and make it print out \t{fp}} & Print false-positive rate. \\
+./indict \p{some words} & Check everything works. \\
+git diff & Review unstaged changes. \\
+git add indict & Stage for committing. \\
+git diff & Review unstaged changes.
+\end{typeme}
+
+\fillme{0.4in}{What is the reported false-positive rate?}
+
+But wait a minute!
+
+\fillme{0.4in}{Does that number make any sense?}
+
+The false positive rate came from a function called \t{fprate}. You can use
+\t{git~grep} to locate its definition: it searches for a string in the working
+tree files using --- just as we saw above with the pager's search feature ---
+a regex. If you locate the function definition, the origin of the buggy output
+is clear.
+
+\begin{typeme}
+git grep fprate & Locate instances of ``fprate''. \\
+\p{edit buggy file} & Fix the bug. \\
+./indict \p{some words} & Check everything works.
+\end{typeme}
+
+\fillme{0.4in}{What is the correct false-positive rate?}
+
+The next set of commands will work through some of the permutations of having
+both staged and unstaged modifications in your working tree --- recall that
+above we ran \t{git~add} on our changes to \t{indict}, but didn't run
+\t{git~commit}.
+
+\begin{typeme}
+git status & Check modification status. \\
+git diff & Review unstaged changes. \\
+git commit & Commit staged changes.
+\end{typeme}
+
+\fillme{0.4in}{What change(s) was/were just committed?}
+
+\fillme{0.6in}{If you were to run \t{git~diff} now, after the \t{git~commit},
+  what would you see? (Err, please try to guess the answer without just
+  running the command.)}
+
+\begin{typeme}
+git diff & Review unstaged changes. \\
+git add \p{remaining file} & Stage for committing. \\
+git commit & Commit staged changes. \\
+git status & Check modification status.
+\end{typeme}
+
+If everything has gone well, you'll have a clean working tree, a new feature
+in \t{indict}, and a fixed bug. You can now muck about with the working tree
+however you want, confident that your important fixes won't be lost.
+
+\begin{typeme}
+pwd & Double-check your directory. \\
+rm -rf * & Type carefully! \\
+git checkout . & Bring it all back. \\
+./indict \p{some words} & Verify correct FP rate is produced.
+\end{typeme}
 
 
 \end{document}
