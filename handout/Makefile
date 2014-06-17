@@ -2,9 +2,13 @@ default: all
 
 toplevels += handout.pdf
 deps += setup.tex
-cleans += handout.pdf .latexwork/*
+cleans += gitversion.tex handout.pdf .latexwork/*
 
 handout.pdf: handout.tex $(deps)
+	git update-index -q --refresh && \
+	vers=$$(git show-ref -h --hash=6 |head -n1) && \
+	[ -z "$$(git diff-index --name-only HEAD --)" ] || vers="$${vers}(dirty)" ; \
+	echo "\newcommand\gitversion{$$vers}" >gitversion.tex
 	./latexdriver -x $< $@
 
 # Misc
