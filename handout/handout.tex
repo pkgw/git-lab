@@ -104,8 +104,8 @@ Now we can get started for real!
 
 We'll get started by setting up a \i{git repository} to play with. This is the
 directory containing your actual content (\ie, files) as well as \git's
-supporting data. There are two commands to set up a repository: \t{git~init},
-which creates a new, empty repository; and \t{git~clone}, which duplicates an
+supporting data. There are two commands to set up a repository: \cmd{init},
+which creates a new, empty repository; and \cmd{clone}, which duplicates an
 existing one. We'll use the latter so that we have some files to work with
 right off the bat.
 
@@ -185,7 +185,7 @@ the best way to think about it. Anyway, let's modify one of the files that
 git status & Check modification status.
 \end{typeme}
 
-The \t{git~status} command will print out several pieces of information ---
+The \cmd{status} command will print out several pieces of information ---
 ignore most of it for now. You should see \git\ highlight that \t{indict} has
 been modified. It should also tell you how to discard your changes if you
 decide you don't like them:
@@ -209,9 +209,9 @@ operation: ``Let's try this and see if it works.'' If you have something that
 already works, the chief enemy of progress is the fear of breaking what you do
 have. \textit{Git makes it safe to try things.} You can make any insane kind
 of change to a file in a \git\ repository, and if you decide you don't like
-it, all you need to do is \t{git~checkout}. You will truly have mastered the
-Zen of Git when you gleefully shred your most precious files without a care in
-the world.
+it, all you need to do is \cmd{checkout}. You will truly have mastered the Zen
+of Git when you gleefully shred your most precious files without a care in the
+world.
 
 These snapshots also mean that \git\ is a nearly disaster-proof backup tool.
 If you're not used to it, the ``\t{rm~-rf~*}'' below means ``delete everything
@@ -254,7 +254,7 @@ broadly speaking you have to tell \git\ to make a new commit based on the
 files you have in your working directory. This is actually a two-step process,
 however, for reasons that we won't go into right now. First, you have to
 identify which changes you want to commit by \i{staging} them with the
-\t{git~add}. Then you actually create the new commit with \t{git~commit}.
+\cmd{add}. Then you actually create the new commit with \cmd{commit}.
 
 \begin{typeme}
 \p{edit `indict' and modify the ``MIGHT BE'' message} & Make a change. \\
@@ -265,7 +265,7 @@ git status & Note change in output. \\
 git commit & Commit the staged changes.
 \end{typeme}
 
-When you run \t{git~commit} you will be prompted to write a \i{commit
+When you run \cmd{commit} you will be prompted to write a \i{commit
   message}. There are no rules about the message contents, but every commit
 must have one. Generally speaking, more sophisticated and organized projects
 will have more detailed policies about what should go in each message. For the
@@ -278,7 +278,7 @@ I've found it helpful to identify the section or subsystem that the commit
 most strongly affects (that's the bit before the colon), as well as a terse
 summary of what you did.
 
-You also use \t{git~add} to tell \git\ to start keeping track of a new file.
+You also use \cmd{add} to tell \git\ to start keeping track of a new file.
 
 \begin{typeme}
 date >mynewfile & Create a new file. \\
@@ -288,7 +288,7 @@ git status & Note change in output. \\
 git commit -m "\p{your message}" & Commit the staged changes.
 \end{typeme}
 
-Here we've used the \t{-m} option to \t{git~commit}, which lets you write the
+Here we've used the \t{-m} option to \cmd{commit}, which lets you write the
 commit message right on the command line. You'll probably be mostly writing
 short messages, so the \t{-m} option can be a big convenience.
 
@@ -299,7 +299,7 @@ short messages, so the \t{-m} option can be a big convenience.
 
 There are a couple of other ways to stage changes to be committed. For
 instance, if we decide we don't want to keep \t{mynewfile} around anymore, we
-need to use \t{git~rm} to register the deletion:
+need to use \cmd{rm} to register the deletion:
 
 \begin{typeme}
 rm mynewfile & Delete our file. \\
@@ -316,13 +316,13 @@ into a repository: even if you make a commit to remove the information, anyone
 with a clue can still get it back. There are ways to fully delete such
 information, but we won't get into them here.
 
-There's also a \t{git~mv} command that is the equivalent of an \t{add} and an
-\t{rm} together. Both this and \t{git~rm} will perform the specified moves
+There's also a \cmd{mv} command that is the equivalent of an \t{add} and an
+\t{rm} together. Both this and \cmd{rm} will perform the specified moves
 and/or deletions on relevant working-tree files if they haven't already
 happened.
 
-Finally, \t{git~commit} has an important \t{-a} option to automatically do the
-equivalent of \t{git~add} on all of your modified files. It does \i{not}
+Finally, \cmd{commit} has an important \t{-a} option to automatically do the
+equivalent of \cmd{add} on all of your modified files. It does \i{not}
 auto-add untracked files in your working tree. Using the standard Unix syntax
 for combining command-line options, we get a very important pattern,
 exemplified here:
@@ -356,17 +356,17 @@ to break down your code into commits will help deepen your understanding of
 how to structure software in general. The more you do it, the easier it will
 get, and the better programmer you'll be. One a more mundane level, as I've
 emphasized, this is also true of the mechanical act of typing
-\t{git~ci~-am~"\ldots"} and composing a decent commit message.
+\cmd{ci~-am~"\ldots"} and composing a decent commit message.
 
 
 \section{git log}
 
-If you do find yourself wanting to review your previous commits, \t{git~log}
+If you do find yourself wanting to review your previous commits, \cmd{log}
 is the command to use.
 
 \typeone{git log}{Show log of changes.}
 
-When you run \t{git~log}, you enter a special subprogram called the \i{pager}.
+When you run \cmd{log}, you enter a special subprogram called the \i{pager}.
 The pager is a tool for navigating lengthy textual output that offers more
 features than your terminal, and \git\ (along with many other Unix tools) uses
 it extensively. Under default settings, your pager is a Unix command called
@@ -394,7 +394,7 @@ just type what you're looking for and the right thing will happen. You will
 find that \i{many} Unix tools use regexes; they are just one of the many
 interlocking technologies that constitute the overall Unix ecosystem.
 
-You'll see that the output of \t{git~log} is a series of commits, each
+You'll see that the output of \cmd{log} is a series of commits, each
 associated with an author, date, and message. Each commit also has a \i{commit
   identifier}, which is the string of 40 random-looking characters. You should
 see your own recent commits at the top of the output.
@@ -414,7 +414,7 @@ a unique identifier.
   elapse before you used all possible identifiers? The Hubble time is about
   $4.3 \times 10^{17}$~s, and $2^{10} \approx 10^3$.}
 
-The \t{git~log} command can also show you which files were changed in each
+The \cmd{log} command can also show you which files were changed in each
 commit. It presents this information in a compact form called a \i{diffstat}
 that we'll see more of later. It shows how many lines were added and removed
 from each file.
@@ -427,7 +427,7 @@ from each file.
 
 \section{git show, git grep, git diff}
 
-To take a closer look at changes, you can use \t{git~show} and \t{git~diff}.
+To take a closer look at changes, you can use \cmd{show} and \cmd{diff}.
 The first of these will show the set of changes associated with any commit in
 \i{diff format}, which is yet another convention that shows up throughout the
 Unix ecosystem. The format should be fairly intuitive to grasp, especially
@@ -449,11 +449,11 @@ git show HEAD & Show your most recent commit.
 The diff for this commit will be fairly simple since it was a trivial example
 you authored just a little while ago.
 
-\fillme{0.4in}{Use \t{git~log} to find the commit that adds support for
-  \s{gzip} compression of the data file and \t{git~show} to view the commit
+\fillme{0.4in}{Use \cmd{log} to find the commit that adds support for
+  \s{gzip} compression of the data file and \cmd{show} to view the commit
   diff. What Python module is needed to add \s{gzip} support?}
 
-Rather than showing an existing commit, the \t{git~diff} command shows the
+Rather than showing an existing commit, the \cmd{diff} command shows the
 difference between your working tree and \i{the staged set of changes} ---
 \i{not} the most recent commit. We'll demonstrate this with a longer example.
 (For the sake of pedagogy, please run through the following commands exactly
@@ -479,7 +479,7 @@ But wait a minute!
 \fillme{0.4in}{Does that number make any sense?}
 
 The false positive rate came from a function called \t{fprate}. You can use
-\t{git~grep} to locate its definition: it searches for a string in the working
+\cmd{grep} to locate its definition: it searches for a string in the working
 tree files using --- just as we saw above with the pager's search feature ---
 a regex. If you locate the function definition, the origin of the buggy output
 is clear.
@@ -494,8 +494,8 @@ git grep fprate & Locate instances of ``fprate''. \\
 
 The next set of commands will work through some of the permutations of having
 both staged and unstaged modifications in your working tree --- recall that
-above we ran \t{git~add} on our changes to \t{indict}, but didn't run
-\t{git~commit}.
+above we ran \cmd{add} on our changes to \t{indict}, but didn't run
+\cmd{commit}.
 
 \begin{typeme}
 git status & Check modification status. \\
@@ -505,7 +505,7 @@ git commit & Commit staged changes.
 
 \fillme{0.4in}{What change(s) was/were just committed?}
 
-\fillme{0.6in}{If you were to run \t{git~diff} now, after the \t{git~commit},
+\fillme{0.6in}{If you were to run \cmd{diff} now, after the \cmd{commit},
   what would you see? (Err, please try to guess the answer without just
   running the command.)}
 
