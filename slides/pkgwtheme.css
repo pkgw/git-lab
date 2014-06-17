@@ -297,7 +297,8 @@ body {
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-/* for debugging; note that the border offsets the layout slightly. */
+/* for debugging; note that the border offsets the layout slightly.
 .reveal .slides section.present {
     border: 2px solid red;
 }
+*/
