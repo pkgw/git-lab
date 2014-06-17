@@ -571,23 +571,28 @@ Not that I'm bitter.) A key aspect of this support is that is that \git\ makes
 it feasible to \i{merge} forks tractably, which we'll discuss in the next
 section.
 
-In \git, a branch is just a name referring to a commit. That's all you need to
-reconstruct the entire project history back to its inception: the named commit
-points to its parent, which points to its parent, and so on. The following
-command prints out the names of the branches in your repository:
+In \git, a branch is just a name referring to a commit, the \i{branch head}.
+That's all you need to reconstruct the entire project history back to its
+inception: the named commit points to its parent, which points to its parent,
+and so on. You can store data for many branches at once, but there is only one
+\i{current branch}: the current branch is the one that the working tree and
+HEAD are synchronized with. The following command prints out the names of the
+branches in your repository:
 
 \typeone{git branch}{List branches.}
 
 \fillme{0.4in}{We only have one branch, the default one. What is its name?}
 
 When you run \cmd{commit}, a new commit is recorded, and the information for
-the branch is updated to point to that new commit. That's all you need to do
-to move the branch forward, and by induction that's still all we need to
+the current branch is updated to point to that new commit. That's all you need
+to do to move the branch forward, and by induction that's still all we need to
 reconstruct the entire history. It's literally that simple, with the branch's
 commit pointer being stored in a simple text file:
 
-\typeone{cat .git/refs/heads/master}{Manually print the master branch commit
-  id.}
+\begin{typeme}
+cat .git/refs/heads/master & Manually print the master branch commit id. \\
+cat .git/HEAD & Manually print out the branch that HEAD references.
+\end{typeme}
 
 (One of the reasons that \git\ is so reliable that commits involve
 \i{appending} new information to the repository but almost no \i{rewriting} of
@@ -641,9 +646,53 @@ bottom of the log listing), but then diverge.
 
 We've been a bit vague about why you might want to make new branches. The
 vagueness will unfortunately continue a while longer as we learn about
-\i{merging} branches.
+\i{merging} branches. The formal-math line of thinking is also going to last a
+little bit longer --- but only a little bit.
 
 Above, I said that each commit has a parent. That wasn't the whole truth.
-Really, each commit has \i{one or more parents}.
+Really, each commit has \i{one or more parents}. Correspondingly, the whole
+history of a branch isn't just a linear sequence of commits going backwards
+from its head --- it's the \i{set} of all parent commits. Topologically,
+commits form not just a tree, but a \i{graph}, specifically an awesome
+mathematical structure called a \i{directed acyclic graph} or DAG. It's not
+worth getting into them here, but they're a very useful reasoning device for
+certain problems. Uncoincidentally, DAGs are also the underlying formalism
+for the legendary Unix tool \t{make}.
+
+The \cmd{merge} command lets you create \i{merge commits}, which are those
+that have more than one parent. Say you have a main branch, \s{master}, and a
+side branch, \s{fix-typos}. The branches have \i{diverged} if their histories are
+disjoint sets of commits: that is, if \s{master} has commits that are not in
+\s{fix-typos}, and \s{fix-typos} has commits that are not in \s{master}. If we
+\i{merge fix-typos into master}, that means that we're updating \s{master} to a
+merge commit that unifies the two histories. After that point, \s{fix-typos} is
+\i{merged into master}, in the sense that the set of commits in its history is
+a subset of those in the history of \s{master}.
+
+Yikes. Okay. What does this mean in practice? Let's merge your alternate line
+of development into master:
+
+\begin{typeme}
+git checkout master & Switch to master. \\
+git merge take2 & Merge the two. \\
+./indict \p{some words} & Verify that your name and FP rate are printed.
+\end{typeme}
+
+The \cmd{merge} will prompt you to write a message for the merge commit;
+unless you're working in a sophisticated project, you can usually just leave
+it with the default.
+
+That seemed straightforward enough. But, what if the \s{master} and
+\s{fix-typos} branches had both modified the same part of the same file in
+different ways? This is the dreaded \i{merge conflict}.
+
+In practice, \git\ doesn't know how your software actually works, so the only
+way to resolve a conflict is through human intervention. If a conflict arises,
+\git\ will leave your working tree in a special funky state, with your files
+modified to indicate where the conflicts are. You must decide how to resolve
+the conflicts, then mark them as dealt with using \cmd{add}, and then finally
+\cmd{commit} when everything is fixed. Things are a little bit simpler than
+you might fear since the various commands will tell you the necessary steps as
+you go through them.
 
 \end{document}
