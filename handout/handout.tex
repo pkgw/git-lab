@@ -104,10 +104,11 @@ Now we can get started for real!
 
 We'll get started by setting up a \i{git repository} to play with. This is the
 directory containing your actual content (\ie, files) as well as \git's
-supporting data. There are two commands to set up a repository: \cmd{init},
-which creates a new, empty repository; and \cmd{clone}, which duplicates an
-existing one. We'll use the latter so that we have some files to work with
-right off the bat.
+supporting data. The \git\ tool is made of many \i{commands}, which are
+invoked as shown below. There are two commands to set up a repository:
+\cmd{init}, which creates a new, empty repository; and \cmd{clone}, which
+duplicates an existing one. We'll use the latter so that we have some files to
+work with right off the bat.
 
 \begin{typeme}
 cd & Go to home directory. \\
@@ -492,6 +493,11 @@ git grep fprate & Locate instances of ``fprate''. \\
 
 \fillme{0.4in}{What is the correct false-positive rate?}
 
+\fillme{0.4in}{(Extra credit.) Use \cmd{checkout} to discard your fix, then
+  the new command \cmd{blame} to identify the commit that introduced the bug.
+  Which one was it? When done, re-fix the bug. \cmd{help~blame} may be
+  \ldots\ helpful.}
+
 The next set of commands will work through some of the permutations of having
 both staged and unstaged modifications in your working tree --- recall that
 above we ran \cmd{add} on our changes to \t{indict}, but didn't run
@@ -511,7 +517,7 @@ git commit & Commit staged changes.
 
 \begin{typeme}
 git diff & Review unstaged changes. \\
-git add \p{remaining file} & Stage for committing. \\
+git add \p{remaining file(s)} & Stage for committing. \\
 git commit & Commit staged changes. \\
 git status & Check modification status.
 \end{typeme}
