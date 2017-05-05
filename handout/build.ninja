@@ -1,0 +1,14 @@
+rule gitversion
+  command = ./git-version-stamp.sh $out
+  description = STAMP $out
+  restat = 1
+
+build gitversion.tex: gitversion
+
+rule tectonic
+  command = tectonic -c minimal --makefile-rules $out.d $in
+  description = TECTONIC $out
+  depfile = $out.d
+  deps = gcc
+
+build handout.pdf: tectonic handout.tex
