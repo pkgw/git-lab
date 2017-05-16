@@ -53,12 +53,11 @@ Important terminology will be introduced in \i{italics}. Computer-y words will
 be written in a monospace font \t{like} \t{this}. Commands that you should
 type in a terminal in are presented with commentary this way:
 
-\begin{typeme}
-echo hello world & Say hello.
-\end{typeme}
+\typeone{echo hello world}{\b{Say hello.}}
 
 You shouldn't type the leading dollar sign, which just indicates a generic
-terminal prompt.
+terminal prompt. When the commentary is \s{\b{in bold like this}}, it means
+that a new command is being introduced.
 
 Often we will give you only a piece of the command and you will have to
 complete it yourself. Sample text in \p{bold braces} must be replaced with a
@@ -102,7 +101,8 @@ turned on by default. Type the following commands in your terminal --- once
 again, you should leave out the initial dollar sign:
 
 \begin{typeme}
-git config --global color.ui auto & Use colors in printed output. \\
+git config --global color.ui auto & \b{Use colors in printed output.} \\
+git config --global core.editor nano & Use \t{nano} to edit files. \\
 git config --global alias.ci commit & A useful shorthand. \\
 git config --global alias.s status & A useful shorthand.
 \end{typeme}
@@ -112,17 +112,13 @@ of your activity. Remember that below, you should replace the sample text
 \p{your name} with your actual name. Remove the braces, but leave the double
 quotes.
 
-\begin{typeme}
-git config --global user.name "\p{your name}" & Tell \git\ your name.
-\end{typeme}
+\typeone{git config --global user.name "\p{your name}"}{Tell \git\ your name.}
 
 You also need to tell \git\ your email address. The value you enter here will
 be preserved permanently, so it is best to use a public address that will be
 long-lived.
 
-\begin{typeme}
-git config --global user.email "\p{your email address}" & Tell git your email.
-\end{typeme}
+\typeone{git config --global user.email "\p{your email address}"}{Tell git your email.}
 
 Now we can get started for real!
 
@@ -142,7 +138,7 @@ bat.
 cd & Move to home directory. \\
 mkdir gitlab & Create work directory. \\
 cd gitlab & Move into it. \\
-git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository.
+git clone https://github.com/pkgw/bloomdemo.git & \b{Clone an existing repository.}
 \end{typeme}
 
 Let's see what just happened. The sample text \p{dirname} below should be
@@ -167,32 +163,80 @@ self-sufficient. You can do anything you want to it without having to talk to
 and nothing you do will affect the \textsf{GitHub} version unless you
 explicitly attempt to synchronize the two. (Which is a vitally important
 process for collaborative work, but not something that we're going to worry
-about for a little while.)
+about just yet.)
 
 You can see a gory listing of \git's housekeeping files with:
 
-\typeone{find . -print}{Print all file names.}
+\typeone{find . -print}{\b{Print all file names.}}
 
-Here, \t{find} is a Unix command that you may not be familiar with; there will
-likely be more in the coming pages. If you'd like to learn more about a
-command, you can try reading its manual page:
+\subsection*{Diversion: Getting Help and the Pager}
 
-\begin{typeme}
-man find & Learn about \t{find}. \\
-man man & Learn about \t{man}.
-\end{typeme}
+The \t{find} command above is a Unix program that you may not be familiar
+with. There will likely be more of these in the coming pages. If you'd like to
+learn more about a program, you can try reading its ``manual page'' with the
+\t{man} command:
 
-\ldots\ although Unix manual pages are notoriously uneven in their quality.
-(This is especially true regarding \git\ itself, unfortunately.) Google is
-often a better resource for beginners. The information on the
+\typeone{man find}{\b{Learn about \t{find}.}}
+
+When you run \t{man}, you enter a special subprogram called the \i{pager}. The
+pager is a tool for navigating lengthy textual output that offers more
+features than your terminal. Because \t{man}, \git, and many other Unix tools
+use it extensively, it is important to learn a bit about it. Different
+programs can do the job of the pager, but by default your system uses a Unix
+command called \t{less}. The \t{less} program is mainly controlled by commands
+that are single keystrokes. Some of these keys are:
+
+\begin{center}
+\label{l.lesskeys}
+\begin{tabular}{>{\ttfamily}cl}
+\rmfamily\i{Key} & \i{Effect} \\ \hline
+q & Quit the pager. \\
+\rmfamily(Arrow keys) & Navigate as you'd expect. \\
+\rmfamily(Spacebar) & Go forward a page. \\
+b & Go backwards a page. \\
+< & Go to the top. \\
+> & Go to the bottom. \\
+/ & Search (type in query, then hit Enter). \\
+n & Go to next search result. \\
+N & Go to previous search result. \\
+\& & Filter (type in query, then hit Enter). \\
+h & Print help information.
+\end{tabular}
+\end{center}
+
+Since we don't want to get too distracted, just press \fbox{\t{q}} to quit the
+pager and return to your main terminal prompt.
+
+%(As a double side note, the search and filter commands above use a special
+%formalism called \i{regular expressions} or \i{regexes} for matching text. In
+%general, you can just type what you're looking for and the right thing will
+%happen. \i{Many} Unix tools use regexes; they are just one of the many
+%interlocking technologies that constitute the overall Unix ecosystem.)
+
+The \t{man} program has its own manual page:
+
+\typeone{man man}{Learn about \t{man}.}
+
+Unix manual pages are notoriously uneven in their quality. This is especially
+true regarding \git\ itself, unfortunately. Google is often a better resource
+for beginners. The information on the
 \href{http://stackexchange.com/}{StackExchange.com} family of websites is
 usually very helpful.
 
-Finally, let's verify that your Python setup is functional. If you run the
-following command, you should get a report about whether certain words are in
-the dictionary. You should \i{not} get any big honking error messages.
+You can run the \t{less} pager program like any other Unix command if you want
+to read a file right in your terminal:
 
-\typeone{./chkdict barn bern birn born burn}{Check reality of words.}
+\typeone{less README}{\b{Read the bloomdemo repository's \t{README}.}}
+
+\subsection*{Back on Track: Testing your Python}
+
+Let's get back to the \git-ing! Well, almost. We should verify that your
+Python setup is working. If you run the following command, you should get a
+report about whether certain words are in the dictionary. You should \i{not}
+get any big honking error messages. If you do, please call over a lab
+assistant.
+
+\typeone{./chkdict barn bern birn born burn}{\b{Check reality of words.}}
 
 For now, we're going to ignore how this program works. If you have extra time
 and are curious, read the file \t{bloom.py}.
@@ -206,22 +250,31 @@ with a recent snapshot of their contents. \git\ stores many of these
 snapshots, each of which is called a \i{commit}. The most ``recent'' snapshot,
 in a sense, is known as the \i{HEAD} commit or just HEAD. Now, in some
 circumstances HEAD isn't chronologically the most recent, but for now that's
-the best way to think about it. Anyway, let's modify one of the files that
-\git's tracking in the working tree:
+the best way to think about it.
+
+Let's modify one of the files that \git's tracking in the working tree. We'll
+use the \t{nano} command to edit files. Your first task is to edit the file
+\t{chkdict} and change the string value that includes the words \t{"MIGHT
+  BE"}. For now, just add the words \t{"... or it might not"} to the end of
+the string.
 
 \begin{typeme}
-\p{edit `chkdict' and modify the ``MIGHT BE'' message} & Make a change. \\
-./chkdict barn bern birn born burn & Check that change stuck. \\
-git status & Check modification status.
+nano chkdict & \b{Make a change.} \\
+./chkdict barn bern birn born burn & Check that change stuck.
 \end{typeme}
 
-The \cmd{status} command will print out several pieces of information ---
-ignore most of it for now. You should see \git\ highlight that \t{chkdict} has
+The next command we'll learn is \cmd{status}, which tells you about your
+\i{local modifications} to the working tree compared to the most recent snapshot:
+
+\typeone{git status}{\b{Check modification status.}}
+
+The \cmd{status} command prints out several pieces of information --- ignore
+most of it for now. But you should see \git\ highlight that \t{chkdict} has
 been modified. It should also tell you how to discard your changes if you
-decide you don't like them:
+decide you don't like them. You do this with the \cmd{checkout} command:
 
 \begin{typeme}
-git checkout chkdict & Discard changes to chkdict. \\
+git checkout chkdict & \b{Discard changes to chkdict.} \\
 ./chkdict \p{some words} & Check that change is gone. \\
 git status & Check modification status.
 \end{typeme}
@@ -244,18 +297,17 @@ of Git when you gleefully shred your most precious files without a care in the
 world.
 
 These snapshots also mean that \git\ is a nearly disaster-proof backup tool.
-If you're not used to it, the ``\t{rm~-rf~*}'' below means ``delete everything
-here recursively'' -- only run it when you're very sure that you're in the
-right directory and that you mean it.
+If you have an up-to-date copy of your \t{.git} directory \i{somewhere}, you
+can probably recover your files.
 
 \begin{typeme}
-rm dictbf.dat.gz & Blow away important file. \\
+rm dictbf.dat.gz & Remove important file. \\
 ./chkdict barn bern birn born burn & Check that program fails. \\
 git status & Check modification status. \\
 git checkout dictbf.dat.gz & Restore deleted file. \\
 ./chkdict barn bern birn born burn & Check that program is healed. \\
 pwd & Check your directory. \\
-rm -rf * & Type carefully! \\
+rm -f *.py *.pyc *.gz *dict* README & Type carefully! \\
 ls -la & Not quite everything gone. \\
 git checkout . & Bring it all back. \\
 ls -la & Huzzah!
@@ -267,32 +319,36 @@ different computers, you get almost complete invulnerability to loss of the
 data stored in the repository.
 
 Of course, \git\ needs to be tracking any file that you want to protect in
-this way. This doesn't happen automatically:
+this way. This doesn't happen automatically. The following commands create a
+new file called \t{mynewfile} and then delete it. Because we haven't told
+\git\ to track \t{mynewfile}, we cannot recover it:
 
 \begin{typeme}
 echo hello >mynewfile & Create a new file. \\
 git status & Check modification status. \\
-rm mynewfile & Blow it away. \\
+rm mynewfile & Remove it. \\
 git checkout mynewfile & There's no saving that one.
 \end{typeme}
 
 
 \section{git add, git commit}
 
-It looks like we ought to learn how to make commits. As you might guess,
-broadly speaking you have to tell \git\ to make a new commit based on the
-files you have in your working directory. This is actually a two-step process,
-however, for reasons that we won't go into right now. First, you have to
-identify which changes you want to commit by \i{staging} them with the
-\cmd{add}. Then you actually create the new commit with \cmd{commit}.
+Since commits are the way that \git\ remembers your files, we should learn how
+to make them! For reasons that we won't go into right now, making commits in
+\git\ is a two-step process. First, you have to identify which changes you
+want to commit by \i{staging} them with the \cmd{add} command. Then you
+actually create the new commit with \cmd{commit}.
+
+To demonstrate this, re-create the modification to \t{chkdict} that you did
+before:
 
 \begin{typeme}
-\p{edit `chkdict' and modify the ``MIGHT BE'' message} & Make a change. \\
-./chkdict barn bern birn born burn & ``Test'' your change. \\
+nano chkdict & Change the ``MIGHT BE'' line. \\
+./chkdict barn bern birn born burn & Validate your change. \\
 git status & Check modification status. \\
-git add chkdict & Stage the change. \\
+git add chkdict & \b{Stage the change.} \\
 git status & Note change in output. \\
-git commit & Commit the staged changes.
+git commit & \b{Commit the staged changes.}
 \end{typeme}
 
 When you run \cmd{commit} you will be prompted to write a \i{commit
@@ -302,68 +358,70 @@ will have more detailed policies about what should go in each message. For the
 kinds of projects you'll be working on, I suggest a one-line message of this
 form:
 
-\hspace{3em}\t{Chapter 2: Update the section on calibration}
+\hspace{3em}\t{chkdict: change the "MIGHT BE" message for fun}
 
 I've found it helpful to identify the section or subsystem that the commit
 most strongly affects (that's the bit before the colon), as well as a terse
 summary of what you did.
 
-You also use \cmd{add} to tell \git\ to start keeping track of a new file.
+You \i{also} use \cmd{add} to tell \git\ to start keeping track of a new file.
+This is an example of a common annoyance with \git: the same command
+(\cmd{add}) will often do very different things, depending on how exactly you
+run it.
 
 \begin{typeme}
 date >mynewfile & Create a new file. \\
 git status & Check modification status. \\
-git add mynewfile & Register it. \\
+git add mynewfile & \b{Register it.} \\
 git status & Note change in output. \\
 git commit -m "\p{your message}" & Commit the staged changes.
 \end{typeme}
 
-Here we've used the \t{-m} option to \cmd{commit}, which lets you write the
-commit message right on the command line. You'll probably be mostly writing
-short messages, so the \t{-m} option can be a big convenience.
+Here we've used a new option to \cmd{commit}: the \t{-m} option, which lets
+you write the commit message right on the command line. You'll probably be
+mostly writing short messages, so the \t{-m} option can be a big convenience.
 
 \fillme{1.0in}{Say you had done the above steps through \t{git add newfile}
   and then decided you actually didn't want to commit the new file. What
-  command would you run to reset things? What happens to \t{newfile} in this
-  case?}
+  command would you run to reset things? (Hint: \cmd{git status} is
+  informative.) What happens to \t{newfile} in this case?}
 
-There are a couple of other ways to stage changes to be committed. For
+There are a couple of other ways to ``stage'' changes to be committed. For
 instance, if we decide we don't want to keep \t{mynewfile} around anymore, we
-need to use \cmd{rm} to register the deletion:
+need to use \cmd{rm} to register the removal:
 
 \begin{typeme}
-rm mynewfile & Delete our file. \\
+rm mynewfile & Remove our file. \\
 git status & Check modification status. \\
-git rm mynewfile & Tell \git\ we want to delete it. \\
+git rm mynewfile & \b{Tell \git\ we want to remove it.} \\
 git status & Note change in output. \\
 git commit -m "\p{deletion message}" & Commit the staged changes.
 \end{typeme}
 
 An important point is that \i{\git\ never forgets anything, so even if you
   delete a file from a repository, its contents are still stored and
-  recoverable}. This is important if you, say, accidentally commit a password
-into a repository: even if you make a commit to remove the information, anyone
-with a clue can still get it back. There are ways to fully delete such
-information, but we won't get into them here.
+  recoverable}. This is \underline{very} important if, for example, you
+accidentally commit a password into a repository: even if you make a commit to
+remove the information, other people can still recover your password. There
+are ways to fully delete such information, but we won't get into them here.
 
 There's also a \cmd{mv} command that is the equivalent of an \t{add} and an
 \t{rm} together. Both this and \cmd{rm} will perform the specified moves
 and/or deletions on relevant working-tree files if they haven't already
 happened.
 
-Finally, \cmd{commit} has an important \t{-a} option to automatically do the
-equivalent of \cmd{add} on all of your modified files. It does \i{not}
-auto-add untracked files in your working tree. Using the standard Unix syntax
-for combining command-line options, we get a very important pattern,
-exemplified here:
+Finally, \cmd{commit} has a useful option: the \t{-a} option, which
+automatically does the equivalent of \cmd{add} on all of your modified files.
+It does \i{not} auto-add untracked files in your working tree. Using the
+standard Unix syntax for combining command-line options, we get a very
+important pattern, exemplified here:
 
 \begin{typeme}
 date >>README & Modify the README. \\
 git commit -am "README: add a timestamp" & Add and commit.
 \end{typeme}
 
-I truly recommend just making sure to run this command at least a few times
-each day until you don't even have to think about typing it.
+Once you develop your finger memory, this is the quickest way to make commits.
 
 \subsection*{Commentary: Commit Sizes and Messages}
 
@@ -384,9 +442,7 @@ thinking when they wrote it.
 This path also goes both ways: the effort that you spend reasoning about how
 to break down your code into commits will help deepen your understanding of
 how to structure software in general. The more you do it, the easier it will
-get, and the better programmer you'll be. One a more mundane level, as I've
-emphasized, this is also true of the mechanical act of typing
-\cmd{ci~-am~"\ldots"} and composing a decent commit message.
+get, and the better programmer you'll be.
 
 
 \section{git log}
@@ -394,51 +450,24 @@ emphasized, this is also true of the mechanical act of typing
 If you do find yourself wanting to review your previous commits, \cmd{log}
 is the command to use.
 
-\typeone{git log}{Show log of changes.}
+\typeone{git log}{\b{Show log of changes.}}
 
-When you run \cmd{log}, you enter a special subprogram called the \i{pager}.
-The pager is a tool for navigating lengthy textual output that offers more
-features than your terminal, and \git\ (along with many other Unix tools) uses
-it extensively. Under default settings, your pager is a Unix command called
-\t{less}, which is mainly controlled by commands that are single keystrokes.
-Among them are:
+The \cmd{log} command will open up the same pager program that we saw with the
+\t{man} command. But here, \cmd{log} shows you a series of commits, each
+associated with an author, a date, and a message. Each commit also has a
+\i{commit identifier}, which is the string of 40 random-looking characters.
+You should see your own recent commits at the top of the output.
 
-\begin{center}
-\begin{tabular}{>{\ttfamily}cl}
-\rmfamily\i{Key} & \i{Effect} \\ \hline
-q & Quit. \\
-\rmfamily(Arrow keys) & Navigate as you'd expect. \\
-\rmfamily(Spacebar) & Go forward a page. \\
-b & Go backwards a page. \\
-< & Go to the top. \\
-> & Go to the bottom. \\
-/ & Search (type in query, then hit Enter). \\
-n & Go to next search result. \\
-N & Go to previous search result. \\
-\& & Filter (type in query, then hit Enter). \\
-h & Print help information.
-\end{tabular}
-\end{center}
-
-As a side note, the search command above uses a special formalism called
-\i{regular expressions} or \i{regexes} for matching text. In general, you can
-just type what you're looking for and the right thing will happen. You will
-find that \i{many} Unix tools use regexes; they are just one of the many
-interlocking technologies that constitute the overall Unix ecosystem.
-
-You'll see that the output of \cmd{log} is a series of commits, each
-associated with an author, date, and message. Each commit also has a \i{commit
-  identifier}, which is the string of 40 random-looking characters. You should
-see your own recent commits at the top of the output.
-
-\fillme{0.4in}{On what date was the very first commit made in this
-  repository?}
+\fillme{0.4in}{On what date was the very first commit made in this repository?
+  You may want to consult the table of keystrokes that control \t{less} on
+  \autopageref{l.lesskeys}.}
 
 \fillme{0.4in}{Find a commit whose message contains the word ``consuming.'' On
   what date was it made?}
 
 An important aspect of \git\ is that every distinct commit in the universe has
-a unique identifier.
+a unique identifier. The identifiers look random but are uniquely determined
+by the commit's files and history.
 
 \fillme{1.5in}{(Optional.) Commit identifiers are 40-character hexadecimal
   strings, with each character having 16 possible values (0--9, a--f). If you
@@ -459,11 +488,15 @@ from each file.
 
 \section{git show, git grep, git diff}
 
-To take a closer look at changes, you can use \cmd{show} and \cmd{diff}.
-The first of these will show the set of changes associated with any commit in
-\i{diff format}, which is yet another convention that shows up throughout the
-Unix ecosystem. The format should be fairly intuitive to grasp, especially
-with the helpful colorful highlighting that \git\ gives you:
+An \i{enormously} important aspect of \git\ is that it makes it easy not just
+to view commits, but to understand the \i{changes} that happened between
+different commits.
+
+The most common commands for examining changes between commits are \cmd{show}
+and \cmd{diff}. The first of these will show the set of changes associated
+with any commit in \i{diff format}, which is yet another convention that shows
+up throughout the Unix ecosystem. The format should be fairly intuitive to
+grasp, especially with the helpful colorful highlighting that \git\ gives you:
 
 \begin{typeme}
 git show c16a09 & Show the named commit in the pager.
