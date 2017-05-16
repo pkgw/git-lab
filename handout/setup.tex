@@ -1,37 +1,42 @@
 % Basic packages
-\usepackage{dblfloatfix,fixltx2e,graphicx}
-\usepackage[breaklinks,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{dblfloatfix, fixltx2e, graphicx}
+\usepackage[breaklinks, colorlinks, urlcolor=blue, citecolor=blue, linkcolor=blue]{hyperref}
 \usepackage{tabularx} % for \prompt
 \usepackage[table]{xcolor} % for \prompt
 \usepackage{changepage} % for indented paragraphs
+
 
 % Skips between pars rather than indents at their beginnings; works better for
 % this kind of document, I think:
 \usepackage[parfill]{parskip}
 
+
 % Page setup
-\usepackage[letterpaper,includehead,margin=1in,top=0.5in,headheight=15pt]{geometry}
+\usepackage[letterpaper, includehead, margin=1in, top=0.5in, headheight=15pt]{geometry}
 \usepackage{fancyhdr}
 \pagestyle{fancyplain}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage}
 \fancyhead[LO,RE]{\textsf{\leftmark}}
 
-% Font; Gyre Pagella is nice and it has math.
-% Suchow's choices: see
-% https://github.com/suchow/Dissertate/blob/master/Dissertate.cls#L76
-% Note: EB Garamond has no bold!
-\usepackage{fontspec}
-\newfontfeature{Microtype}{protrusion=default;expansion=default;}
-\setmainfont[Microtype,Ligatures=TeX]{EB Garamond}
-%\setsansfont[Scale=MatchLowercase, BoldFont={Lato Bold}]{Lato Regular}
-\setmonofont[Scale=MatchLowercase,Ligatures=Common]{SourceCodePro-Regular.otf}
 
-%% \newfontfeature{Microtype}{protrusion=default;expansion=default;}
-%% \setmainfont[Microtype,Ligatures=TeX]{TeX Gyre Pagella}
-%% \setmathfont[Scale=MatchLowercase]{TeX Gyre Pagella Math}
-%% \setsansfont[Microtype,Ligatures=TeX]{TeX Gyre Heros}
-%% \setmonofont[Ligatures=TeX]{TeX Gyre Cursor}
+% Fonts. Note that EB Garamond has no bold, alas!
+\usepackage{fontspec}
+\newfontfeature{Microtype}{protrusion=default; expansion=default;}
+
+\setmainfont[
+  Microtype,
+  Ligatures = TeX,
+  ItalicFont = EBGaramond12-Italic.otf
+]{EBGaramond12-Regular.otf}
+
+\setmonofont[
+  Scale = MatchLowercase,
+  Ligatures = TeX,
+  BoldFont = SourceCodePro-Bold.otf,
+  ItalicFont = SourceCodePro-It.otf,
+  BoldItalicFont = SourceCodePro-BoldIt.otf,
+]{SourceCodePro-Regular.otf}
 
 
 % Sectioning
@@ -51,6 +56,7 @@
 \pretitle{\begin{center}\Huge}
 \posttitle{\end{center}}
 
+
 % Lists
 %% \usepackage{enumitem}
 %% \setitemize{noitemsep,topsep=6pt,parsep=0pt,partopsep=0pt,leftmargin=*}
@@ -69,10 +75,12 @@
 \newcommand\git{\s{git}}
 \newcommand\ie{\i{i.e.}}
 
+
 \input gitversion % definition generated during build process
 
-% The question-to-answer environment. Derived from leftbar environment
-% of framed package. We just make the rule thinner.
+
+% The question-to-answer environment. Derived from `leftbar` environment of
+% `framed` package. We just make the rule thinner.
 
 \usepackage{framed}
 
