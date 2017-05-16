@@ -26,13 +26,13 @@
 
 \setmainfont[
   Microtype,
-  Ligatures = TeX,
+  Ligatures = Common,
   ItalicFont = EBGaramond12-Italic.otf
 ]{EBGaramond12-Regular.otf}
 
 \setmonofont[
   Scale = MatchLowercase,
-  Ligatures = TeX,
+  Ligatures = Common, % needed for vertical quotes, etc.
   BoldFont = SourceCodePro-Bold.otf,
   ItalicFont = SourceCodePro-It.otf,
   BoldItalicFont = SourceCodePro-BoldIt.otf,
@@ -110,3 +110,7 @@
 
 \newcommand\fillinparam[1]{\textsf{\textbf{\{#1\}}}}
 \let\p=\fillinparam
+
+
+% Boxes around sample characters in the Introduction.
+\setlength{\fboxsep}{1pt}

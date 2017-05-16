@@ -51,51 +51,78 @@ assistants.
 
 Important terminology will be introduced in \i{italics}. Computer-y words will
 be written in a monospace font \t{like} \t{this}. Commands that you should
-type in are presented with commentary this way, sometimes with parameters that
-you need to figure out for yourself:
+type in a terminal in are presented with commentary this way:
 
 \begin{typeme}
-echo hello world & Say hello. \\
-echo \p{your name} & Say your name.
+echo hello world & Say hello.
 \end{typeme}
 
-You shouldn't type the leading dollar sign, which is just meant to indicate a
-generic terminal prompt, or the braces. The exercises are interspersed with
-questions so that you can check your understanding. They're represented
-thusly:
+You shouldn't type the leading dollar sign, which just indicates a generic
+terminal prompt.
 
-\fillme{0.4in}{What is your name? What is your quest?}
+Often we will give you only a piece of the command and you will have to
+complete it yourself. Sample text in \p{bold braces} must be replaced with a
+value that you choose or figure out for yourself, such as:
+
+\begin{typeme}
+echo \p{the current year} & Say the year (sample as printed) \\
+echo \the\year & Say the year (what you actually type)
+\end{typeme}
+
+Don't type the braces! With the exception of the leading dollar signs and
+these pieces of sample text denoted with braces, \i{always type every command
+  exactly as shown in the manual}. Take special care with punctuation and
+similar letters --- command-line interfaces are finicky. The characters
+\fbox{\t{'}} (single vertical quote), \fbox{\t{`}} (backtick), and
+\fbox{\t{"}} (double vertical quote) may look the same but they are all
+interpreted differently. Likewise for \fbox{\t{l}} (the letter ell),
+\fbox{\t{1}} (the digit one), \fbox{\t{|}} (pipe symbol), and so on.
+
+The exercises are interspersed with questions so that you can check your
+understanding. They're represented thusly:
+
+\fillme{0.6in}{What is your name? What is your quest?}
+
+Please actually write down the answers that you and your partner come up with!
 
 There's one more bit of preliminary work to do before we get started in
 earnest.
 
 
-\section{.gitconfig}
+\section{git config}
 
-Before we proceed, each participant in the lab should set up a file named
-\t{.gitconfig} in her or his home directory to set up a few important
-parameters:
+Before we start using \git\ in earnest, we need to set up some important
+configuration. We can do this with the \git\ program itself.
+
+The \git\ program that you run from the terminal is a sort of ``Swiss Army
+knife'' tool that provides many \i{commands} that do all sorts of different
+things. The command that sets up configuration is (quite sensibly) known as
+\cmd{config}. Our first commands will set up some nice features that aren't
+turned on by default. Type the following commands in your terminal --- once
+again, you should leave out the initial dollar sign:
 
 \begin{typeme}
-cd & Move to your home directory. \\
-\p{edit the file .gitconfig} & Set up \t{.gitconfig}.
+git config --global color.ui auto & Use colors in printed output. \\
+git config --global alias.ci commit & A useful shorthand. \\
+git config --global alias.s status & A useful shorthand.
 \end{typeme}
 
-The file should look like this:
+Next we will tell \git\ your name, which it will then embed in all of its logs
+of your activity. Remember that below, you should replace the sample text
+\p{your name} with your actual name. Remove the braces, but leave the double
+quotes.
 
-\begin{adjustwidth}{2.5em}{0pt}
-\ttfamily
-[user]\\
-name = \p{your name}\\
-email = \p{your email}\\
-\\{}
-[color]\\
-ui = auto\\
-\\{}
-[alias]\\
-ci = commit\\
-s = status
-\end{adjustwidth}
+\begin{typeme}
+git config --global user.name "\p{your name}" & Tell \git\ your name.
+\end{typeme}
+
+You also need to tell \git\ your email address. The value you enter here will
+be preserved permanently, so it is best to use a public address that will be
+long-lived.
+
+\begin{typeme}
+git config --global user.email "\p{your email address}" & Tell git your email.
+\end{typeme}
 
 Now we can get started for real!
 
@@ -104,11 +131,12 @@ Now we can get started for real!
 
 We'll get started by setting up a \i{git repository} to play with. This is the
 directory containing your actual content (\ie, files) as well as \git's
-supporting data. The \git\ tool is made of many \i{commands}, which are
-invoked as shown below. There are two commands to set up a repository:
-\cmd{init}, which creates a new, empty repository; and \cmd{clone}, which
-duplicates an existing one. We'll use the latter so that we have some files to
-work with right off the bat.
+supporting data.
+
+There are two \git\ commands to set up a repository: \cmd{init}, which creates
+a new, empty repository; and \cmd{clone}, which duplicates an existing one.
+We'll use the latter so that we have some files to work with right off the
+bat.
 
 \begin{typeme}
 cd & Move to home directory. \\
@@ -117,7 +145,9 @@ cd gitlab & Move into it. \\
 git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository.
 \end{typeme}
 
-Let's see what just happened:
+Let's see what just happened. The sample text \p{dirname} below should be
+replaced with the name of a directory that the \cmd{clone} command creates ---
+the first \t{ls} that you run should reveal its name to you.
 
 \begin{typeme}
 ls & Examine files. \\
