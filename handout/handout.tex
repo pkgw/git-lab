@@ -238,8 +238,18 @@ assistant.
 
 \typeone{./chkdict barn bern birn born burn}{\b{Check reality of words.}}
 
-For now, we're going to ignore how this program works. If you have extra time
-and are curious, read the file \t{bloom.py}.
+This program uses a technique called a \i{Bloom filter} to examine the words
+that you specify as arguments (``barn,'' ``bern,'' etc.) and tell you whether
+they are found in the English dictionary. Bloom filters are unusual because
+they make mistakes in a one-sided way: if a word is in the dictionary, a Bloom
+filter will never say that it isn't; but sometimes a Bloom filter will think
+that a word is in the dictionary when it really is not. Why would you want
+that behavior? Bloom filters are much faster than filters that are always
+correct, and sometimes it makes sense to trade accuracy for speed.
+
+Don't worry: the details of Bloom filters aren't important here, and we won't
+go into them any further. If you have extra time and are curious, read the
+file \t{bloom.py}.
 
 
 \section{git status, git checkout}
@@ -360,9 +370,9 @@ form:
 
 \hspace{3em}\t{chkdict: change the "MIGHT BE" message for fun}
 
-I've found it helpful to identify the section or subsystem that the commit
-most strongly affects (that's the bit before the colon), as well as a terse
-summary of what you did.
+I find it helpful to identify the section or subsystem that the commit most
+strongly affects --- that's the bit before the colon --- and then tersely
+summarize what you did.
 
 You \i{also} use \cmd{add} to tell \git\ to start keeping track of a new file.
 This is an example of a common annoyance with \git: the same command
@@ -407,14 +417,14 @@ are ways to fully delete such information, but we won't get into them here.
 
 There's also a \cmd{mv} command that is the equivalent of an \t{add} and an
 \t{rm} together. Both this and \cmd{rm} will perform the specified moves
-and/or deletions on relevant working-tree files if they haven't already
+and/or removals on relevant working-tree files if they haven't already
 happened.
 
 Finally, \cmd{commit} has a useful option: the \t{-a} option, which
 automatically does the equivalent of \cmd{add} on all of your modified files.
 It does \i{not} auto-add untracked files in your working tree. Using the
 standard Unix syntax for combining command-line options, we get a very
-important pattern, exemplified here:
+useful pattern, exemplified here:
 
 \begin{typeme}
 date >>README & Modify the README. \\
@@ -450,7 +460,7 @@ get, and the better programmer you'll be.
 If you do find yourself wanting to review your previous commits, \cmd{log}
 is the command to use.
 
-\typeone{git log}{\b{Show log of changes.}}
+\typeone{git log}{\b{Show the commit history.}}
 
 The \cmd{log} command will open up the same pager program that we saw with the
 \t{man} command. But here, \cmd{log} shows you a series of commits, each
@@ -476,11 +486,14 @@ by the commit's files and history.
   $4.3 \times 10^{17}$~s, and $2^{10} \approx 10^3$.}
 
 The \cmd{log} command can also show you which files were changed in each
-commit. It presents this information in a compact form called a \i{diffstat}
-that we'll see more of later. It shows how many lines were added and removed
-from each file.
+commit relative to the one before. This is an \i{enormously} important aspect
+of \git\ --- is that it makes it easy not just to view commits, but to
+understand the \i{changes} that happened between different commits. The
+\cmd{log} command presents change information in a compact form called a
+\i{diffstat} that we'll see more of later. It shows how many lines were added
+and removed from each file.
 
-\typeone{git log --stat}{Show log, with change statistics.}
+\typeone{git log --stat}{\b{Show log, with change statistics.}}
 
 \fillme{0.4in}{In the most recent commit to modify the file \t{INSTRUCTIONS},
   how many lines were added? How many removed?}
@@ -488,51 +501,56 @@ from each file.
 
 \section{git show, git grep, git diff}
 
-An \i{enormously} important aspect of \git\ is that it makes it easy not just
-to view commits, but to understand the \i{changes} that happened between
-different commits.
+While the \cmd{log -{}-stat} command is useful, the most common commands for
+examining changes between commits are \cmd{show} and \cmd{diff}. The first of
+these will show the set of changes associated with any commit in \i{diff
+  format}, which is yet another convention that shows up throughout the Unix
+ecosystem. The format should be fairly intuitive to grasp, especially with the
+helpful colorful highlighting that \git\ gives you:
 
-The most common commands for examining changes between commits are \cmd{show}
-and \cmd{diff}. The first of these will show the set of changes associated
-with any commit in \i{diff format}, which is yet another convention that shows
-up throughout the Unix ecosystem. The format should be fairly intuitive to
-grasp, especially with the helpful colorful highlighting that \git\ gives you:
-
-\begin{typeme}
-git show c16a09 & Show the named commit in the pager.
-\end{typeme}
+\typeone{git show 09933f}{\b{Show the named commit in the pager.}}
 
 Above, we've named a commit based on the beginning of its hexadecimal
 identifier. In any given project, five or six hexadecimal digits is almost
-always enough to uniquely name a commit. You already know the name of another
-commit: HEAD.
+always enough to uniquely name a commit. (Optional exercise: how many
+different combinations of six hexadecimal digits are there?) You already know
+the name of another commit: HEAD.
 
-\begin{typeme}
-git show HEAD & Show your most recent commit.
-\end{typeme}
+\typeone{git show HEAD}{Show your most recent commit.}
 
 The diff for this commit will be fairly simple since it was a trivial example
 you authored just a little while ago.
 
-\fillme{0.4in}{Use \cmd{log} to find the commit that adds support for
-  \s{gzip} compression of the data file and \cmd{show} to view the commit
-  diff. What Python module is needed to add \s{gzip} support?}
+\fillme{0.4in}{Use \cmd{log} to find the commit that adds code that uses
+  \s{gzip} to compress the Bloom filter data file, then use \cmd{show} to view
+  the commit diff. What Python module is needed to add \s{gzip} support?}
 
 Rather than showing an existing commit, the \cmd{diff} command shows the
 difference between your working tree and \i{the staged set of changes} ---
 \i{not} the most recent commit. We'll demonstrate this with a longer example.
-(For the sake of pedagogy, please run through the following commands exactly
-as presented your first time through this section.)
+For the sake of pedagogy, please run through the following commands exactly as
+presented on your first time through this section.
 
-If you examine the \t{chkdict} program, you see that it computes a
-false-positive rate for the technique it's using, which is called a ``Bloom
-filter.'' Let's modify \t{chkdict} to print out this number before it reports
-the filter results for each word.
+\subsection*{The Bloom Filter False-Positive Rate}
+
+Read over the \t{chkdict} program. Towards the end you will see that it sets a
+variable named \t{fp}, which is the ``false-positive rate'' for the Bloom
+filter that it uses. The false-positive rate is the average frequency with
+which the Bloom filter will say that a word \i{is} in the dictionary when it
+really \i{isn't}. If \t{fp = 0.01}, the filter will think that 1\% of
+non-words are actually words, on average. If \t{fp = 0.9}, the filter will
+think that 90\% of non-words are actually words. (Once again, there's a
+tradeoff: filters with larger false-positive rates are less accurate but more
+efficient.)
+
+Modify \t{chkdict} to print out this number before it reports the filter
+results for each word. To do this you should just need to add one line of code
+to the \t{chkdict} file.
 
 \begin{typeme}
-\p{edit `chkdict' and make it print out \t{fp}} & Print false-positive rate. \\
+nano chkdict & Edit to print false-positive rate. \\
 ./chkdict \p{some words} & Check everything works. \\
-git diff & Review unstaged changes. \\
+git diff & \b{Review unstaged changes.} \\
 git add chkdict & Stage for committing. \\
 git diff & Review unstaged changes.
 \end{typeme}
@@ -541,17 +559,22 @@ git diff & Review unstaged changes.
 
 But wait a minute!
 
-\fillme{0.4in}{Does that number make any sense?}
+\fillme{0.4in}{Given what you've been told, can the number that your program
+  printed possibly be the correct false positive rate?}
+
+\i{Spoiler alert:} No, it cannot.
 
 The false positive rate came from a function called \t{fprate}. You can use
-\cmd{grep} to locate its definition: it searches for a string in the working
-tree files using --- just as we saw above with the pager's search feature ---
-a regex. If you locate the function definition, the origin of the buggy output
-is clear.
+\cmd{grep} to locate its definition: this command searches for a string in the
+working tree files. (Technically \cmd{grep} and the search feature of \t{less}
+use a Unix formalism called \i{regular expressions} or \i{regexes}, but for
+our purposes, you can just type what you're looking for.) If you locate the
+function definition and read the surrounding source code, you will see that
+the current implementation of the \t{fprate} function is just plain wrong.
 
 \begin{typeme}
-git grep fprate & Locate instances of ``fprate''. \\
-\p{edit buggy file} & Fix the bug. \\
+git grep fprate & \b{Locate instances of ``fprate''.} \\
+nano \p{buggy file} & Fix the bug. \\
 ./chkdict \p{some words} & Check everything works.
 \end{typeme}
 
@@ -559,8 +582,8 @@ git grep fprate & Locate instances of ``fprate''. \\
 
 \fillme{0.4in}{(Extra credit.) Use \cmd{checkout} to discard your fix, then
   the new command \cmd{blame} to identify the commit that introduced the bug.
-  Which one was it? When done, re-fix the bug. \cmd{help~blame} may be
-  \ldots\ helpful.}
+  Which one was it? When done, re-fix the bug. The additional new command
+  \cmd{help~blame} may come in handy.}
 
 The next set of commands will work through some of the permutations of having
 both staged and unstaged modifications in your working tree --- recall that
@@ -575,14 +598,14 @@ git commit & Commit staged changes.
 
 \fillme{0.4in}{What change(s) was/were just committed?}
 
-\fillme{0.6in}{If you were to run \cmd{diff} now, after the \cmd{commit},
-  what would you see? (Err, please try to guess the answer without just
-  running the command.)}
+\fillme{0.6in}{If you were to run \cmd{diff} now, after the \cmd{commit}, what
+  would you see? (Please try to guess the answer without just running the
+  command!)}
 
 \begin{typeme}
 git diff & Review unstaged changes. \\
 git add \p{remaining file(s)} & Stage for committing. \\
-git diff --staged & Review staged changes. \\
+git diff --staged & \b{Review staged changes.} \\
 git commit & Commit staged changes. \\
 git status & Check modification status.
 \end{typeme}
@@ -597,8 +620,9 @@ won't be lost.
 
 \begin{typeme}
 pwd & Double-check your directory. \\
-rm -rf * & Type carefully! \\
-git checkout . & Bring it all back. \\
+rm -f *.py *.pyc *.gz *dict* README & Type carefully! \\
+ls -l & Confirm file removal. \\
+git checkout . & Bring them all back. \\
 ./chkdict \p{some words} & Verify correct FP rate is produced.
 \end{typeme}
 
@@ -608,7 +632,7 @@ git checkout . & Bring it all back. \\
 If you run \git\ without any arguments, you get a listing of its most commonly
 used commands:
 
-\typeone{git}{Get help summary.}
+\typeone{git}{\b{Get help summary.}}
 
 Taking a look at this list, we've touched on almost all of them! The next big
 step is to start getting into \git's support for collaborative coding. The
@@ -619,47 +643,54 @@ In this lab you've made several commits and reviewed them with \cmd{log}. It
 would be reasonable to think of commits as coming in a time-ordered series:
 you start by making commit~\#1, then commit~\#2, then \#3, and so on, for as
 long as you keep on updating your project. For very profound reasons,
-\git\ does \i{not} work this way. Instead, each \git\ commit merely records
-the unique identifier of the one that came before it --- its \i{parent}.
+\git\ does \i{not} work this way. Instead of being given a unique serial
+number, each \git\ commit embeds the unique identifier of the one that it
+derives from --- its \i{parent}.
 
 \fillme{2in}{Try to think through the implications of this difference. Think
   graphically, and keep in mind that we're introducing the concept of
   \s{branches}. Any thoughts?}
 
 It is true that in many cases your commits will form a linear chain in time
-order. However, they don't \i{have} to. You can \i{fork} --- create a new
-\i{branch} --- and have two series of commits diverging from the same parent.
-For now, we won't really deal with \i{why} you might want to do this: please
-take my word for it that it'll be important to understand the underlying
-process. In fact, \i{the core technical breakthrough of \git\ is its ability
-  to deal with forks in an efficient, sane way.} This ability is why it's
-taking over the world against a host of competing tools. (Also helpful is that
-it's ridiculously fast and reliable --- if you ``grew up'' with \git, you'll
-wonder how anyone ever put up with dog-slow, buggy, piece-of-junk Subversion.
-Not that I'm bitter.) A key aspect of this support is that is that \git\ makes
-it feasible to \i{merge} forks tractably, which we'll discuss in the next
+order. However, they don't \i{have} to. For instance, you can create two
+different series of commits that diverge from the same parent --- this is
+called \i{forking} or \i{branching}. For now, we won't really deal with
+\i{why} you might want to do this: please take my word for it that it'll be
+important to understand the underlying process. In fact, \i{the core technical
+  breakthrough of \git\ is its ability to deal with branches efficiently.}
+This ability is why it's taking over the world against a host of competing
+tools. (Also helpful is that it's ridiculously fast and reliable --- if you
+``grew up'' with \git, you'll wonder how anyone ever put up with dog-slow,
+buggy, piece-of-junk Subversion. Not that I'm bitter.) Not only does
+\git\ make it easy to create branches, it provides a tractable mechanism for
+\i{merging} them back together --- something we'll discuss in the next
 section.
 
-In \git, a branch is just a name referring to a commit, the \i{branch head}.
-That's all you need to reconstruct the entire project history back to its
-inception: the named commit points to its parent, which points to its parent,
-and so on. You can store data for many branches at once, but there is only one
-\i{current branch}: the current branch is the one that the working tree and
-HEAD are synchronized with. The following command prints out the names of the
-branches in your repository:
+In \git, a ``branch'' is just a name that refers to some specific commit, the
+\i{branch head}. That's all you need to reconstruct the entire project history
+back to its inception: the named commit embeds the unique identifier of its
+parent, which embeds the identifier of \i{its} parent, and so on. You can
+store data for many branches at once, but there is only one \i{current
+  branch}: the current branch is the one that the working tree and HEAD are
+synchronized with. The following command prints out the names of the branches
+in your repository:
 
-\typeone{git branch}{List branches.}
+\typeone{git branch}{\b{List branches.}}
 
-\fillme{0.4in}{We only have one branch, the default one. What is its name?}
+Your repository can track multiple branches, but there can only be one
+\i{current branch}, which is denoted in the output of \cmd{branch} with an
+asterisk.
 
-When you run \cmd{commit}, a new commit is recorded, and the information for
-the current branch is updated to point to that new commit. That's all you need
-to do to move the branch forward, and by induction that's still all we need to
-reconstruct the entire history. It's literally that simple, with the branch's
-head pointer being stored in a simple text file:
+\fillme{0.4in}{Our repository has only one branch. What is its name?}
+
+When you run \cmd{commit}, \git\ creates a new commit in its database that
+lists the current HEAD as its parent; then the record for the current branch
+is updated to point to that new commit. These are both fairly straightforward
+operations. For instance, for each branch, the current identity of the branch
+head is stored in a simple text file:
 
 \begin{typeme}
-cat .git/refs/heads/master & Manually print the master branch commit id. \\
+cat .git/refs/heads/master & \b{Manually print the master branch commit id.} \\
 cat .git/HEAD & Manually print out the branch that HEAD references.
 \end{typeme}
 
@@ -669,16 +700,16 @@ existing information, which is generally more dangerous. This is something to
 keep in mind when writing your own data-processing tools.)
 
 It's simple to create new branches. Once you've done so, you can \i{switch
-  branches} with \cmd{checkout} --- which is a sort of understandable double
-duty, if you think of \cmd{checkout}'s job as being to synchronize your
-working tree files with information in the repository. We'll make a new branch
-that resets your working tree to the pristine files you originally cloned.
+  branches} and alter the current branch with \cmd{checkout} --- another case
+of one command doing double duty, like \cmd{add} before. For example, let's
+make a new branch that resets your working tree to the pristine files you
+originally cloned.
 
 \begin{typeme}
-git branch improved \demohead & Make new branch pointing to original files. \\
+git branch improved \demohead & \b{Make new branch pointing to original files.} \\
 git status & Check modification status. \\
 \p{clean up any dirtiness in your tree} & Prep for branch switch. \\
-git checkout improved & Switch to \t{improved} branch. \\
+git checkout improved & \b{Switch to \t{improved} branch.} \\
 git branch & List branches. \\
 ./chkdict \p{some words} & Verify that FP rate is not printed.
 \end{typeme}
@@ -688,18 +719,23 @@ git branch & List branches. \\
   repository.}
 
 Here, \cmd{checkout} has done two things: it's updated information to say that
-the current branch is now \s{improved}, not \s{master}, and it's synchronized
-your working tree to match \s{improved}. If you had any uncommitted changes,
-\cmd{checkout} would have either preserved them or refused to run if it
-couldn't.
+the current branch is now the one named \s{improved}, not \s{master}, and it's
+synchronized your working tree to match \s{improved}. If you had any
+uncommitted changes, \cmd{checkout} would have either preserved them or
+refused to run if it couldn't.
 
 Let's create a commit on this new branch. Because the active branch is now
 \s{improved}, that's the one that will be updated, not \s{master}.
 
+We'll make another silly change. Edit the top of the \t{chkdict} to add a line
+that prints your name after all of the \t{import} statements. Below, we've
+started assuming that you're getting the hang of things and don't need to see
+every \cmd{add} and \cmd{commit} command written out.
+
 \begin{typeme}
-\p{edit the top of \t{chkdict} to print your name} & Make a change. \\
+nano chkdict & Make the change. \\
 \p{review and commit your change} & Commit it. \\
-git log --oneline & Summarize history for current branch. \\
+git log --oneline & \b{Summarize history for current branch.} \\
 git log --oneline master & Summarize history for master branch. \\
 git checkout master & Switch to master. \\
 ./chkdict \p{some words} & Verify that FP rate is printed. \\
@@ -707,8 +743,11 @@ git checkout improved & Switch to improved. \\
 ./chkdict \p{some words} & Verify that your name is printed.
 \end{typeme}
 
+We've also slipped in another argument to \cmd{log}, called \s{-{}-oneline},
+that produces a terser form of output.
+
 You should see that the two branches start out with the same history (at the
-bottom of the log listing), but then diverge.
+bottom of the log listings), but then diverge.
 
 
 \section{git merge}
@@ -718,15 +757,15 @@ vagueness will unfortunately continue a while longer as we learn about
 \i{merging} branches. The formal-math line of thinking is also going to last a
 little bit longer --- but only a little bit.
 
-Above, I said that each commit has a parent. That wasn't the whole truth.
+Above, I wrote that each commit has a parent. That wasn't the whole truth.
 Really, each commit has \i{one or more parents}. Correspondingly, the whole
 history of a branch isn't just a linear sequence of commits going backwards
 from its head --- it's the \i{set} of all parent commits. Topologically,
 commits form not just a tree, but a \i{graph}, specifically an awesome
 mathematical structure called a \i{directed acyclic graph} or DAG. It's not
 worth getting into them here, but they're a very useful reasoning device for
-certain problems. Uncoincidentally, DAGs are also the underlying formalism
-for the legendary Unix tool \t{make}.
+certain problems. DAGs are also the underlying formalism for the legendary
+Unix tool \t{make}.
 
 The \cmd{merge} command lets you create \i{merge commits}, which are those
 that have more than one parent. Say you have a main branch, \s{master}, and a
@@ -744,15 +783,21 @@ of development into master:
 \begin{typeme}
 git checkout master & Switch to master. \\
 git merge improved & Merge the two. \\
-./chkdict \p{some words} & Verify that your name and FP rate are printed.
+./chkdict \p{some words} & Verify that both your name and FP rate are printed.
 \end{typeme}
 
-The \cmd{merge} will prompt you to write a message for the merge commit;
-unless you're working in a sophisticated project, you can usually just leave
-it with the default.
+This sequence of commands will merge the unique changes in your two branches
+back together. Namely, your \s{master} branch contains changes that fix the
+calculation of the false-positive rate and print it out; your \s{improved}
+branched contains changes that print your name when the \t{chkdict} program
+runs. The merged code contains both sets of changes.
 
-That seemed straightforward enough. But, what if the \s{master} and
-\s{fix-typos} branches had both modified the same part of the same file in
+The \cmd{merge} command will prompt you to write a message for the merge
+commit; unless you're working in a sophisticated project, you can usually just
+leave it with the default.
+
+Hopefully that seemed straightforward enough. But, what if the \s{master} and
+\s{improved} branches had both modified the same part of the same file in
 different ways? This is the dreaded \i{merge conflict}.
 
 In practice, \git\ doesn't know how your software actually works, so the only
@@ -774,7 +819,7 @@ git merge origin/no-skipmisses-option & Merge in \t{no-skipmisses-option}. \\
 git merge origin/goodbye-option & Likewise.
 \end{typeme}
 
-At this point, you should run into a conflict. \git\ will edit the conflicted
+At this point, \git\ should report a conflict. \git\ will edit the conflicted
 files to show the overlapping changes. Specifically, it will show a long row
 of ``\t{<<<<}'', the contents from one branch, then ``\t{====}'', the contents
 from the other branch, and finally ``\t{>>>>}''. It's up to you to find all
