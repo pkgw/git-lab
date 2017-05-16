@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="pkgwtheme.css" id="theme">
     <script>
       document.write('<link rel="stylesheet" href="reveal/css/print/'+(window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper')+'.css" type="text/css" media="print">');
+      if (window.location.search.match(/bbdebug/gi)) {
+        document.write('<style>.reveal .slides section.present { outline: 2px solid red; outline-offset: 0px; }</style>');
+      }
     </script>
     <!--[if lt IE 9]>
     <script src="reveal/lib/js/html5shiv.js"></script>
@@ -20,9 +23,8 @@
 
     <div class="reveal">
       <div class="slides">
-        <section data-background="assets/635945main_iss030e177670_full_adapted.jpg"
-		 data-background-size="960px">
-          <h1 class="blkoutline">‘git’ Lab</h1>
+        <section>
+          <h1>‘git’ Lab</h1>
 
 	  <div style="position: absolute; bottom: 1em; width: 100%">
             <p class="tctr" style="margin-bottom: 0.5em">Peter K. G. Williams ·
@@ -31,12 +33,9 @@
 	    </p>
 
             <p class="tctr" style="font-size: 80%">
-	      CfA REU Orientation · Cambridge, MA · 2014 Jun 17
+	      CHAMP Camp · Pomona, CA, USA · 2017 Jun 12
 	    </p>
 	  </div>
-
-	  <p class="bgcred">Image:
-	    <a href="http://www.nasa.gov/multimedia/imagegallery/image_feature_2212.html">NASA</a></p>
         </section>
 
 	<section>
@@ -46,7 +45,7 @@
 	    larger"><p><b>git</b> is a very powerful tool for tracking,
 	    managing, and sharing changes to a set of files.</p><p>It’s mostly
 	    used for computer code, but is also excellent for LaTeX,
-	    configuration files, websites, presentations, etc.</p>
+	    configuration files, websites, presentations, …</p>
 	  </div>
 	</section>
 
