@@ -159,8 +159,8 @@ not a one.
 
 It's worth emphasizing that this cloned repository is both self-contained and
 self-sufficient. You can do anything you want to it without having to talk to
-\textsf{GitHub} again (without even needing an internet connection, in fact),
-and nothing you do will affect the \textsf{GitHub} version unless you
+\s{GitHub} again (without even needing an internet connection, in fact),
+and nothing you do will affect the \s{GitHub} version unless you
 explicitly attempt to synchronize the two. (Which is a vitally important
 process for collaborative work, but not something that we're going to worry
 about just yet.)
@@ -643,58 +643,55 @@ In this lab you've made several commits and reviewed them with \cmd{log}. It
 would be reasonable to think of commits as coming in a time-ordered series:
 you start by making commit~\#1, then commit~\#2, then \#3, and so on, for as
 long as you keep on updating your project. For very profound reasons,
-\git\ does \i{not} work this way. Instead of being given a unique serial
-number, each \git\ commit embeds the unique identifier of the one that it
-derives from --- its \i{parent}.
+\git\ does \i{not} identify commits this way. As we've seen, each \git\ commit
+has a random-looking unique identifier. How do we know that one commit comes
+``after'' another, then? In \git\ this is accomplished by having each records
+the unique identifier of the commit that it derived from --- its \i{parent}.
 
-\fillme{2in}{Try to think through the implications of this difference. Think
-  graphically, and keep in mind that we're introducing the concept of
-  \s{branches}. Any thoughts?}
+\fillme{2in}{Try to think about this arrangement topologically. If you draw
+  commits as circles with arrows pointing to their parents, what structures
+  can you make that aren't simple linear chains? Keep in mind that we're
+  introducing the concept of \s{branches}.}
 
 It is true that in many cases your commits will form a linear chain in time
-order. However, they don't \i{have} to. For instance, you can create two
+order. However, they don't \i{have} to. In particular, you can create two
 different series of commits that diverge from the same parent --- this is
 called \i{forking} or \i{branching}. For now, we won't really deal with
 \i{why} you might want to do this: please take my word for it that it'll be
 important to understand the underlying process. In fact, \i{the core technical
-  breakthrough of \git\ is its ability to deal with branches efficiently.}
-This ability is why it's taking over the world against a host of competing
-tools. (Also helpful is that it's ridiculously fast and reliable --- if you
-``grew up'' with \git, you'll wonder how anyone ever put up with dog-slow,
-buggy, piece-of-junk Subversion. Not that I'm bitter.) Not only does
-\git\ make it easy to create branches, it provides a tractable mechanism for
-\i{merging} them back together --- something we'll discuss in the next
-section.
+  breakthrough of \git\ is its ability to deal with branches efficiently.} If
+you get the hang of \git\ and then start dealing with branches in older tools
+such as Subversion, you'll see why \git\ has been so revolutionary.
 
 In \git, a ``branch'' is just a name that refers to some specific commit, the
 \i{branch head}. That's all you need to reconstruct the entire project history
 back to its inception: the named commit embeds the unique identifier of its
-parent, which embeds the identifier of \i{its} parent, and so on. You can
-store data for many branches at once, but there is only one \i{current
-  branch}: the current branch is the one that the working tree and HEAD are
-synchronized with. The following command prints out the names of the branches
-in your repository:
+parent, which embeds the identifier of \i{its} parent, and so on. A branch's
+\i{history} is the set of all commits that have gone into it.
+
+You can store data for many different branches at once, but there is only one
+\i{current branch}: the current branch is the one that the working tree and
+HEAD are synchronized with. The \cmd{branch} command prints out the names of
+the branches in your repository:
 
 \typeone{git branch}{\b{List branches.}}
 
-Your repository can track multiple branches, but there can only be one
-\i{current branch}, which is denoted in the output of \cmd{branch} with an
-asterisk.
+The current branch is denoted in the output of \cmd{branch} with an asterisk.
 
 \fillme{0.4in}{Our repository has only one branch. What is its name?}
 
 When you run \cmd{commit}, \git\ creates a new commit in its database that
-lists the current HEAD as its parent; then the record for the current branch
-is updated to point to that new commit. These are both fairly straightforward
-operations. For instance, for each branch, the current identity of the branch
-head is stored in a simple text file:
+lists the current branch head as its parent, then it updates the record for
+the current branch to point to that new commit. These are both fairly
+straightforward operations. For instance, for each branch, the current
+identity of the branch head is stored in a simple text file:
 
 \begin{typeme}
 cat .git/refs/heads/master & \b{Manually print the master branch commit id.} \\
 cat .git/HEAD & Manually print out the branch that HEAD references.
 \end{typeme}
 
-(One of the reasons that \git\ is so reliable that commits involve
+(One of the reasons that \git\ is so reliable is that commits involve
 \i{appending} new information to the repository but almost no \i{rewriting} of
 existing information, which is generally more dangerous. This is something to
 keep in mind when writing your own data-processing tools.)
@@ -702,35 +699,38 @@ keep in mind when writing your own data-processing tools.)
 It's simple to create new branches. Once you've done so, you can \i{switch
   branches} and alter the current branch with \cmd{checkout} --- another case
 of one command doing double duty, like \cmd{add} before. For example, let's
-make a new branch that resets your working tree to the pristine files you
-originally cloned.
+make a new branch called \s{print-my-name}. For now, this branch will be
+identical to the one you originally cloned from \s{GitHub}. If you have any
+uncommitted changes in your working tree, commit them or discard them before
+running the \cmd{checkout} command --- otherwise you may get errors.
 
 \begin{typeme}
-git branch improved \demohead & \b{Make new branch pointing to original files.} \\
+git branch print-my-name \demohead & \b{Make new branch pointing to original files.} \\
 git status & Check modification status. \\
-\p{clean up any dirtiness in your tree} & Prep for branch switch. \\
-git checkout improved & \b{Switch to \t{improved} branch.} \\
+git checkout print-my-name & \b{Switch to \t{print-my-name} branch.} \\
 git branch & List branches. \\
 ./chkdict \p{some words} & Verify that FP rate is not printed.
 \end{typeme}
 
-\fillme{0.4in}{(Optional.) Use \cmd{log} to verify that \t{\demohead} is the name
-  of the commit that you started with when you initially cloned the
-  repository.}
+\fillme{0.4in}{(Optional.) Use \cmd{log} to verify that \t{\demohead} is the
+  (shortened) unique identifier of the commit that you started with when you
+  initially cloned the repository.}
 
 Here, \cmd{checkout} has done two things: it's updated information to say that
-the current branch is now the one named \s{improved}, not \s{master}, and it's
-synchronized your working tree to match \s{improved}. If you had any
-uncommitted changes, \cmd{checkout} would have either preserved them or
-refused to run if it couldn't.
+the current branch is now the one named \s{print-my-name}, not \s{master},
+\i{and} it's synchronized your working tree to match \s{print-my-name}. If you
+had any uncommitted changes, \cmd{checkout} would have either preserved them
+or refused to run if it couldn't.
 
-Let's create a commit on this new branch. Because the active branch is now
-\s{improved}, that's the one that will be updated, not \s{master}.
+Let's create a commit on this new branch. We can do so using the same commands
+we've been using all along --- because we've changed the active branch to
+\s{print-my-name}, that's the one that will be updated, not \s{master}.
 
-We'll make another silly change. Edit the top of the \t{chkdict} to add a line
-that prints your name after all of the \t{import} statements. Below, we've
-started assuming that you're getting the hang of things and don't need to see
-every \cmd{add} and \cmd{commit} command written out.
+We'll make another silly change hinted at in the name of the branch. Edit the
+top of the \t{chkdict} to add a line that prints your name after all of the
+\t{import} statements. Below, we've started assuming that you're getting the
+hang of things and don't need to see every \cmd{add} and \cmd{commit} command
+written out.
 
 \begin{typeme}
 nano chkdict & Make the change. \\
@@ -739,7 +739,7 @@ git log --oneline & \b{Summarize history for current branch.} \\
 git log --oneline master & Summarize history for master branch. \\
 git checkout master & Switch to master. \\
 ./chkdict \p{some words} & Verify that FP rate is printed. \\
-git checkout improved & Switch to improved. \\
+git checkout print-my-name & Switch to print-my-name. \\
 ./chkdict \p{some words} & Verify that your name is printed.
 \end{typeme}
 
@@ -747,98 +747,166 @@ We've also slipped in another argument to \cmd{log}, called \s{-{}-oneline},
 that produces a terser form of output.
 
 You should see that the two branches start out with the same history (at the
-bottom of the log listings), but then diverge.
+bottom of the log listings), but then \i{diverge}: they have commits in
+common, but both branches include commits that the other doesn't.
 
 
 \section{git merge}
 
-We've been a bit vague about why you might want to make new branches. The
-vagueness will unfortunately continue a while longer as we learn about
-\i{merging} branches. The formal-math line of thinking is also going to last a
-little bit longer --- but only a little bit.
+You might be able come up with reasons why you'd want to create multiple
+branches in a repository. For instance, you might maintain a piece of software
+that has two version series, 1.x and 2.x --- even though your focus is on the
+2.x version, you might still make updates to 1.x to support users who aren't
+able to upgrade. In these situations it's convenient to maintain two
+\i{long-lived branches}.
 
-Above, I wrote that each commit has a parent. That wasn't the whole truth.
-Really, each commit has \i{one or more parents}. Correspondingly, the whole
-history of a branch isn't just a linear sequence of commits going backwards
-from its head --- it's the \i{set} of all parent commits. Topologically,
-commits form not just a tree, but a \i{graph}, specifically an awesome
-mathematical structure called a \i{directed acyclic graph} or DAG. It's not
-worth getting into them here, but they're a very useful reasoning device for
-certain problems. DAGs are also the underlying formalism for the legendary
-Unix tool \t{make}.
+If that were the only use case, branching wouldn't be such a big deal. But
+\git\ makes many things possible because you can not only create branches
+easily, but you can \i{merge} them back together later. Merging is a subtle
+concept but it is central to several common \git\ operations, so it's
+important to take the time to understand how it works.
 
-The \cmd{merge} command lets you create \i{merge commits}, which are those
-that have more than one parent. Say you have a main branch, \s{master}, and a
-side branch, \s{fix-typos}. The branches have \i{diverged} if their histories are
-disjoint sets of commits: that is, if \s{master} has commits that are not in
-\s{fix-typos}, and \s{fix-typos} has commits that are not in \s{master}. If we
-\i{merge fix-typos into master}, that means that we're updating \s{master} to a
-merge commit that unifies the two histories. After that point, \s{fix-typos} is
-\i{merged into master}, in the sense that the set of commits in its history is
-a subset of those in the history of \s{master}.
+First, a technical perspective. Above, I wrote that each commit has a parent.
+That wasn't the whole truth. Really, each commit has \i{one or more parents}.
+When you merge two branches, you make a special commit that has \i{two}
+parents --- a \i{merge commit}.
 
-Yikes. Okay. What does this mean in practice? Let's merge your alternate line
-of development into master:
+Mathematically, the history of a branch is therefore \i{not} necessarily just
+a linear sequence of commits going backwards from its head. The best way to
+visualize the history of a branch is actually as a mathematical \i{graph} ---
+specifically, a \i{directed acyclic graph} or DAG. We won't get into DAGs
+here, but they're very useful reasoning devices for certain problems. DAGs are
+also the underlying formalism for the legendary Unix tool \t{make}. The tools
+of set and graph theory provide the formal foundation for the operations we'll
+describe below.
+
+Now, let's think about what it \i{means} to merge two branches. It's best to
+focus on the ways in which the relevant branches differ, rather than what they
+have in common. Say, for instance, that I've started a project and ended up
+with two different branches derived from a common parent. One branch might be
+called \s{fix-typos}, and it might differ from the common parent in that it
+fixes some mistakes in the documentation. Another might be called
+\s{add-feature}, and it might differ from the common parent in that it adds an
+exciting new feature to the program. From this perspective, the merger of
+these two branches should clearly do \i{both} things: fix the typos \i{and}
+add the new feature.
+
+Next, let's focus on the mechanics of what's actually happening with your
+files. We have emphasized that every commit corresponds to a snapshot of all
+of the files in your repository. To merge two different branches, we therefore
+need to combine two different snapshots. How does that happen?
+
+In principle, you could examine the different snapshots corresponding to your
+two branches, identify the places where they differ from their common parent,
+figure out how to combine the changes, edit the files to combine the changes
+in both branches, and then \cmd{add} and \cmd{commit} the results. This would
+be an awfully tedious and error-prone process.
+
+Fortunately, the \cmd{merge} command automates this process just about as much
+as possible. For instance, let's merge your \s{print-my-name} branch into your
+\s{master} branch. Recall that \s{master} contains your change to print the
+correct Bloom filter false positive rate, while \s{print-my-name} doesn't,
+because we started it from the originally cloned snapshot. Instead,
+\s{print-my-name} has a change to print out your name in the \t{chkdict}
+program.
+
+Peforming the merge is just a matter of running:
 
 \begin{typeme}
 git checkout master & Switch to master. \\
-git merge improved & Merge the two. \\
-./chkdict \p{some words} & Verify that both your name and FP rate are printed.
+git merge print-my-name & \b{Merge this branch into master.} \\
 \end{typeme}
-
-This sequence of commands will merge the unique changes in your two branches
-back together. Namely, your \s{master} branch contains changes that fix the
-calculation of the false-positive rate and print it out; your \s{improved}
-branched contains changes that print your name when the \t{chkdict} program
-runs. The merged code contains both sets of changes.
 
 The \cmd{merge} command will prompt you to write a message for the merge
 commit; unless you're working in a sophisticated project, you can usually just
 leave it with the default.
 
-Hopefully that seemed straightforward enough. But, what if the \s{master} and
-\s{improved} branches had both modified the same part of the same file in
-different ways? This is the dreaded \i{merge conflict}.
+The above commands should have updated your \s{master} branch to contain not
+just your changes to print the Bloom filter false positive rate, but also your
+recent modifications to print your name. Running the merged code should
+demonstrate the effects of both sets of changes:
 
-In practice, \git\ doesn't know how your software actually works, so the only
-way to resolve a conflict is through human intervention. If a conflict arises,
-\git\ will leave your working tree in a special funky state, with your files
-modified to indicate where the conflicts are. You must decide how to resolve
-the conflicts, then mark them as dealt with using \cmd{add}, and then finally
-\cmd{commit} when everything is fixed. Things are a little bit simpler than
-you might fear since the various commands will tell you the necessary steps as
-you go through them. We'll work through a merge using some secret branches
-that came along with our clone:
+\typeone{./chkdict \p{some words}}{Verify that both your name and FP rate are printed.}
+
+Hopefully that went straightforwardly enough. What happened under the hood is
+that \git\ figured out what changes were contained in each branch relative to
+the common parent and decided that it could automatically apply both sets,
+\i{because the two sets of changes did not edit the same part of the same
+  file}.
+
+\subsection*{Resolving Merge Conflicts}
+
+If two different branches \i{do} modify the same part of the same file in
+different ways, you have a dreaded \i{merge conflict}. Because \git\ doesn't
+actually know how your software works, the only way to resolve a conflict is
+through human intervention.
+
+If a conflict arises, \git\ leaves your working tree in a special funky state,
+with your files edited to point out where the conflicts are. You must decide
+how to resolve the conflicts, edit the files to implement the resolution, mark
+the files as dealt with using \cmd{add}, and then finally \cmd{commit} when
+everything is fixed. Things are a little bit simpler than you might fear since
+the various commands will tell you the necessary steps as you go through them.
+
+We'll work through a merge conflict using some secret branches that came along
+with our clone:
 
 \begin{typeme}
-git branch newstuff origin/master & New branch with pristine files. \\
-git checkout newstuff & Switch to \t{newstuff} branch. \\
-git show origin/goodbye-option & See changes in \t{goodbye-option} branch. \\
-git show origin/no-skipmisses-option & Likewise. \\
+git branch conflict-demo origin/master & New branch with pristine files. \\
+git checkout conflict-demo & Switch to \t{conflict-demo} branch. \\
+git show origin/goodbye-option & View changes in the specified branch. \\
+git show origin/no-skipmisses-option & Likewise.
+\end{typeme}
+
+Please pause here and think about what \i{changes} these two branches apply,
+relative to their common parent. The \s{origin/goodbye-option} branch adds a
+new option that prints ``Goodbye'' when the program is done running. The
+\s{origin/no-skipmisses-option} removes the \t{-s} option implemented in the
+original version of \t{chkdict}.
+
+Now let's try merging both branches into \s{conflict-demo}:
+
+\begin{typeme}
 git merge origin/no-skipmisses-option & Merge in \t{no-skipmisses-option}. \\
 git merge origin/goodbye-option & Likewise.
 \end{typeme}
 
-At this point, \git\ should report a conflict. \git\ will edit the conflicted
-files to show the overlapping changes. Specifically, it will show a long row
-of ``\t{<<<<}'', the contents from one branch, then ``\t{====}'', the contents
-from the other branch, and finally ``\t{>>>>}''. It's up to you to find all
-instances of these conflicts and edit the files to somehow do what \i{both}
-commits were attempting. In the example above, the requisite merge isn't too
-complicated. By reviewing the histories of the relevant branches, you should
-be able to see what each commit was trying to accomplish, and find a way to
-accomplish both goals in the merged \t{chkdict}.
+At this point, \git\ should report a conflict. The output of the commands
+isn't incredibly clear on this point, but both branches modified the same
+portion of the \t{chkdict} file, so \git\ doesn't know how to proceed.
+
+\typeone{git status}{Report merge/conflict state.}
+
+If you open up \t{chkdict} in \t{nano}, you will find that \git\ has edited
+the file behind your back. Specifically, has added \i{conflict markers}
+indicating the problematic region that was edited in both branches. These
+consiste of a long row of ``\t{<<<<}'', the final text found in one branch,
+then ``\t{====}'', the final text from the other branch, and finally
+``\t{>>>>}''. It's up to you to find all instances of these conflicts and edit
+the files to somehow do what \i{both} commits were attempting.
+
+The example here tries to keep the conflict minimal. One branch adds a
+command-line option, and another branch removes one, so they both edit the
+same stanza of option-handling code at the beginning of \t{chkdict}. To
+resolve the conflict, you first have to decide what the merged code \i{should}
+do --- it seems clear that it should accept the new argument and remove the
+old argument. You then need to \i{implement} that solution by editing the
+code. To implement the solution you should use the sample text from the two
+branches as a reference, but the best implementation might not look exactly
+like \i{either} version. After you're done, all of the conflict markers should
+be gone from your files. You can then \cmd{add} and \cmd{commit} as usual ---
+\git\ uses a special internal reminder to realize that this commit represents
+a merge and not just a regular commit.
 
 \begin{typeme}
-git status & Report merge/conflict state. \\
-\p{edit affected file} & Fix the conflict. \\
-git add \p{affected file} & Stage the fix. \\
+nano chkdict & Fix the conflict. \\
+git add chkdict & Stage the fix. \\
 git commit & Commit the fix. \\
 git log & Review commit history.
 \end{typeme}
 
-\fillme{1.5in}{What does the commit history of the \t{newstuff} branch look
-  like, as a graph?}
+\fillme{1.5in}{What does the commit history of the \t{conflict-demo} branch now
+  look like, as a graph?}
 
 \subsection*{Commentary: Well-definedness of merges}
 
@@ -850,7 +918,7 @@ branches while preserving their intent. When you make a merge commit, you're
 branches in some reasonable way, but it's impossible for \git, or any other
 objective analysis, to \i{prove} that this is the case. In fact, you could
 ``resolve'' a merge conflict by replacing all the contents of every file in
-your project with the Doctor Who fan fiction.
+your project with Doctor Who fan fiction.
 
 What underlies the way that \git's merge system works is an assumption that
 \i{modifications to different parts of different files are probably
@@ -923,13 +991,13 @@ see is silence, indicating that there are no new commits:
 \typeone{git fetch origin}{Update remote branches for origin.}
 
 If there \i{were} new commits, what would you do? Well, you've got a branch
-that you're working on (generally \s{master}, or \s{newstuff} here), and
+that you're working on (generally \s{master}, or \s{conflict-demo} here), and
 you've got one with commits that you want to import (\s{origin/master} ---
 note that the \s{remotes/} prefix isn't necessary). That sounds like time for
 a \cmd{merge}!
 
 \begin{typeme}
-git checkout newstuff & Make sure we're on the right branch. \\
+git checkout conflict-demo & Make sure we're on the right branch. \\
 git merge origin/master & Merge in (nonexistent) updates.
 \end{typeme}
 
@@ -956,7 +1024,7 @@ git init --bare & Create push-able repo. \\
 ls & Examine files. \\
 cd ../bloomdemo & Back to working tree. \\
 git remote add localsync ../sync.git & Register the new repo. \\
-git push localsync improved & Publish our \t{improved} branch. \\
+git push localsync print-my-name & Publish our \t{print-my-name} branch. \\
 git remote show localsync & Show details about \t{localsync}.
 \end{typeme}
 
@@ -998,7 +1066,7 @@ git remote add localsync ../sync.git & Register our backup. \\
 git branch -a & List all branches. \\
 git fetch localsync & Fetch data from localsync. \\
 git branch -a & List all branches. \\
-git merge localsync/improved & Merge in our work. \\
+git merge localsync/print-my-name & Merge in our work. \\
 ./chkdict \p{some words} & Confirm our bugfix.
 \end{typeme}
 
