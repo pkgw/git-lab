@@ -973,22 +973,22 @@ You can learn about your remotes with, unsurprisingly, the \cmd{remote}
 command.
 
 \begin{typeme}
-git remote & List named remotes. \\
-git remote show origin & Show details about \t{origin}.
+git remote & \b{List named remotes.} \\
+git remote show origin & \b{Show details about \t{origin}.}x
 \end{typeme}
 
 Each remote is associated with \i{remote branches}, which the \cmd{remote
   show} command just listed for us. The \cmd{branch} command will also list
 them if you give it the \t{-a} (``all branches'') option:
 
-\typeone{git branch -a}{Show all branches.}
+\typeone{git branch -a}{\b{Show all branches.}}
 
 You can't make commits on these branches yourself. However, you can download
 updates from the remote with the \cmd{fetch} command. We can run it here, but
 since I haven't craftily updated \s{origin} since this lab started, all you'll
 see is silence, indicating that there are no new commits:
 
-\typeone{git fetch origin}{Update remote branches for origin.}
+\typeone{git fetch origin}{\b{Update remote branches for origin.}}
 
 If there \i{were} new commits, what would you do? Well, you've got a branch
 that you're working on (generally \s{master}, or \s{conflict-demo} here), and
@@ -1002,10 +1002,12 @@ git merge origin/master & Merge in (nonexistent) updates.
 \end{typeme}
 
 The command \cmd{pull} essentially does a \cmd{fetch} followed by a
-\cmd{merge}, though it has a few bells and whistles. Generally speaking,
-\cmd{pull} should be your go-to pull-in-new-changes command.
+\cmd{merge}, though it has a few bells and whistles. Generally speaking, if
+you want to update your repository, you want to run \cmd{status} (to check
+whether you have an uncommitted changes that need to be tidied up) then
+\cmd{pull}.
 
-\typeone{git pull origin master}{Fetch and merge nonexistent updates, again.}
+\typeone{git pull origin master}{\b{Fetch and merge nonexistent updates, again.}}
 
 
 \section{git push}
@@ -1020,10 +1022,11 @@ exactly the same in either case.
 \begin{typeme}
 mkdir ../sync.git & Create sync repo directory. \\
 cd ../sync.git & Move into it. \\
-git init --bare & Create push-able repo. \\
+git init --bare & \b{Create push-able repo.} \\
 ls & Examine files. \\
 cd ../bloomdemo & Back to working tree. \\
-git remote add localsync ../sync.git & Register the new repo. \\
+git remote add localsync ../sync.git & \b{Register the new repo.} \\
+git push localsync master & \b{Publish our \t{master} branch.} \\
 git push localsync print-my-name & Publish our \t{print-my-name} branch. \\
 git remote show localsync & Show details about \t{localsync}.
 \end{typeme}
@@ -1043,10 +1046,10 @@ branch under the name \t{experiments} on \t{localsync}, you write:
 
 \begin{typeme}
 git branch -a & List all branches. \\
-git push localsync master:experiments & Publish \t{master} as \t{experiments}. \\
+git push localsync master:experiments & \b{Publish \t{master} as \t{experiments}.} \\
 git branch -a & List all branches. \\
 git remote show localsync & Show details about \t{localsync}. \\
-git push localsync :experiments & Delete \t{experiments} on \t{localsync}. \\
+git push localsync :experiments & \b{Delete \t{experiments} on \t{localsync}.} \\
 git remote show localsync & Show details about \t{localsync}.
 \end{typeme}
 
@@ -1058,7 +1061,8 @@ successfully pushed our changes, we can now shred our files without worrying.
 
 \begin{typeme}
 cd .. & Move to \t{gitlab} directory. \\
-rm -rf bloomdemo & Destroy our work. \\
+pwd & Confirm your directory. \\
+rm -rf bloomdemo & Destroy this repo. \\
 ls -la & Confirm it's gone. \\
 git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository. \\
 cd bloomdemo & Move into it. \\
@@ -1066,8 +1070,8 @@ git remote add localsync ../sync.git & Register our backup. \\
 git branch -a & List all branches. \\
 git fetch localsync & Fetch data from localsync. \\
 git branch -a & List all branches. \\
-git merge localsync/print-my-name & Merge in our work. \\
-./chkdict \p{some words} & Confirm our bugfix.
+git merge localsync/master & Merge in our work. \\
+./chkdict \p{some words} & Confirm our changes.
 \end{typeme}
 
 
