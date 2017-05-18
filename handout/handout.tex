@@ -317,7 +317,7 @@ git status & Check modification status. \\
 git checkout dictbf.dat.gz & Restore deleted file. \\
 ./chkdict barn bern birn born burn & Check that program is healed. \\
 pwd & Check your directory. \\
-rm -f *.py *.pyc *.gz *dict* README & Type carefully! \\
+rm -fv *.py *.pyc *.gz *dict* README & Type carefully! \\
 ls -la & Not quite everything gone. \\
 git checkout . & Bring it all back. \\
 ls -la & Huzzah!
@@ -620,7 +620,7 @@ won't be lost.
 
 \begin{typeme}
 pwd & Double-check your directory. \\
-rm -f *.py *.pyc *.gz *dict* README & Type carefully! \\
+rm -fv *.py *.pyc *.gz *dict* README & Type carefully! \\
 ls -l & Confirm file removal. \\
 git checkout . & Bring them all back. \\
 ./chkdict \p{some words} & Verify correct FP rate is produced.
@@ -877,13 +877,17 @@ portion of the \t{chkdict} file, so \git\ doesn't know how to proceed.
 
 \typeone{git status}{Report merge/conflict state.}
 
-If you open up \t{chkdict} in \t{nano}, you will find that \git\ has edited
-the file behind your back. Specifically, has added \i{conflict markers}
-indicating the problematic region that was edited in both branches. These
-consiste of a long row of ``\t{<<<<}'', the final text found in one branch,
-then ``\t{====}'', the final text from the other branch, and finally
-``\t{>>>>}''. It's up to you to find all instances of these conflicts and edit
-the files to somehow do what \i{both} commits were attempting.
+Behind the scenes, \git\ has edited the file \t{chkdict} and added \i{conflict
+  markers} indicating the problematic region that was edited in both branches.
+These consist of a long row of ``\t{<<<<}'', the final text found in one
+branch, then ``\t{====}'', the final text from the other branch, and finally
+``\t{>>>>}''. Open up the file in \t{nano} and take a look:
+
+\typeone{nano chkdict}{Locate and examine conflict regions.}
+
+When a conflict happens, it's up to you to find \i{all} instances of these
+conflicts and edit the files to somehow do what \i{both} commits were
+attempting.
 
 The example here tries to keep the conflict minimal. One branch adds a
 command-line option, and another branch removes one, so they both edit the
@@ -901,6 +905,7 @@ a merge and not just a regular commit.
 \begin{typeme}
 nano chkdict & Fix the conflict. \\
 git add chkdict & Stage the fix. \\
+git diff --staged & Examine the changes of the final merge. \\
 git commit & Commit the fix. \\
 git log & Review commit history.
 \end{typeme}
@@ -923,14 +928,14 @@ your project with Doctor Who fan fiction.
 What underlies the way that \git's merge system works is an assumption that
 \i{modifications to different parts of different files are probably
   independent} --- it will only flag a conflict if two commits modify the
-\i{same} part of the \i{same} file. But it's easy to construct cases where
-this assumption fails. For instance, I could merge two branches where one
-renames a variable in file \t{A}, while the other references the old variable
-name in file \t{B}. There's no way to detect the problem without running the
-code. More broadly speaking, \i{a merge is not a well-defined, mechanical
-  operation, and it can never be entirely automated}. Fortunately, in the real
-world, the different-places-means-independence assumption is generally true,
-and most merges can proceed mechanically.
+\i{same} part of the \i{same} file. But this assumption can fail. For
+instance, I could merge two branches where one renames a variable in file
+\t{A}, while the other references the old variable name in file \t{B}. There's
+no way to detect the problem without running the code. More broadly speaking,
+\i{a merge is not a well-defined, mechanical operation, and it can never be
+  entirely automated}. Fortunately, in the real world, the
+different-places-means-independence assumption is generally true, and most
+merges can proceed mechanically.
 
 Stepping back, the same general point is true of any kind of commit. Commits
 in a sequence are generally assumed to be related and not include enormous
@@ -974,7 +979,7 @@ command.
 
 \begin{typeme}
 git remote & \b{List named remotes.} \\
-git remote show origin & \b{Show details about \t{origin}.}x
+git remote show origin & \b{Show details about \t{origin}.}
 \end{typeme}
 
 Each remote is associated with \i{remote branches}, which the \cmd{remote
@@ -1002,12 +1007,22 @@ git merge origin/master & Merge in (nonexistent) updates.
 \end{typeme}
 
 The command \cmd{pull} essentially does a \cmd{fetch} followed by a
-\cmd{merge}, though it has a few bells and whistles. Generally speaking, if
-you want to update your repository, you want to run \cmd{status} (to check
-whether you have an uncommitted changes that need to be tidied up) then
-\cmd{pull}.
+\cmd{merge}, though it has a few bells and whistles.
 
-\typeone{git pull origin master}{\b{Fetch and merge nonexistent updates, again.}}
+\typeone{git pull origin master}{\b{Fetch and merge more nonexistent updates.}}
+
+We haven't discussed this, but it can be very difficult to work through merges
+if your working tree is dirty. Therefore, to synchronize your repository with
+the outside world, you should generally follow this procedure:
+
+\begin{enumerate}
+\item Run \cmd{status} to see if you have any uncommitted changes that need to
+  be tidied up.
+\item If you do: either commit your work or decide to throw it away; or
+  otherwise clean up your working tree.
+\item Finally, run \cmd{pull} to fetch and merge any updates
+  from your collaborators.
+\end{enumerate}
 
 
 \section{git push}
@@ -1062,7 +1077,7 @@ successfully pushed our changes, we can now shred our files without worrying.
 \begin{typeme}
 cd .. & Move to \t{gitlab} directory. \\
 pwd & Confirm your directory. \\
-rm -rf bloomdemo & Destroy this repo. \\
+rm -rfv bloomdemo & Destroy all of your work! \\
 ls -la & Confirm it's gone. \\
 git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository. \\
 cd bloomdemo & Move into it. \\
@@ -1070,9 +1085,14 @@ git remote add localsync ../sync.git & Register our backup. \\
 git branch -a & List all branches. \\
 git fetch localsync & Fetch data from localsync. \\
 git branch -a & List all branches. \\
-git merge localsync/master & Merge in our work. \\
+git merge localsync/master & Merge changes from backup. \\
 ./chkdict \p{some words} & Confirm our changes.
 \end{typeme}
+
+With a few short commands, you were able to recover all of the work that you
+did during this lab --- not just the files themselves, but the \i{history} of
+what you did to them --- even though we completely erased the directory in
+which you did all of the work. I hope you're impressed!
 
 
 \section*{Recap}
@@ -1098,8 +1118,9 @@ an electronic form? There is, and it's tracked in \git, of course:
 \bigskip
 {\large\centering\url{https://github.com/pkgw/git-lab}\par}
 
+\newpage
 
-\section*{git Command Quick Reference}
+\section*{git Command Quick Reference\markboth{Quick Reference}{}}
 
 There are many commands that are not listed, and all of these commands can do
 much more than is given in the summaries below.
@@ -1120,10 +1141,10 @@ git grep \p{regex} & Search for text in the repository contents. \\
 git init & Create a new empty repository. \\
 git log & Show commit logs. \\
 git merge \p{branch} & Merge another branch into the current one. \\
-git mv \p{old} \p{new} & Rename a file. \\
+git mv \p{old} \p{new} & Rename a \git-tracked file. \\
 git pull & Combination of \t{fetch} and \t{merge}. \\
 git push & Publish updates to a remote. \\
-git rm \p{file} & Delete a file. \\
+git rm \p{file} & Delete a \git-tracked file. \\
 git show \p{commit} & Show the changes in a commit. \\
 git status & Report status of the working tree.
 \end{tabular}
