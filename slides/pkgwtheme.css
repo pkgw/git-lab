@@ -230,6 +230,34 @@ body {
     padding-left: 1em;
 }
 
+
+.reveal ul.squish li, .reveal ol.squish li {
+  margin-bottom: 0.2em;
+  line-height: 1em;
+}
+
+.reveal sub {
+  font-size: smaller;
+  vertical-align: sub;
+}
+
+.reveal sup {
+  font-size: smaller;
+  vertical-align: super;
+}
+
+.reveal tt {
+  font-family: monospace;
+}
+
+.reveal pre {
+  font-family: monospace;
+  text-align: left;
+  line-height: 1.2em;
+  width: 80%;
+  margin: 0.2em auto 1em auto;
+}
+
 /* Custom helper classes for layout */
 
 .reveal .ctr {
