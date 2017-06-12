@@ -161,11 +161,6 @@
         transition: 'none', // default/cube/page/concave/zoom/linear/fade/none
         transitionSpeed: 'default', // default/fast/slow
 
-        math: {
-          mathjax: 'mathjax/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-        },
-
         dependencies: [
           { src: 'reveal/lib/js/classList.js',
 	    condition: function() { return !document.body.classList; }},
@@ -177,7 +172,6 @@
 	    callback: function() { hljs.initHighlightingOnLoad (); }},
           { src: 'reveal/plugin/notes/notes.js', async: true,
 	    condition: function() { return !!document.body.classList; }},
-          { src: 'lib/mymath.js', async: true },
 	  { src: 'lib/pdfimgs.js', async: true },
 	  { src: 'lib/autostart.js', async: true },
         ],
