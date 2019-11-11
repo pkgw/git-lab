@@ -1,153 +1,157 @@
-\documentclass[letterpaper,12pt,titlepage,twoside]{article}
+\documentclass[letterpaper, 12pt, titlepage, twoside]{article}
 \input setup
 
-\title{A Laboratory Introduction to \git}
-\author{P. K. G. Williams (\href{mailto:peter@newton.cx}{peter@newton.cx})}
-\date{\today \\ version \t{\gitversion}}
-
 \begin{document}
+
+% Title page -- with temporary margins to keep everything centered.
+\newgeometry{margin=1in}
+\begin{titlepage}
+\title{A Laboratory Introduction to {\git} and {\github}}
+\author{P. K. G.~Williams (\href{mailto:peter@newton.cx}{peter@newton.cx})}
+\date{\today \\ version \t{\gitversion}}
 \maketitle
+\end{titlepage}
+\restoregeometry
 
 \section*{Introduction\markboth{Introduction}{}}
 
+\edef\marginnotetextwidth{\the\textwidth}
+
 Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
-of this awesome tool by walking you through some exercises that demonstrate
-its everyday functionality. Along the way we'll discuss some of its underlying
-principles and its connection to the rest of the Unix ecosystem too. We should
-note that we're assuming that you've already been given a broad overview of
-what \git\ is, and why you might want to use it.
+of this awesome tool by walking you through its everyday functionality. You'll
+also learn about the popular commercial website \github, and how the two fit
+together.
 
-Learning \git\ is like learning an instrument, or a language. There are
-certain concepts to master, but there's also just a lot of practice involved:
-repeating certain motions so that they become automatic. When it comes to
-computers, Unix pros talk about \i{finger memory}: I can type out \t{git
-  commit -am} in my sleep. Of course, there's also the deeper appreciation of
-the underlying concepts and esoteric possibilities that you gain as you use a
-tool more and more. My assertion to you is that \i{time spent practicing
-  \git\ will more than repay itself in the future}. If you're just starting
-out as a programmer (\ie, you've written less than 100,000 lines of code or
-so), some of its advantages are a bit hard to grasp; for what it's worth, the
-developer site \href{https://github.com/}{GitHub} has more than 4.5 million
-users and 6 million \git\ repositories.
+\xnote{This is an example marginal note!}
 
-\i{This lab is best done with a partner.} Real-deal education research shows
-that it's much faster for you to learn something when talking it over with a
-partner rather than just staring at it by yourself. Getting back to the finger
-memory thing, though, please try to switch off between who's ``driving'' the
-keyboard and who's watching and commenting. It really does make a difference!
+This manual includes a lot of marginal notes\x. They are intended to provide
+extra context and information for reference, but you don't need to read them
+for the core lab activities.
 
-If you and your partner get stuck on something, trying asking the group next
-to you, or Google. Your lab assistants are happy to help you out, of course,
-but you'll learn more if you spend some time trying to solve problems on your
-own. That being said, with computers sometimes things go wrong even if you've
+\xnote{Learning \git\ is like learning an instrument or a language. There
+  are certain concepts to master, but there's also just an element of
+  practice. Unix pros talk about \i{finger memory}: after typing a command a
+  few hundred times, it starts coming pretty easily.}
+
+\i{We strongly recommend that you actually type out the commands shown
+  here}\x, and not just read the commands passively.
+
+\vspace{6em}
+
+\xnote{Real-deal education research shows that it's much faster for you to
+  learn something when talking it over with a partner rather than just staring
+  at it by yourself.}
+
+\i{This lab is best done with a partner.}{\x} However, please try to switch
+off between who's ``driving'' the keyboard and who's watching and commenting.
+
+If you and your partner get stuck, trying asking the group next to you, or
+Google. Of course, with computers sometimes things go wrong even if you've
 done everything right --- if you see a truly strange error message,
-particularly one associated with a non-\git\ command, it's probably better to
-summon the lab assistants sooner rather than later. Deeper conceptual
-questions (``why'' rather than ``how'') are also good to bring to the
-assistants.
+particularly one associated with a non-\git\ command, get the attention of an
+expert.
 
 
 \subsection*{Notation in this manual}
 
-Important terminology will be introduced in \i{italics}. Computer-y words will
-be written in a monospace font \t{like} \t{this}. Commands that you should
-type in a terminal in are presented with commentary this way:
+Important terms will be introduced in \i{italics}. Computer-y words will be
+written in a monospace font \t{like} \t{this}. Commands to type in the
+terminal in are presented with commentary like so:
 
 \typeone{echo hello world}{\b{Say hello.}}
 
-You shouldn't type the leading dollar sign, which just indicates a generic
-terminal prompt. When the commentary is \s{\b{in bold like this}}, it means
-that a new command is being introduced.
+Don't type the dollar sign, which indicates the terminal prompt.
 
-Often we will give you only a piece of the command and you will have to
-complete it yourself. Sample text in \p{bold braces} must be replaced with a
-value that you choose or figure out for yourself, such as:
+Often you'll have to fill in part of a command yourself. Substitute \p{sample
+  text} with a value that you choose or figure out for yourself. For instance:
 
 \begin{typeme}
-echo \p{the current year} & Say the year (sample as printed) \\
-echo \the\year & Say the year (what you actually type)
+echo \p{the current year} & What's printed in this manual. \\
+echo \the\year & What you actually type.
 \end{typeme}
 
-Don't type the braces! With the exception of the leading dollar signs and
-these pieces of sample text denoted with braces, \i{always type every command
-  exactly as shown in the manual}. Take special care with punctuation and
-similar letters --- command-line interfaces are finicky. The characters
-\fbox{\t{'}} (single vertical quote), \fbox{\t{`}} (backtick), and
-\fbox{\t{"}} (double vertical quote) may look the same but they are all
-interpreted differently. Likewise for \fbox{\t{l}} (the letter ell),
-\fbox{\t{1}} (the digit one), \fbox{\t{|}} (pipe symbol), and so on.
+Don't type the braces!
 
-The exercises are interspersed with questions so that you can check your
-understanding. They're represented thusly:
+\xnote{Take special care with punctuation and similar letters --- command-line
+  interfaces are finicky. The characters \fbox{\t{'}} (single vertical quote),
+  \fbox{\t{`}} (backtick), and \fbox{\t{"}} (double vertical quote) may be
+  similar but they are all interpreted differently by the computer. Likewise
+  for \fbox{\t{l}} (the letter ell), \fbox{\t{1}} (the digit one),
+  \fbox{\t{|}} (pipe symbol), and so on.}
 
-\fillme{0.6in}{What is your name? What is your quest?}
+With \x the exception of the leading dollar signs and the sample text, \i{type
+  every command exactly as shown in this manual}.
 
-Please actually write down the answers that you and your partner come up with!
+This manual includes a few questions so that you can check your understanding.
+Let's start simple:
 
-There's one more bit of preliminary work to do before we get started in
-earnest.
+\fillme{0.6in}{What is your name?}
+
+No one's going to grade you, but it will help learning if you actually think
+about these questions and write down your answers!
 
 
 \section{git config}
 
-Before we start using \git\ in earnest, we need to set up some important
-configuration. We can do this with the \git\ program itself.
+\xnote{The \git\ program that you run from the terminal is a sort of ``Swiss
+  Army knife'' tool that provides many \i{commands} that do all sorts of
+  different things. The command that sets up configuration is (quite sensibly)
+  \cmd{config}.}
 
-The \git\ program that you run from the terminal is a sort of ``Swiss Army
-knife'' tool that provides many \i{commands} that do all sorts of different
-things. The command that sets up configuration is (quite sensibly) known as
-\cmd{config}. Our first commands will set up some nice features that aren't
-turned on by default. Type the following commands in your terminal --- once
-again, you should leave out the initial dollar sign:
+Before \x we really get started, we need to set up some important
+configuration. We can do this with the \git\ program itself. Run these
+commands:
 
 \begin{typeme}
 git config --global color.ui auto & \b{Use colors in printed output.} \\
-git config --global core.editor nano & Use \t{nano} to edit files. \\
 git config --global alias.ci commit & A useful shorthand. \\
 git config --global alias.s status & A useful shorthand.
 \end{typeme}
 
-Next we will tell \git\ your name, which it will then embed in all of its logs
-of your activity. Remember that below, you should replace the sample text
-\p{your name} with your actual name. Remove the braces, but leave the double
-quotes.
+\xnote{\git\ will embed your name and email address in all of its logs of your
+  activity, so it's important to declare them! The values you enter here will
+  be preserved permanently. For email, it's best to use a long-lived, public
+  address.}
 
-\typeone{git config --global user.name "\p{your name}"}{Tell \git\ your name.}
+For \x the next two, remember to replace the sample text with real answers.
+Don't type the braces, but do type the double quotes.
 
-You also need to tell \git\ your email address. The value you enter here will
-be preserved permanently, so it is best to use a public address that will be
-long-lived.
-
-\typeone{git config --global user.email "\p{your email address}"}{Tell git your email.}
+\begin{typeme}
+git config --global user.name "\p{your name}" & Tell \git\ your name. \\
+git config --global user.email "\p{your email address}" & Tell git your email.
+\end{typeme}
 
 Now we can get started for real!
 
 
 \section{git clone}
 
-We'll get started by setting up a \i{git repository} to play with. This is the
-directory containing your actual content (\ie, files) as well as \git's
-supporting data.
+\xnote{There are two \git\ commands to set up a repository: \cmd{init}, which
+  creates a new, empty repository; and \cmd{clone}, which duplicates an
+  existing one. We use the latter so that we have some files to work with
+  right off the bat.}
 
-There are two \git\ commands to set up a repository: \cmd{init}, which creates
-a new, empty repository; and \cmd{clone}, which duplicates an existing one.
-We'll use the latter so that we have some files to work with right off the
-bat.
+We'll \x get started by setting up a \i{git repository} (``repo'') to play
+with. This is the directory containing your actual content (\ie, files) as
+well as \git's supporting data.
 
 \begin{typeme}
 cd & Move to home directory. \\
 mkdir gitlab & Create work directory. \\
 cd gitlab & Move into it. \\
-git clone https://github.com/pkgw/bloomdemo.git & \b{Clone an existing repository.}
+git clone https://github.com/pkgw/bloomdemo.git & \b{Clone an existing repo.}
 \end{typeme}
 
-Let's see what just happened. The sample text \p{dirname} below should be
-replaced with the name of a directory that the \cmd{clone} command creates ---
-the first \t{ls} that you run should reveal its name to you.
+What file(s) did \git\ just create?
 
 \begin{typeme}
-ls & Examine files. \\
-cd \p{dirname} & Enter repository directory. \\
+ls & Examine files.
+\end{typeme}
+
+Let's navigate into this directory and examine its contents.
+
+\begin{typeme}
+cd bloomdemo & Enter repository directory. \\
 ls & Examine files again. \\
 ls -la & Detailed listing of files.
 \end{typeme}
@@ -155,21 +159,19 @@ ls -la & Detailed listing of files.
 By the way, in the final command above, the letter after the dash is an ell,
 not a one.
 
-\fillme{0.4in}{Where do \git's supporting data seem to be stored?}
+\fillme{0.4in}{The detailed file listing should reveal a hidden directory,
+  used by \git\ to store its supporting data. What is this directory called?}
 
-It's worth emphasizing that this cloned repository is both self-contained and
-self-sufficient. You can do anything you want to it without having to talk to
-\s{GitHub} again (without even needing an internet connection, in fact),
-and nothing you do will affect the \s{GitHub} version unless you
-explicitly attempt to synchronize the two. (Which is a vitally important
-process for collaborative work, but not something that we're going to worry
-about just yet.)
+Your cloned repository is both self-contained and self-sufficient. You can do
+anything you want to it without having to talk to \github\ again (without even
+needing an internet connection, in fact), and nothing you do will affect the
+\github\ version unless you explicitly attempt to synchronize the two.
 
 You can see a gory listing of \git's housekeeping files with:
 
 \typeone{find . -print}{\b{Print all file names.}}
 
-\subsection*{Diversion: Getting Help and the Pager}
+\subsection*{Diversions: Getting Help, and the Pager}
 
 The \t{find} command above is a Unix program that you may not be familiar
 with. There will likely be more of these in the coming pages. If you'd like to
@@ -700,7 +702,7 @@ It's simple to create new branches. Once you've done so, you can \i{switch
   branches} and alter the current branch with \cmd{checkout} --- another case
 of one command doing double duty, like \cmd{add} before. For example, let's
 make a new branch called \s{print-my-name}. For now, this branch will be
-identical to the one you originally cloned from \s{GitHub}. If you have any
+identical to the one you originally cloned from \github. If you have any
 uncommitted changes in your working tree, commit them or discard them before
 running the \cmd{checkout} command --- otherwise you may get errors.
 
