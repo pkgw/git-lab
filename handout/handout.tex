@@ -230,15 +230,20 @@ the program:
 ./chkdict barn bern birn born burn & Check that change stuck.
 \end{typeme}
 
-The next command we'll learn is \cmd{status}, which tells you about your
-\i{local modifications} to the working tree compared to the most recent snapshot:
+Next we'll use \cmd{status} to learn about \i{local modifications} to the
+working tree compared to the most recent snapshot:
 
 \typeone{git status}{\b{Check modification status.}}
 
-The \cmd{status} command prints out several pieces of information --- ignore
-most of it for now. But you should see \git\ highlight that \t{chkdict} has
-been modified. It should also tell you how to discard your changes if you
-decide you don't like them. You do this with the \cmd{checkout} command:
+\xnote{Newer versions of \git\ suggest that you use \cmd{restore} instead of
+  \cmd{checkout} here. The new name was created because \cmd{checkout} did two
+  very different jobs, as we'll see later. But not that many computers have a
+  new enough version of \git\ installed just yet.}
+
+The \cmd{status} \x command prints out several pieces of information. Ignore most
+of them for now. But you should see \git\ highlight that \t{chkdict} has been
+modified. It should also tell you how to discard your changes if you decide
+you don't like them. You can do this with the \cmd{checkout} command:
 
 \begin{typeme}
 git checkout chkdict & \b{Discard changes to chkdict.} \\
@@ -246,22 +251,25 @@ git checkout chkdict & \b{Discard changes to chkdict.} \\
 git status & Check modification status.
 \end{typeme}
 
-Your change should be gone, and \git\ should report that your working
-directory is \i{clean}. (If it's not, then it is, appropriately, \i{dirty}.)
+\xnote{If your working directory isn't clean, then it is, appropriately,
+  \i{dirty}.}
 
-\fillme{0.4in}{Does \git\ go so far as to restore the modification timestamp
+Your change should be gone, and \git\ should report that your working
+directory is \x \i{clean}.
+
+\fillme{0.6in}{Does \git\ go so far as to restore the modification timestamp
   of \t{chkdict}? You can use \t{ls -l} to check.}
 
-Let's pause for a second here. \i{The ability to discard your changes is in
-  fact profoundly important and immensely powerful.} A \i{huge} amount of
-progress in programming and scientific research stems from one basic
-operation: ``Let's try this and see if it works.'' If you have something that
-already works, the chief enemy of progress is the fear of breaking what you do
-have. \textit{Git makes it safe to try things.} You can make any insane kind
-of change to a file in a \git\ repository, and if you decide you don't like
-it, all you need to do is \cmd{checkout}. You will truly have mastered the Zen
-of Git when you gleefully shred your most precious files without a care in the
-world.
+\xnote{If you have something that already works, the chief enemy of progress
+  is the fear of breaking what you do have. You will truly have mastered the
+  Zen of Git when you gleefully shred your most precious files without a care
+  in the world.}
+
+Let's \x pause here. \i{The ability to discard your changes is profoundly
+  important and immensely powerful.} A \i{huge} amount of progress stems from
+one basic operation: ``Let's try this and see if it works.'' \textit{Git makes
+  it safe to try things} because it makes it easy to revert to known-working
+code.
 
 These snapshots also mean that \git\ is a nearly disaster-proof backup tool.
 If you have an up-to-date copy of your \t{.git} directory \i{somewhere}, you
@@ -280,15 +288,21 @@ git checkout . & Bring it all back. \\
 ls -la & Huzzah!
 \end{typeme}
 
-The saved commits in the \t{.git} directory guard against many kinds of
-blunders. When you add in \git's ability to synchronize repositories between
-different computers, you get almost complete invulnerability to loss of the
-data stored in the repository.
+\xnote{Many developers have a saying that inverts the point of view: \i{if it
+    isn't in Git, it didn't happen}.}
 
-Of course, \git\ needs to be tracking any file that you want to protect in
-this way. This doesn't happen automatically. The following commands create a
-new file called \t{mynewfile} and then delete it. Because we haven't told
-\git\ to track \t{mynewfile}, we cannot recover it:
+The saved commits in the \t{.git} directory guard against many kinds of
+blunders. \x When you add in \git's ability to synchronize repositories
+between different computers, you get almost complete invulnerability to loss
+of the data stored in the repository.
+
+
+\section{git add, git commit}
+
+If you want to protect a file, \git\ needs to be tracking it. This doesn't
+happen automatically. The following commands create a new file called
+\t{mynewfile} and then delete it. Because we haven't told \git\ to track
+\t{mynewfile}, we cannot recover it:
 
 \begin{typeme}
 echo hello >mynewfile & Create a new file. \\
@@ -297,44 +311,55 @@ rm mynewfile & Remove it. \\
 git checkout mynewfile & There's no saving that one.
 \end{typeme}
 
+\xnote{We won't go into \i{why} this two-phase approach was chosen, but there
+  are good reasons.}
 
-\section{git add, git commit}
+Commits are the way that \git\ remembers your files, so we should learn how to
+make them! Making commits in \git\ is a two-step \x process. First, you have
+to identify which changes you want to commit by \i{staging} them with the
+\cmd{add} command. Then you actually create the new commit with \cmd{commit}.
+We'll demonstrate this.
 
-Since commits are the way that \git\ remembers your files, we should learn how
-to make them! For reasons that we won't go into right now, making commits in
-\git\ is a two-step process. First, you have to identify which changes you
-want to commit by \i{staging} them with the \cmd{add} command. Then you
-actually create the new commit with \cmd{commit}.
+\begin{noncli}
+  Open the file \s{chkdict} in your code editor and recreate the change you
+  made before. Save the file when done.
+\end{noncli}
 
-To demonstrate this, re-create the modification to \t{chkdict} that you did
-before:
+\xnote{We'll see below that \cmd{add} can also teach \git\ about new files.
+  This is an example of a common annoyance with \git: the same command will
+  often do very different things depending on how exactly you run it.}
+
+Now \x run these commands:
 
 \begin{typeme}
-nano chkdict & Change the ``MIGHT BE'' line. \\
 ./chkdict barn bern birn born burn & Validate your change. \\
 git status & Check modification status. \\
 git add chkdict & \b{Stage the change.} \\
 git status & Note change in output. \\
-git commit & \b{Commit the staged changes.}
 \end{typeme}
 
-When you run \cmd{commit} you will be prompted to write a \i{commit
+\fillme{0.4in}{How does \git\ describe the status of \t{chkdict} after you
+  have ``added'' it?}
+
+To finalize the commit, run:
+
+\typeone{git commit}{\b{Commit the staged changes.}}
+
+\xnote{Generally speaking, more sophisticated and organized projects will have
+  more detailed policies about what should go in each message. I find it
+  helpful to identify the section or subsystem that the commit most strongly
+  affects --- that's the bit before the colon --- and then tersely summarize
+  what you did. Additional lines should report \i{why}. The rule of a
+  gold-plated commit message is that someone knowledgeable should be able to
+  recreate your changes based only on the message.}
+
+When \x you run \cmd{commit} you will be prompted to write a \i{commit
   message}. There are no rules about the message contents, but every commit
-must have one. Generally speaking, more sophisticated and organized projects
-will have more detailed policies about what should go in each message. For the
-kinds of projects you'll be working on, I suggest a one-line message of this
-form:
+must have one. Here, I suggest a one-line message of this form:
 
 \hspace{3em}\t{chkdict: change the "MIGHT BE" message for fun}
 
-I find it helpful to identify the section or subsystem that the commit most
-strongly affects --- that's the bit before the colon --- and then tersely
-summarize what you did.
-
 You \i{also} use \cmd{add} to tell \git\ to start keeping track of a new file.
-This is an example of a common annoyance with \git: the same command
-(\cmd{add}) will often do very different things, depending on how exactly you
-run it.
 
 \begin{typeme}
 date >mynewfile & Create a new file. \\
@@ -348,7 +373,7 @@ Here we've used a new option to \cmd{commit}: the \t{-m} option, which lets
 you write the commit message right on the command line. You'll probably be
 mostly writing short messages, so the \t{-m} option can be a big convenience.
 
-\fillme{1.0in}{Say you had done the above steps through \t{git add newfile}
+\fillme{1.4in}{Say you had done the above steps through \t{git add newfile}
   and then decided you actually didn't want to commit the new file. What
   command would you run to reset things? (Hint: \cmd{status} is
   informative.) What happens to \t{newfile} in this case?}
@@ -365,14 +390,16 @@ git status & Note change in output. \\
 git commit -m "\p{deletion message}" & Commit the staged changes.
 \end{typeme}
 
-An important point is that \i{\git\ never forgets anything, so even if you
-  delete a file from a repository, its contents are still stored and
-  recoverable}. This is \underline{very} important if, for example, you
-accidentally commit a password into a repository: even if you make a commit to
-remove the information, other people can still recover your password. There
-are ways to fully delete such information, but we won't get into them here.
+\xnote{This is \underline{very} important if, for example, you accidentally
+  commit a password into a repository: even if you make a commit to remove the
+  information, other people can still recover your password. There are ways to
+  fully delete such information, but we won't get into them here.}
 
-There's also a \cmd{mv} command that is the equivalent of an \t{add} and an
+An \x important point is that \i{\git\ never forgets anything, so even if you
+  delete a file from a repository, its contents are still stored and
+  recoverable}.
+
+There's also a \cmd{mv} command. It's the equivalent of an \t{add} and an
 \t{rm} together. Both this and \cmd{rm} will perform the specified moves
 and/or removals on relevant working-tree files if they haven't already
 happened.
@@ -388,42 +415,37 @@ date >>README & Modify the README. \\
 git commit -am "README: add a timestamp" & Add and commit.
 \end{typeme}
 
-Once you develop your finger memory, this is the quickest way to make commits.
+\xnote{Most people starting out with coding and \git'ing tend to evolve
+  towards writing shorter and shorter messages for larger and larger commits,
+  usually converging in one large commit made at the end of the day labeled
+  ``Update.'' I \i{strongly, strongly urge} you to try to get into the habit
+  of committing in small chunks with thought-out log messages, even if it may
+  take a while for the payoff to become clear. The fundamental reason is that
+  smaller commits are easier to understand. By breaking your work into smaller
+  pieces, it's easier to reason about its correctness and overall design. This
+  is true both as you write new code, and as you evaluate old code --- every
+  experienced programmer can tell you about revisiting \i{their own} year-old
+  work and having no idea what they were thinking when they wrote it. This
+  path also goes both ways: the effort that you spend reasoning about how to
+  break down your code into commits will help deepen your understanding of how
+  to structure software in general. The more you do it, the easier it will
+  get, and the better programmer you'll be.}
 
-\subsection*{Commentary: Commit Sizes and Messages}
-
-Most people starting out with coding and \git'ing tend to evolve towards
-writing shorter and shorter messages for larger and larger commits, usually
-converging in one large commit made at the end of the day labeled ``Update.''
-I \i{strongly, strongly urge} you to try to get into the habit of committing
-in small chunks with thought-out log messages, even if it may take a while for
-the payoff to become clear.
-
-The fundamental reason is that smaller commits are easier to understand. By
-breaking your work into smaller pieces, it's easier to reason about its
-correctness and overall design. This is true both as you write new code, and
-as you evaluate old code --- every experienced programmer can tell you about
-revisiting \i{their own} year-old work and having no idea what they were
-thinking when they wrote it.
-
-This path also goes both ways: the effort that you spend reasoning about how
-to break down your code into commits will help deepen your understanding of
-how to structure software in general. The more you do it, the easier it will
-get, and the better programmer you'll be.
+Once \x you develop your finger memory, this is the quickest way to make commits.
 
 
 \section{git log}
 
-If you do find yourself wanting to review your previous commits, \cmd{log}
-is the command to use.
+If you find yourself wanting to review your previous commits, \cmd{log} is the
+command to use.
 
 \typeone{git log}{\b{Show the commit history.}}
 
-The \cmd{log} command will open up the same pager program that we saw with the
-\t{man} command. But here, \cmd{log} shows you a series of commits, each
-associated with an author, a date, and a message. Each commit also has a
-\i{commit identifier}, which is the string of 40 random-looking characters.
-You should see your own recent commits at the top of the output.
+The \cmd{log} command will open up a ``pager'' program as described in an
+Appendix. It shows you a series of commits, each associated with an author, a
+date, and a message. Each commit also has a \i{commit identifier}, which is
+the string of 40 random-looking characters. You should see your own recent
+commits at the top of the output.
 
 \fillme{0.4in}{On what date was the very first commit made in this repository?
   You may want to consult the table of keystrokes that control \t{less} on
@@ -432,9 +454,9 @@ You should see your own recent commits at the top of the output.
 \fillme{0.4in}{Find a commit whose message contains the word ``consuming.'' On
   what date was it made?}
 
-An important aspect of \git\ is that every distinct commit in the universe has
-a unique identifier. The identifiers look random but are uniquely determined
-by the commit's files and history.
+Every distinct \git\ commit in the universe has a unique identifier. The
+identifiers look random but are uniquely determined by the commit's files and
+history.
 
 \fillme{1.5in}{(Optional.) Commit identifiers are 40-character hexadecimal
   strings, with each character having 16 possible values (0--9, a--f). If you
@@ -442,13 +464,13 @@ by the commit's files and history.
   elapse before you used all possible identifiers? The Hubble time is about
   $4.3 \times 10^{17}$~s, and $2^{10} \approx 10^3$.}
 
-The \cmd{log} command can also show you which files were changed in each
-commit relative to the one before. This is an \i{enormously} important aspect
-of \git\ --- is that it makes it easy not just to view commits, but to
-understand the \i{changes} that happened between different commits. The
-\cmd{log} command presents change information in a compact form called a
-\i{diffstat} that we'll see more of later. It shows how many lines were added
-and removed from each file.
+\xnote{This is an \i{enormously} important aspect of \git\ --- it makes it
+  easy not just to view commits, but to understand the \i{changes} that
+  happened between different commits.}
+
+The \x \cmd{log} command can also show you which files were changed in each
+commit relative to the one before. This \i{diffstat} mode shows how many lines
+were added and removed from each file.
 
 \typeone{git log --stat}{\b{Show log, with change statistics.}}
 
