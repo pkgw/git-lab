@@ -14,6 +14,17 @@
 \restoregeometry
 
 
+% A silly colophon page. This is mainly about having the real content start on
+% a right-hand page as is customary.
+\thispagestyle{empty}
+\leavevmode
+\vfill
+\begin{flushright}
+  Typeset in EB~Garamond and Adobe Source Code Pro using \LaTeX.
+\end{flushright}
+\newpage
+
+
 \section*{Introduction\markboth{Introduction}{}}
 
 Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
@@ -27,29 +38,29 @@ This manual includes a lot of marginal notes\x. They are intended to provide
 extra context and information for reference, but you don't need to read them
 for the core lab activities.
 
-\xnote{Learning \git\ is like learning an instrument or a language. There
-  are certain concepts to master, but there's also just an element of
-  practice. Unix pros talk about \i{finger memory}: after typing a command a
-  few hundred times, it starts coming pretty easily.}
+\xnote{Learning \git\ is like learning an instrument or a language. There are
+  certain concepts to master, but there's also just an element of practice.
+  Unix pros talk about \i{finger memory}: you need to type a command a few
+  hundred times to start really using it fluently.}
 
-\i{We strongly recommend that you actually type out the commands shown
-  here}\x, and not just read the commands passively.
+Here are some basic guidelines for this lab:
 
-\vspace{6em}
+\begin{itemize}
+\item \i{We strongly recommend that you actually type out the commands shown
+  here}, \x and not just read the commands passively.
 
-\xnote{Real-deal education research shows that it's much faster for you to
-  learn something when talking it over with a partner rather than just staring
-  at it by yourself.}
+\item \i{This lab is best done with a partner.} However, please try to switch
+  off between who's ``driving'' the keyboard and who's watching and
+  commenting.
 
-\i{This lab is best done with a partner.}{\x} However, please try to switch
-off between who's ``driving'' the keyboard and who's watching and commenting.
+\item \i{Ask for help!} That's the whole point of doing this lab as a group
+  instead of on your own. If you and your partner get stuck, trying asking the
+  group next to you, or Google.
 
-If you and your partner get stuck, trying asking the group next to you, or
-Google. Of course, with computers sometimes things go wrong even if you've
-done everything right --- if you see a truly strange error message,
-particularly one associated with a non-\git\ command, get the attention of an
-expert.
-
+\item Of course, with computers sometimes things go wrong even if you've done
+  everything right --- if you see a truly strange error message, particularly
+  one associated with a non-\git\ command, get the attention of an expert.
+\end{itemize}
 
 \subsection*{Notation in this manual}
 
@@ -63,6 +74,8 @@ Don't type the dollar sign, which indicates the terminal prompt.
 
 Often you'll have to fill in part of a command yourself. Substitute \p{sample
   text} with a value that you choose or figure out for yourself. For instance:
+
+\nopagebreak
 
 \begin{typeme}
 echo \p{the current year} & What's printed in this manual. \\
@@ -78,17 +91,27 @@ Don't type the braces!
   for \fbox{\t{l}} (the letter ell), \fbox{\t{1}} (the digit one),
   \fbox{\t{|}} (pipe symbol), and so on.}
 
-With \x the exception of the leading dollar signs and the sample text, \i{type
-  every command exactly as shown in this manual}.
+With \x the exception of the leading dollar signs and \p{sample text}, you'll
+get your best results if you \i{type every command exactly as shown in this
+  manual}.
 
-This manual includes a few questions so that you can check your understanding.
-Let's start simple:
+Other actions you that you should perform on your computer are typeset like
+so:
+
+\begin{noncli}
+  Start your code editor.
+\end{noncli}
+
+This manual also includes questions to can check your understanding. Let's
+start simple:
 
 \fillme{0.6in}{What is your name?}
 
 No one's going to grade you, but it will help learning if you actually think
 about these questions and write down your answers!
 
+
+\mypart{Command-Line Basics}
 
 \section{git config}
 
@@ -149,7 +172,17 @@ ls & Examine files.
 
 Let's navigate into this directory and examine its contents.
 
-\begin{typeme}
+\xnote{The code here uses a tool called a \i{Bloom filter} to check whether
+  words that you specify as arguments (``barn,'' ``bern,'' etc.) are found in
+  the English dictionary. Bloom filters make mistakes, but in a one-sided way:
+  if a word is in the dictionary, a Bloom filter will never say that it isn't;
+  but sometimes a Bloom filter will think that a word is in the dictionary
+  when it really isn't. Why would you want that behavior? Bloom filters are
+  much faster than filters that are always correct, and sometimes it's good to
+  trade accuracy for speed. Don't worry: the details aren't important here. If
+  you have extra time and are curious, read the file \t{bloom.py}.}
+
+\x \begin{typeme}
 cd bloomdemo & Enter repository directory. \\
 ls & Examine files again. \\
 ls -la & Detailed listing of files.
@@ -172,17 +205,7 @@ You can see a gory listing of \git's housekeeping files with:
 
 \subsection*{Testing your Python}
 
-\xnote{The code here uses a tool called a \i{Bloom filter} to check whether
-  words that you specify as arguments (``barn,'' ``bern,'' etc.) are found in
-  the English dictionary. Bloom filters make mistakes, but in a one-sided way:
-  if a word is in the dictionary, a Bloom filter will never say that it isn't;
-  but sometimes a Bloom filter will think that a word is in the dictionary
-  when it really isn't. Why would you want that behavior? Bloom filters are
-  much faster than filters that are always correct, and sometimes it's good to
-  trade accuracy for speed. Don't worry: the details aren't important here. If
-  you have extra time and are curious, read the file \t{bloom.py}.}
-
-The \x repository we cloned is named \s{bloomdemo}. Let's learn a bit more about
+The repository we cloned is named \s{bloomdemo}. Let's learn a bit more about
 it:
 
 \typeone{cat README}{\b{Print the bloomdemo repository's \t{README}.}}
@@ -196,20 +219,17 @@ When you run the above command, you should get a report about whether certain
 words are in the dictionary. You should \i{not} get any big honking error
 messages. If you do, please consult with an expert.
 
-\vspace{3em}
 
 \section{git status, git checkout}
 
 \xnote{Now, in some circumstances HEAD isn't chronologically the most recent,
   but for now that's the best way to think about it.}
 
-Fundamentally, all \git\ does is track changes to the files in your
+Fundamentally, \x all \git\ does is track changes to the files in your
 repository. It compares the files on disk, the \i{working tree}, with a recent
 snapshot of their contents. \git\ stores many of these snapshots, each of
-which is called a \i{commit}. The most ``recent'' snapshot, in a \x sense, is
+which is called a \i{commit}. The most ``recent'' snapshot, in a sense, is
 known as the \i{HEAD} commit or just HEAD.
-
-\vspace{2em}
 
 \xnote{Not sure how to open files in a code editor? Ask your partner or one of
   the experts!}
@@ -235,10 +255,10 @@ working tree compared to the most recent snapshot:
 
 \typeone{git status}{\b{Check modification status.}}
 
-\xnote{Newer versions of \git\ suggest that you use \cmd{restore} instead of
-  \cmd{checkout} here. The new name was created because \cmd{checkout} did two
-  very different jobs, as we'll see later. But not that many computers have a
-  new enough version of \git\ installed just yet.}
+\xnote{Newer versions of \git\ use \cmd{restore} instead of \cmd{checkout}
+  here. The new name was created because \cmd{checkout} did two very different
+  jobs, as we'll see later. But not that many computers have a new enough
+  version of \git\ installed just yet.}
 
 The \cmd{status} \x command prints out several pieces of information. Ignore most
 of them for now. But you should see \git\ highlight that \t{chkdict} has been
@@ -458,6 +478,8 @@ Every distinct \git\ commit in the universe has a unique identifier. The
 identifiers look random but are uniquely determined by the commit's files and
 history.
 
+\pagebreak[4]
+
 \fillme{1.5in}{(Optional.) Commit identifiers are 40-character hexadecimal
   strings, with each character having 16 possible values (0--9, a--f). If you
   made one new commit every second, about how many Hubble times would need to
@@ -466,7 +488,8 @@ history.
 
 \xnote{This is an \i{enormously} important aspect of \git\ --- it makes it
   easy not just to view commits, but to understand the \i{changes} that
-  happened between different commits.}
+  happened between different commits. \github's web interface makes these
+  things even easier.}
 
 The \x \cmd{log} command can also show you which files were changed in each
 commit relative to the one before. This \i{diffstat} mode shows how many lines
@@ -478,56 +501,62 @@ were added and removed from each file.
   how many lines were added? How many removed?}
 
 
-\section{git show, git grep, git diff}
+\section{git show, git diff, git grep}
 
-While the \cmd{log -{}-stat} command is useful, the most common commands for
-examining changes between commits are \cmd{show} and \cmd{diff}. The first of
-these will show the set of changes associated with any commit in \i{diff
-  format}, which is yet another convention that shows up throughout the Unix
-ecosystem. The format should be fairly intuitive to grasp, especially with the
-helpful colorful highlighting that \git\ gives you:
+\xnote{The diff format is yet another convention that shows up throughout the
+  Unix ecosystem.}
+
+The \x command \cmd{show} will show the set of changes associated with a
+commit in \i{diff format}. It should be fairly intuitive to grasp, especially
+with the helpful colorful highlighting that \git\ gives you:
 
 \typeone{git show 09933f}{\b{Show the named commit in the pager.}}
 
-Above, we've named a commit based on the beginning of its hexadecimal
-identifier. In any given project, five or six hexadecimal digits is almost
-always enough to uniquely name a commit. (Optional exercise: how many
-different combinations of six hexadecimal digits are there?) You already know
-the name of another commit: HEAD.
+\xnote{In any given project, five or six hexadecimal digits is almost always
+  enough to uniquely name a commit. Optional exercise: how many different
+  combinations of six hexadecimal digits are there?}
+
+Above, \x we've named a commit based on the beginning of its hexadecimal
+identifier. You already know the name of another commit: HEAD.
 
 \typeone{git show HEAD}{Show your most recent commit.}
 
-The diff for this commit will be fairly simple since it was a trivial example
-you authored just a little while ago.
+The diff for this commit is fairly simple since it was a trivial example you
+authored just a little while ago.
 
 \fillme{0.4in}{Use \cmd{log} to find the commit that adds code that uses
   \s{gzip} to compress the Bloom filter data file, then use \cmd{show} to view
   the commit diff. What Python module is needed to add \s{gzip} support?}
 
+\subsection*{The Bloom Filter False-Positive Rate}
+
 Rather than showing an existing commit, the \cmd{diff} command shows the
 difference between your working tree and \i{the staged set of changes} ---
 \i{not} the most recent commit. We'll demonstrate this with a longer example.
-For the sake of pedagogy, please run through the following commands exactly as
-presented on your first time through this section.
 
-\subsection*{The Bloom Filter False-Positive Rate}
+\begin{noncli}
+  Open the \t{chkdict} file in your code editor.
+\end{noncli}
 
-Read over the \t{chkdict} program. Towards the end you will see that it sets a
-variable named \t{fp}, which is the ``false-positive rate'' for the Bloom
-filter that it uses. The false-positive rate is the average frequency with
-which the Bloom filter will say that a word \i{is} in the dictionary when it
-really \i{isn't}. If \t{fp = 0.01}, the filter will think that 1\% of
-non-words are actually words, on average. If \t{fp = 0.9}, the filter will
-think that 90\% of non-words are actually words. (Once again, there's a
-tradeoff: filters with larger false-positive rates are less accurate but more
-efficient.)
+\xnote{The false-positive rate is the average frequency with which the
+  Bloom filter will say that a word \i{is} in the dictionary when it really
+  \i{isn't}. If \t{fp = 0.01}, the filter will think that 1\% of non-words are
+  actually words, on average. If \t{fp = 0.9}, the filter will think that 90\%
+  of non-words are actually words. This parameter is useful because there's a
+  tradeoff: filters with larger false-positive rates are less accurate but
+  more efficient.}
 
-Modify \t{chkdict} to print out this number before it reports the filter
-results for each word. To do this you should just need to add one line of code
-to the \t{chkdict} file.
+Towards \x the end of the file you will see that it sets a variable named
+\t{fp}. This variable is the ``false-positive rate'' for the program's Bloom
+filter.
+
+\begin{noncli}
+  Modify \t{chkdict} to print out \t{fp} before it reports the filter results
+  for each word. To do this you need to add one line of code to the
+  \t{chkdict} file. Save the file when done.
+\end{noncli}
 
 \begin{typeme}
-nano chkdict & Edit to print false-positive rate. \\
 ./chkdict \p{some words} & Check everything works. \\
 git diff & \b{Review unstaged changes.} \\
 git add chkdict & Stage for committing. \\
@@ -536,26 +565,30 @@ git diff & Review unstaged changes.
 
 \fillme{0.4in}{What is the reported false-positive rate?}
 
-But wait a minute!
+But wait a minute! A false-positive rate is a probability. Your program should
+have printed out a negative number, which is not a legal probability.
 
-\fillme{0.4in}{Given what you've been told, can the number that your program
-  printed possibly be the correct false positive rate?}
-
-\i{Spoiler alert:} No, it cannot.
+\xnote{Technically \cmd{grep} and the search feature of \t{less} use a Unix
+  formalism called \i{regular expressions} or \i{regexes}. These are powerful
+  and cool constructs, but for our purposes, you can just type what you're
+  looking for.}
 
 The false positive rate came from a function called \t{fprate}. You can use
-\cmd{grep} to locate its definition: this command searches for a string in the
-working tree files. (Technically \cmd{grep} and the search feature of \t{less}
-use a Unix formalism called \i{regular expressions} or \i{regexes}, but for
-our purposes, you can just type what you're looking for.) If you locate the
-function definition and read the surrounding source code, you will see that
-the current implementation of the \t{fprate} function is just plain wrong.
+\x \cmd{grep} to locate its definition: this command searches for a string in the
+working tree files.
 
-\begin{typeme}
-git grep fprate & \b{Locate instances of ``fprate''.} \\
-nano \p{buggy file} & Fix the bug. \\
-./chkdict \p{some words} & Check everything works.
-\end{typeme}
+\typeone{git grep 'def fprate'}{\b{Locate instances of ``fprate''.}}
+
+The repository that you checked out has had a bug intentionally inserted into
+this function.
+
+\begin{noncli}
+  Open the file identified by \cmd{grep}. Find the definition of the
+  \t{fprate} function. Remove the bug according to the instructions in the
+  file.
+\end{noncli}
+
+\typeone{./chkdict \p{some words}}{Check everything works.}
 
 \fillme{0.4in}{What is the correct false-positive rate?}
 
@@ -565,9 +598,9 @@ nano \p{buggy file} & Fix the bug. \\
   \cmd{help~blame} may come in handy.}
 
 The next set of commands will work through some of the permutations of having
-both staged and unstaged modifications in your working tree --- recall that
-above we ran \cmd{add} on our changes to \t{chkdict}, but didn't run
-\cmd{commit}.
+both staged and unstaged modifications in your working tree. Recall that above
+we ran \cmd{add} on our change to make \t{chkdict} print out the
+false-positive rate, but we didn't run \cmd{commit}.
 
 \begin{typeme}
 git status & Check modification status. \\
@@ -578,8 +611,7 @@ git commit & Commit staged changes.
 \fillme{0.4in}{What change(s) was/were just committed?}
 
 \fillme{0.6in}{If you were to run \cmd{diff} now, after the \cmd{commit}, what
-  would you see? (Please try to guess the answer without just running the
-  command!)}
+  would you see? Try to guess the answer without just running the command!}
 
 \begin{typeme}
 git diff & Review unstaged changes. \\
@@ -589,13 +621,14 @@ git commit & Commit staged changes. \\
 git status & Check modification status.
 \end{typeme}
 
-Here, \cmd{diff -{}-staged} is a different mode that examines the differences
-between the \i{staged changes} and {HEAD}, while, as we've seen, plain
-\cmd{diff} examines the differences between the \i{working tree} and the
-\i{staged changes}. If everything has gone well, you'll have a clean working
-tree, a new feature in \t{chkdict}, and a fixed bug. You can now muck about
-with the working tree however you want, confident that your important fixes
-won't be lost.
+\xnote{This contrasts with plain \cmd{diff}, which examines the differences
+  between the \i{working tree} and the \i{staged changes}.}
+
+Here, \x \cmd{diff -{}-staged} is a different mode that examines the
+differences between the staged changes and HEAD. If everything has gone well,
+you'll have a clean working tree, a new feature in \t{chkdict}, and a fixed
+bug. You can now muck about with the working tree however you want, confident
+that your important fixes won't be lost.
 
 \begin{typeme}
 pwd & Double-check your directory. \\
@@ -605,6 +638,8 @@ git checkout . & Bring them all back. \\
 ./chkdict \p{some words} & Verify correct FP rate is produced.
 \end{typeme}
 
+
+\mypart{Collaboration: Foundations}
 
 \section{git branch, git checkout (redux)}
 

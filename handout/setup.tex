@@ -145,6 +145,18 @@
 % Boxes around sample characters in the Introduction.
 \setlength{\fboxsep}{1pt}
 
+% Ragged page bottoms.
+\raggedbottom
+
+% I should use chapters or whatever, but meh.
+\newcounter{partnum}
+\stepcounter{partnum}  % start at 1!
+\newcommand{\mypart}[1]{%
+  \newpage
+  {\centering \sffamily\LARGE\bfseries Part~\thepartnum: #1 \par}%
+  \stepcounter{partnum}%
+}
+
 % Embedded versions
 \newcommand\demohead{90984a} % NOTE! sync with bloomdemo.
 \input{gitversion} % definition generated during build process
