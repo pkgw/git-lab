@@ -38,6 +38,9 @@
 	  </div>
         </section>
 
+
+        <!-- Part 1: Intro and Command-Line Basics -->
+
 	<section>
 	  <h2>What is git?</h2>
 
@@ -55,6 +58,21 @@
 	  </div>
 	</section>
 
+
+	<section>
+	  <h2>What is GitHub?</h2>
+
+	  <div class="w80 ctr" style="margin-top: 80px; font-size: larger">
+            <p><b>GitHub</b> is commercial service based on git, offering:</p>
+            <ul class="squish">
+              <li>a centralized place to share code
+	      <li>lots of value-adding features
+              <li>integrations with other services like Travis CI
+            </ul>
+	  </div>
+	</section>
+
+
 	<section>
 	  <h2>What’s the big deal?</h2>
 
@@ -68,12 +86,13 @@
 	    <li>Important for <b>becoming a better coder</b>.</li>
 	  </ul>
 
-	  <p><a href="https://github.com/">GitHub.com</a>: 28 million users,
-	    57 million projects.</p>
+	  <p><a href="https://github.com/">GitHub</a>: tens of millions of
+	    users, &gt;100 million repositories.</p>
 	</section>
 
+
 	<section>
-	  <h2>How does it work?</h2>
+	  <h2>How does git work?</h2>
 
 	  <p>A special directory called a <b>repository</b> contains your
 	    files <i>plus</i> hidden data capturing their “history”.</p>
@@ -86,42 +105,139 @@
 	    file you ever commit</b>. It does this very efficiently.</p>
 	</section>
 
+
 	<section>
 	  <h2>Is git right for me?</h2>
 
 	  <p>Yes. Yes, <b>yes</b>, yes, <i>yes</i>, yes, <u>yes</u>. Yes!</p>
 
 	  <p>But it’s a sophisticated tool and takes some time to learn.
-	    Practice is key. Remember: those 28 million GitHub users are
+	    Practice is key. Remember: those millions of GitHub users are
 	    probably on to something.</p>
 
 	  <p>Git is very helpful even for personal projects! Your future self
 	    will thank you.</p>
 	</section>
 
-	<section>
-	  <h2>Let’s go to it!</h2>
 
-	  <p>It’s time to partner up and start working on the lab!</p>
+	<section>
+	  <h2><center>The Lab: Part 1</center></h2>
+
+	  <p>That’s enough introduction — let’s get git-ing!</p>
 
 	  <ul>
-	    <li>Make as much progress as you can in the time we have.</li>
 	    <li>No whispering.</li>
-	    <li>Take turns at the keyboard.</li>
-	    <li>The Hierarchy of Help:
-	      <ol>
-		<li>Your partner.</li>
-		<li>Your neighbors.</li>
-		<li>The lab assistants.</li>
-	      </ol>
-	    </li>
-	    <li>Use “<tt>nano</tt>” to edit files.</li>
+	    <li>If partnering, take turns at the keyboard.</li>
+	    <li>Ask for help as needed! That’s why we’re in the same room.</li>
 	    <li>Prompts <b><tt>{like this}</tt></b> (bold braces) mean you
 	      need to replace the braced bit with something you figure out or
 	      choose.</li>
             <li>If a program prints something, read it carefully!</li>
 	  </ul>
         </section>
+
+
+        <!-- Part 2: Collaboration: Foundations -->
+
+        <section>
+          <h2>So far, so good!</h2>
+
+          <p>We’ve gone over a lot of the basic git commands.</p>
+
+          <p>Now it’s time to dive into the features that have made git the
+            superstar it is: branches and merging.</p>
+
+          <p>The best way to understand this stuff, I promise, is by putting
+            on your math hat.</p>
+        </section>
+
+
+        <section>
+          <h2>Linear histories don’t allow collaboration.</h2>
+
+          <p>It turns out that you can’t just number commits in order:</p>
+
+          <div class="w80 ctr wbg">
+            <img src="assets/commit-graph-branches.svg" class="w100">
+          </div>
+        </section>
+
+
+        <section>
+          <h2>Collaboration requires merging.</h2>
+
+          <p>Git commits can have <i>one or more</i> parents:</p>
+
+          <div class="w80 ctr wbg">
+            <img src="assets/commit-graph-merged.svg" class="w100">
+          </div>
+        </section>
+
+
+        <section>
+          <h2>This is a mathematical graph structure.</h2>
+
+          <p>In particular, a <i>directed acyclic graph</i>.</p>
+
+          <div class="w80 ctr wbg">
+            <img src="assets/commit-graph-complex.svg" class="w100">
+          </div>
+        </section>
+
+
+        <section>
+          <h2>A <i>branch</i> is just a name for a commit.</h2>
+
+          <p>When you’re “working on” a branch, it moves as you make commits.</p>
+
+          <div class="w80 ctr wbg">
+            <img src="assets/commit-graph-named.svg" class="w100">
+          </div>
+        </section>
+
+
+        <section>
+          <h2>Merging is not a well-defined process.</h2>
+
+          <p>Human semantic judgment is needed to know that fileset <b>Z</b>
+            is a true and faithful representation of the merger of
+            filesets <b>X</b> and <b>Y</b>.</p>
+
+          <p>Git (and every other tool) uses a two-part automation heuristic:</p>
+
+          <ol>
+            <li>It evaluates merges based on changes relative to their common
+              base.</li>
+            <li>Changes to different files, or different parts of the same
+              file, are presumed orthogonal.</li>
+          </ol>
+
+          <p>When this heuristic breaks down, you have a <i>merge conflict</i> and
+            need to take matters into your own hands.</p>
+
+          <p>Sometime the heuristic succeeds when it should fail!</p>
+
+          <p>By the way: committing isn’t really well-defined either … 🤯</p>
+        </section>
+
+
+	<section>
+	  <h2><center>The Lab: Part 2</center></h2>
+
+	  <p>Here we go …</p>
+
+	  <ul>
+	    <li>No whispering.</li>
+	    <li>If partnering, take turns at the keyboard.</li>
+	    <li>Ask for help as needed! That’s why we’re in the same room.</li>
+	    <li>Prompts <b><tt>{like this}</tt></b> (bold braces) mean you
+	      need to replace the braced bit with something you figure out or
+	      choose.</li>
+            <li>If a program prints something, read it carefully!</li>
+	  </ul>
+        </section>
+
+
       </div>
     </div>
 
