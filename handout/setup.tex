@@ -108,7 +108,7 @@
 \usepackage[table]{xcolor}
 
 \newenvironment{typeme}{%
-  \tabularx{6.5in}{>{\columncolor{lightgray}\ttfamily\i{\$} }X>{\sffamily}l}%
+  \tabularx{6.5in}{>{\columncolor{gray!20}\ttfamily\i{\$} }X>{\columncolor{gray!20}\sffamily}l}%
 }{%
   \endtabularx%
 }
@@ -123,6 +123,25 @@
 \newcommand\fillinparam[1]{\s{\b{\{#1\}}}}
 \let\p=\fillinparam
 
+% "Non-CLI" things to do -- namely, opening and editing files. I'm not sure
+% how best to convey this stuff.
+\usepackage{mdframed}
+
+\newenvironment{noncli}{%
+  \begin{mdframed}[%
+    hidealllines = true,
+    backgroundcolor = gray!20,
+    innermargin = 3em,
+    outermargin = 3em,
+    skipabove = \topskip,
+    skipbelow = \topskip,
+  ]
+  \centering
+  \itshape
+}{%
+  \end{mdframed}%
+}%
+  
 % Boxes around sample characters in the Introduction.
 \setlength{\fboxsep}{1pt}
 

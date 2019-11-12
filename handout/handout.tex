@@ -13,9 +13,8 @@
 \end{titlepage}
 \restoregeometry
 
-\section*{Introduction\markboth{Introduction}{}}
 
-\edef\marginnotetextwidth{\the\textwidth}
+\section*{Introduction\markboth{Introduction}{}}
 
 Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
 of this awesome tool by walking you through its everyday functionality. You'll
@@ -171,107 +170,63 @@ You can see a gory listing of \git's housekeeping files with:
 
 \typeone{find . -print}{\b{Print all file names.}}
 
-\subsection*{Diversions: Getting Help, and the Pager}
+\subsection*{Testing your Python}
 
-The \t{find} command above is a Unix program that you may not be familiar
-with. There will likely be more of these in the coming pages. If you'd like to
-learn more about a program, you can try reading its ``manual page'' with the
-\t{man} command:
+\xnote{The code here uses a tool called a \i{Bloom filter} to check whether
+  words that you specify as arguments (``barn,'' ``bern,'' etc.) are found in
+  the English dictionary. Bloom filters make mistakes, but in a one-sided way:
+  if a word is in the dictionary, a Bloom filter will never say that it isn't;
+  but sometimes a Bloom filter will think that a word is in the dictionary
+  when it really isn't. Why would you want that behavior? Bloom filters are
+  much faster than filters that are always correct, and sometimes it's good to
+  trade accuracy for speed. Don't worry: the details aren't important here. If
+  you have extra time and are curious, read the file \t{bloom.py}.}
 
-\typeone{man find}{\b{Learn about \t{find}.}}
+The \x repository we cloned is named \s{bloomdemo}. Let's learn a bit more about
+it:
 
-When you run \t{man}, you enter a special subprogram called the \i{pager}. The
-pager is a tool for navigating lengthy textual output that offers more
-features than your terminal. Because \t{man}, \git, and many other Unix tools
-use it extensively, it is important to learn a bit about it. Different
-programs can do the job of the pager, but by default your system uses a Unix
-command called \t{less}. The \t{less} program is mainly controlled by commands
-that are single keystrokes. Some of these keys are:
+\typeone{cat README}{\b{Print the bloomdemo repository's \t{README}.}}
 
-\begin{center}
-\label{l.lesskeys}
-\begin{tabular}{>{\ttfamily}cl}
-\rmfamily\i{Key} & \i{Effect} \\ \hline
-q & Quit the pager. \\
-\rmfamily(Arrow keys) & Navigate as you'd expect. \\
-\rmfamily(Spacebar) & Go forward a page. \\
-b & Go backwards a page. \\
-< & Go to the top. \\
-> & Go to the bottom. \\
-/ & Search (type in query, then hit Enter). \\
-n & Go to next search result. \\
-N & Go to previous search result. \\
-\& & Filter (type in query, then hit Enter). \\
-h & Print help information.
-\end{tabular}
-\end{center}
-
-Since we don't want to get too distracted, just press \fbox{\t{q}} to quit the
-pager and return to your main terminal prompt.
-
-%(As a double side note, the search and filter commands above use a special
-%formalism called \i{regular expressions} or \i{regexes} for matching text. In
-%general, you can just type what you're looking for and the right thing will
-%happen. \i{Many} Unix tools use regexes; they are just one of the many
-%interlocking technologies that constitute the overall Unix ecosystem.)
-
-The \t{man} program has its own manual page:
-
-\typeone{man man}{Learn about \t{man}.}
-
-Unix manual pages are notoriously uneven in their quality. This is especially
-true regarding \git\ itself, unfortunately. Google is often a better resource
-for beginners. The information on the
-\href{http://stackexchange.com/}{StackExchange.com} family of websites is
-usually very helpful.
-
-You can run the \t{less} pager program like any other Unix command if you want
-to read a file right in your terminal:
-
-\typeone{less README}{\b{Read the bloomdemo repository's \t{README}.}}
-
-\subsection*{Back on Track: Testing your Python}
-
-Let's get back to the \git-ing! Well, almost. We should verify that your
-Python setup is working. If you run the following command, you should get a
-report about whether certain words are in the dictionary. You should \i{not}
-get any big honking error messages. If you do, please call over a lab
-assistant.
+The \s{README} says that this repository contains Python code. Before you go
+any farther, let's check that your Python installation works:
 
 \typeone{./chkdict barn bern birn born burn}{\b{Check reality of words.}}
 
-This program uses a technique called a \i{Bloom filter} to examine the words
-that you specify as arguments (``barn,'' ``bern,'' etc.) and tell you whether
-they are found in the English dictionary. Bloom filters are unusual because
-they make mistakes in a one-sided way: if a word is in the dictionary, a Bloom
-filter will never say that it isn't; but sometimes a Bloom filter will think
-that a word is in the dictionary when it really is not. Why would you want
-that behavior? Bloom filters are much faster than filters that are always
-correct, and sometimes it makes sense to trade accuracy for speed.
+When you run the above command, you should get a report about whether certain
+words are in the dictionary. You should \i{not} get any big honking error
+messages. If you do, please consult with an expert.
 
-Don't worry: the details of Bloom filters aren't important here, and we won't
-go into them any further. If you have extra time and are curious, read the
-file \t{bloom.py}.
-
+\vspace{3em}
 
 \section{git status, git checkout}
 
-Fundamentally, all \git\ does is track changes to the files in your repository
-directory. It does this by comparing the files on disk, the \i{working tree},
-with a recent snapshot of their contents. \git\ stores many of these
-snapshots, each of which is called a \i{commit}. The most ``recent'' snapshot,
-in a sense, is known as the \i{HEAD} commit or just HEAD. Now, in some
-circumstances HEAD isn't chronologically the most recent, but for now that's
-the best way to think about it.
+\xnote{Now, in some circumstances HEAD isn't chronologically the most recent,
+  but for now that's the best way to think about it.}
 
-Let's modify one of the files that \git's tracking in the working tree. We'll
-use the \t{nano} command to edit files. Your first task is to edit the file
-\t{chkdict} and change the string value that includes the words \t{"MIGHT
-  BE"}. For now, just add the words \t{"... or it might not"} to the end of
-the string.
+Fundamentally, all \git\ does is track changes to the files in your
+repository. It compares the files on disk, the \i{working tree}, with a recent
+snapshot of their contents. \git\ stores many of these snapshots, each of
+which is called a \i{commit}. The most ``recent'' snapshot, in a \x sense, is
+known as the \i{HEAD} commit or just HEAD.
+
+\vspace{2em}
+
+\xnote{Not sure how to open files in a code editor? Ask your partner or one of
+  the experts!}
+
+Let's see how this process works.
+
+\x
+\begin{noncli}
+  Open the file \s{chkdict} in your code editor. Find the line that includes
+  the words \t{"MIGHT BE"}. Edit it to add the words \t{"... or it might not"}
+  within the quotation marks. Save the file when done.
+\end{noncli}
+
+If everything worked, the output of the program should change when you rerun
+the program:
 
 \begin{typeme}
-nano chkdict & \b{Make a change.} \\
 ./chkdict barn bern birn born burn & Check that change stuck.
 \end{typeme}
 
@@ -1119,6 +1074,74 @@ an electronic form? There is, and it's tracked in \git, of course:
 
 \bigskip
 {\large\centering\url{https://github.com/pkgw/git-lab}\par}
+
+
+\newpage
+
+\section*{Appendix: Unix Help\markboth{Unix Help}{}}
+
+To learn about command-line programs in Unix operating systems, you can try
+reading their ``manual page''s with the \t{man} command:
+
+\typeone{man find}{\b{Learn about \t{find}.}}
+
+When you run \t{man}, you enter a special subprogram called the \i{pager},
+described in the next Appendix.
+The \t{man} program has its own manual page:
+
+\typeone{man man}{Learn about \t{man}.}
+
+Unix manual pages are notoriously uneven in their quality. This is especially
+true regarding \git\ itself, unfortunately. Google is often a better resource
+for beginners. The information on the
+\href{http://stackexchange.com/}{StackExchange.com} family of websites is
+usually very helpful.
+
+
+\newpage
+
+\section*{Appendix: The Pager\markboth{The Pager}{}}
+
+\xnote{The search and filter commands in \t{less} use a special formalism
+  called \i{regular expressions} or \i{regexes} for matching text. In general,
+  you can just type what you're looking for and the right thing will happen.
+  \i{Many} Unix tools use regexes; they are just one of the many interlocking
+  technologies that constitute the overall Unix ecosystem.}
+
+The \i{pager} is a special Unix program for navigating lengthy textual
+output. It offers many more features than the bare terminal. Because \t{man},
+\git, and many other Unix tools use it extensively, it is valuable to learn a
+bit about it. Different programs can do the job of the pager, but by default
+your system uses a Unix command called \t{less}. \x The \t{less} program is
+mainly controlled by commands that are single keystrokes. Some of these keys
+are:
+
+\begin{center}
+\label{l.lesskeys}
+\begin{tabular}{>{\ttfamily}cl}
+\rmfamily\i{Key} & \i{Effect} \\ \hline
+q & Quit the pager. \\
+\rmfamily(Arrow keys) & Navigate as you'd expect. \\
+\rmfamily(Spacebar) & Go forward a page. \\
+b & Go backwards a page. \\
+< & Go to the top. \\
+> & Go to the bottom. \\
+/ & Search (type in query, then hit Enter). \\
+n & Go to next search result. \\
+N & Go to previous search result. \\
+\& & Filter (type in query, then hit Enter). \\
+h & Print help information.
+\end{tabular}
+\end{center}
+
+When in doubt, just press \fbox{\t{q}} to quit the pager and return to your
+main terminal prompt.
+
+You can run the \t{less} pager program like any other Unix command if you want
+to read a file right in your terminal:
+
+\typeone{less README}{\b{Page the file \t{README}.}}
+
 
 \newpage
 
