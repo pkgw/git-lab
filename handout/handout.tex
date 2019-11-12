@@ -867,32 +867,23 @@ The \x \t{-d} mode of \cmd{branch} won't let you delete a branch unless
 
 \section{git remote, git fetch, git pull}
 
-Finally we get to the payoff. \i{The features of \git's branching system are
-  sufficient to allow collaborative work on a project by a distributed,
-  decentralized team.} Or, more prosaically, \git's ability to synchronize
-repositories between computers builds on its branching and merging
-infrastructure. So even if you're not planning on contributing to the Linux
-kernel any time soon, a solid understanding of the branching system is
-important for synchronizing your work between different machines and sharing
-your work with others.
+\xnote{Remotes can be in a different directory on the same machine, or
+  accessible over the network using any of several protocols. The simplest way
+  to collaborate using \git\ is to set up a central repository on the network
+  that everyone can push to --- which is exactly what
+  \href{https://github.com/}{GitHub} does and why it's so popular. It bears
+  emphasizing, however, that a key advantage of \git\ is that if
+  \href{https://github.com/}{GitHub} were to disappear tomorrow, we wouldn't
+  lose any data, because each repository is self-sufficient, and by setting up
+  new remotes we could start collaborating again almost seamlessly.}
 
 Each \git\ repository stores a list of other repositories that it knows about,
-known as \i{remotes}. These can be in a different directory on the same
-machine, or accessible over the network using any of several protocols. You
-can download updates from a remote and, as we'll see in the next section, also
-\i{push} updates to it. The simplest way to collaborate using \git\ is to set
-up a central repository on the network that everyone can push to --- which is
-exactly what \href{https://github.com/}{GitHub} does and why it's so popular.
-Other, less-centralized models are possible, but we won't discuss them here.
-It bear emphasizing, however, that a key advantage of \git\ is that if
-\href{https://github.com/}{GitHub} were to disappear tomorrow, we wouldn't
-lose any data, because each repository is self-sufficient, and by setting up
-new remotes we could start collaborating again almost seamlessly.
+known as \i{remotes}. You can download updates from remotes and \i{push}
+updates to them. Every cloned repository starts with a remote called
+\s{origin}, which you've probably been seeing mentioned by various tools over
+the course of the lab.
 
-Every cloned repository starts with a remote called \s{origin}, which you've
-probably been seeing mentioned by various tools over the course of the lab.
-You can learn about your remotes with, unsurprisingly, the \cmd{remote}
-command.
+You can learn about your remotes with the \cmd{remote} command.
 
 \begin{typeme}
 git remote & \b{List named remotes.} \\
@@ -912,104 +903,143 @@ see is silence, indicating that there are no new commits:
 
 \typeone{git fetch origin}{\b{Update remote branches for origin.}}
 
-If there \i{were} new commits, what would you do? Well, you've got a branch
-that you're working on (generally \s{master}, or \s{conflict-demo} here), and
-you've got one with commits that you want to import (\s{origin/master} ---
-note that the \s{remotes/} prefix isn't necessary). That sounds like time for
-a \cmd{merge}!
+\subsection*{Linking With Your GitHub Account}
+
+\xnote{The key thing about a fork is that you can do work on my code without
+  needing to ask me for permission to start making changes. If you later want
+  to submit your changes, the two repositories will nonetheless share a common
+  \git\ history so that they can be merged easily.}
+
+We'll \x now get your repository talking to your GitHub account. First, we need
+to \i{fork} --- duplicate --- the origin repository.
+
+\begin{noncli}
+  Navigate your browser to \url{https://github.com/pkgw/bloomdemo/}. Click the
+  ``Fork'' button at the top-right of the screen. Once you’re looking at your
+  fork, click the “Clone or Download” button and copy the clone address to
+  your computer’s clipboard.
+\end{noncli}
+
+Now we'll tell your repo about your fork on GitHub, registering it as a remote
+named \s{mine}:
 
 \begin{typeme}
-git checkout conflict-demo & Make sure we're on the right branch. \\
-git merge origin/master & Merge in (nonexistent) updates.
+  git remote add mine \p{GitHub clone address} & Register a new remote \\
+  git fetch mine & Pull down its current status
 \end{typeme}
-
-The command \cmd{pull} essentially does a \cmd{fetch} followed by a
-\cmd{merge}, though it has a few bells and whistles.
-
-\typeone{git pull origin master}{\b{Fetch and merge more nonexistent updates.}}
-
-We haven't discussed this, but it can be very difficult to work through merges
-if your working tree is dirty. Therefore, to synchronize your repository with
-the outside world, you should generally follow this procedure:
-
-\begin{enumerate}
-\item Run \cmd{status} to see if you have any uncommitted changes that need to
-  be tidied up.
-\item If you do: either commit your work or decide to throw it away; or
-  otherwise clean up your working tree.
-\item Finally, run \cmd{pull} to fetch and merge any updates
-  from your collaborators.
-\end{enumerate}
 
 
 \section{git push}
 
-Finally, there's the matter of \i{pushing} updates to a remote repository. In
-practice you'll generally be doing this by pushing updates to
-\href{https://github.com/}{GitHub}, but to keep the lab self-contained we're
-going to do everything on your local disk. \git\ does a good job of
-abstracting between different kinds of remotes, so the underlying steps are
-exactly the same in either case.
+To share changes we \i{push} them to a remote. We'll create yet another branch
+with some quasi-nonsense changes:
 
 \begin{typeme}
-mkdir ../sync.git & Create sync repo directory. \\
-cd ../sync.git & Move into it. \\
-git init --bare & \b{Create push-able repo.} \\
-ls & Examine files. \\
-cd ../bloomdemo & Back to working tree. \\
-git remote add localsync ../sync.git & \b{Register the new repo.} \\
-git push localsync master & \b{Publish our \t{master} branch.} \\
-git push localsync print-my-name & Publish our \t{print-my-name} branch. \\
-git remote show localsync & Show details about \t{localsync}.
+git branch graduation origin/master & New branch with pristine files. \\
+git checkout graduation & Switch to \t{conflict-demo} branch. \\
+mkdir alumni & Make a directory. \\
+date >alumni/\p{your-github-username}.txt & Create your very own file. \\
+git add alumni & Register new directory with \git. \\
+git commit -m "Git graduation." & Commit
 \end{typeme}
 
-This sequence of commands creates a local repository that we can push to. The
-\t{sync.git} directory is a \i{bare repository}: it has commit data, branches,
-and a HEAD, but no actual working tree! You can't push to a repository with a
-working tree since \git\ would need to be able to rewrite all the working
-files, which it can't safely do if there happen to be local modifications. The
-files in the \t{sync.git} directory are the same as those in your working
-tree's \t{.git} directory. It's conventional to give bare repositories names
-ending with \t{.git} even though they're directories.
+\xnote{Of course, \cmd{push} also uploads all of the needed backing data as
+  well.}
 
-The \cmd{push} command has somewhat-sophisticated syntax allowing you to remap
-branch names between repositories. For instance, to publish our \t{master}
-branch under the name \t{experiments} on \t{localsync}, you write:
+The \x command \cmd{push} copies a branch from your local repository to a
+remote. The syntax with a colon shown below can be used to change the name
+that the branch will be given on the remote.
 
 \begin{typeme}
 git branch -a & List all branches. \\
-git push localsync master:experiments & \b{Publish \t{master} as \t{experiments}.} \\
+git push mine graduation & \b{Publish the changes.} \\
+git push mine master:experiments & Publish our main work as \t{experiments}. \\
 git branch -a & List all branches. \\
-git remote show localsync & Show details about \t{localsync}. \\
-git push localsync :experiments & \b{Delete \t{experiments} on \t{localsync}.} \\
-git remote show localsync & Show details about \t{localsync}.
+git remote show mine & Show details about \t{mine}.
 \end{typeme}
 
 \fillme{0.4in}{What's different the second time you run \cmd{branch~-a}?}
 
-As we see above, the special syntax of pushing a blank branch name (``\t{git
-  push localsync :experiments}'') deletes the branch on the remote. Having
-successfully pushed our changes, we can now shred our files without worrying.
+You'll see that \git\ prints some messages about creating a pull request.
+We'll ignore them for now.
+
+\begin{noncli}
+  Reload the GitHub webpage for your fork of the \s{bloomdemo} repository. In
+  the ``Branch:'' dropdown menu, you should see your new \s{graduation}
+  branch. Click on the commit message (``Git graduation.'') to see your change
+  as displayed by GitHub.
+\end{noncli}
+
+Your changes are now available to the wide world!
+
+\subsection*{Issuing a Pull Request}
+
+\xnote{Actually, it would be more accurate to call them \i{merge requests}.}
+
+If you're just working on a personal project, GitHub already adds value: above
+all else, it backs up your repository offsite. Where it really shines,
+however, is how it enables decentralized development. Specifically, GitHub
+\i{pull requests} (PRs) \x let you submit changes to repositories that you
+don't own.
+
+\begin{noncli}
+  Click the big green ``Compare \& pull request'' button associated with your
+  \s{graduation} branch. You can attach a message to your pull request --- in
+  normal usage, this would summarize what changes are in your branch, and why.
+
+  Once the first few pull requests arrive, the lab leader will demonstrate how
+  they are reviewed and handled. In the meantime, you are encouraged to click
+  around the different elements of the GitHub PR user interface!
+\end{noncli}
+
+
+\section{git pull}
+
+There is a \cmd{pull} command that somewhat mirrors \cmd{push}. But really,
+\cmd{pull} is just a combination of \cmd{fetch} and \cmd{merge}.
+
+\begin{noncli}
+  Wait for the instructor to merge a few pull requests into the master
+  repository.
+\end{noncli}
+
+\xnote{It can be tricky to merge changes if your local tree is dirty. Before
+  pulling, we recomend doing a \cmd{status} and cleaning up any uncommitted or
+  unstaged changes.}
+
+Now \x that your \s{origin} repository has seen some changes, let's incorporate
+them locally:
+
+\begin{typeme}
+git checkout master & Switch to \t{master} branch. \\
+git pull origin & Fetch and merge any changes from \s{origin}. \\
+ls alumni & See who's graduated!
+\end{typeme}
+
+\subsection*{Grand Finale}
+
+Having successfully uploaded our work to the cloud, we can now shred our local
+files without worrying.
 
 \begin{typeme}
 cd .. & Move to \t{gitlab} directory. \\
 pwd & Confirm your directory. \\
 rm -rfv bloomdemo & Destroy all of your work! \\
 ls -la & Confirm it's gone. \\
-git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository. \\
+git clone https://github.com/pkgw/bloomdemo.git & Clone the main repository. \\
 cd bloomdemo & Move into it. \\
-git remote add localsync ../sync.git & Register our backup. \\
+git remote add mine \p{GitHub clone address} & Register our fork. \\
 git branch -a & List all branches. \\
-git fetch localsync & Fetch data from localsync. \\
+git fetch mine & Fetch our fork. \\
 git branch -a & List all branches. \\
-git merge localsync/master & Merge changes from backup. \\
+git merge mine/experiments & Restore our changes. \\
 ./chkdict \p{some words} & Confirm our changes.
 \end{typeme}
 
-With a few short commands, you were able to recover all of the work that you
-did during this lab --- not just the files themselves, but the \i{history} of
-what you did to them --- even though we completely erased the directory in
-which you did all of the work. I hope you're impressed!
+With a few short commands, you were able to recover the work that you did
+during this lab --- not just the files themselves, but the \i{history} of what
+you did to them --- even though we completely erased the directory in which
+you did all of the work. I hope you're impressed!
 
 
 \section*{Recap}
