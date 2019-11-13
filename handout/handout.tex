@@ -1,153 +1,189 @@
-\documentclass[letterpaper,12pt,titlepage,twoside]{article}
+\documentclass[letterpaper, 12pt, titlepage, twoside]{article}
 \input setup
 
-\title{A Laboratory Introduction to \git}
-\author{P. K. G. Williams (\href{mailto:peter@newton.cx}{peter@newton.cx})}
-\date{\today \\ version \t{\gitversion}}
-
 \begin{document}
+
+% Title page -- with temporary margins to keep everything centered.
+\newgeometry{margin=1in}
+\begin{titlepage}
+\title{A Laboratory Introduction to {\git} and {\github}}
+\author{P. K. G.~Williams (\href{mailto:peter@newton.cx}{peter@newton.cx})}
+\date{\today \\ version \t{\gitversion}}
 \maketitle
+\end{titlepage}
+\restoregeometry
+
+
+% A silly colophon page. This is mainly about having the real content start on
+% a right-hand page as is customary.
+\thispagestyle{empty}
+\leavevmode
+\vfill
+\begin{flushright}
+  Typeset in EB~Garamond and Adobe Source Code Pro using \LaTeX.
+\end{flushright}
+\newpage
+
 
 \section*{Introduction\markboth{Introduction}{}}
 
 Welcome to the \git\ lab! This manual aims to help you learn the fundamentals
-of this awesome tool by walking you through some exercises that demonstrate
-its everyday functionality. Along the way we'll discuss some of its underlying
-principles and its connection to the rest of the Unix ecosystem too. We should
-note that we're assuming that you've already been given a broad overview of
-what \git\ is, and why you might want to use it.
+of this awesome tool by walking you through its everyday functionality. You'll
+also learn about the popular commercial website \github, and how the two fit
+together.
 
-Learning \git\ is like learning an instrument, or a language. There are
-certain concepts to master, but there's also just a lot of practice involved:
-repeating certain motions so that they become automatic. When it comes to
-computers, Unix pros talk about \i{finger memory}: I can type out \t{git
-  commit -am} in my sleep. Of course, there's also the deeper appreciation of
-the underlying concepts and esoteric possibilities that you gain as you use a
-tool more and more. My assertion to you is that \i{time spent practicing
-  \git\ will more than repay itself in the future}. If you're just starting
-out as a programmer (\ie, you've written less than 100,000 lines of code or
-so), some of its advantages are a bit hard to grasp; for what it's worth, the
-developer site \href{https://github.com/}{GitHub} has more than 4.5 million
-users and 6 million \git\ repositories.
+\xnote{This is an example marginal note!}
 
-\i{This lab is best done with a partner.} Real-deal education research shows
-that it's much faster for you to learn something when talking it over with a
-partner rather than just staring at it by yourself. Getting back to the finger
-memory thing, though, please try to switch off between who's ``driving'' the
-keyboard and who's watching and commenting. It really does make a difference!
+This manual includes a lot of marginal notes\x. They are intended to provide
+extra context and information for reference, but you don't need to read them
+for the core lab activities.
 
-If you and your partner get stuck on something, trying asking the group next
-to you, or Google. Your lab assistants are happy to help you out, of course,
-but you'll learn more if you spend some time trying to solve problems on your
-own. That being said, with computers sometimes things go wrong even if you've
-done everything right --- if you see a truly strange error message,
-particularly one associated with a non-\git\ command, it's probably better to
-summon the lab assistants sooner rather than later. Deeper conceptual
-questions (``why'' rather than ``how'') are also good to bring to the
-assistants.
+\xnote{Learning \git\ is like learning an instrument or a language. There are
+  certain concepts to master, but there's also just an element of practice.
+  Unix pros talk about \i{finger memory}: you need to type a command a few
+  hundred times to start really using it fluently.}
 
+Here are some basic guidelines for this lab:
+
+\begin{itemize}
+\item \i{We strongly recommend that you actually type out the commands shown
+  here}, \x and not just read the commands passively.
+
+\item \i{This lab is best done with a partner.} However, please try to switch
+  off between who's ``driving'' the keyboard and who's watching and
+  commenting.
+
+\item \i{Ask for help!} That's the whole point of doing this lab as a group
+  instead of on your own. If you and your partner get stuck, trying asking the
+  group next to you, or Google.
+
+\item Of course, with computers sometimes things go wrong even if you've done
+  everything right --- if you see a truly strange error message, particularly
+  one associated with a non-\git\ command, get the attention of an expert.
+\end{itemize}
 
 \subsection*{Notation in this manual}
 
-Important terminology will be introduced in \i{italics}. Computer-y words will
-be written in a monospace font \t{like} \t{this}. Commands that you should
-type in a terminal in are presented with commentary this way:
+Important terms will be introduced in \i{italics}. Computer-y words will be
+written in a monospace font \t{like} \t{this}. Commands to type in the
+terminal in are presented with commentary like so:
 
 \typeone{echo hello world}{\b{Say hello.}}
 
-You shouldn't type the leading dollar sign, which just indicates a generic
-terminal prompt. When the commentary is \s{\b{in bold like this}}, it means
-that a new command is being introduced.
+Don't type the dollar sign, which indicates the terminal prompt.
 
-Often we will give you only a piece of the command and you will have to
-complete it yourself. Sample text in \p{bold braces} must be replaced with a
-value that you choose or figure out for yourself, such as:
+Often you'll have to fill in part of a command yourself. Substitute \p{sample
+  text} with a value that you choose or figure out for yourself. For instance:
+
+\nopagebreak
 
 \begin{typeme}
-echo \p{the current year} & Say the year (sample as printed) \\
-echo \the\year & Say the year (what you actually type)
+echo \p{the current year} & What's printed in this manual. \\
+echo \the\year & What you actually type.
 \end{typeme}
 
-Don't type the braces! With the exception of the leading dollar signs and
-these pieces of sample text denoted with braces, \i{always type every command
-  exactly as shown in the manual}. Take special care with punctuation and
-similar letters --- command-line interfaces are finicky. The characters
-\fbox{\t{'}} (single vertical quote), \fbox{\t{`}} (backtick), and
-\fbox{\t{"}} (double vertical quote) may look the same but they are all
-interpreted differently. Likewise for \fbox{\t{l}} (the letter ell),
-\fbox{\t{1}} (the digit one), \fbox{\t{|}} (pipe symbol), and so on.
+Don't type the braces!
 
-The exercises are interspersed with questions so that you can check your
-understanding. They're represented thusly:
+\xnote{Take special care with punctuation and similar letters --- command-line
+  interfaces are finicky. The characters \fbox{\t{'}} (single vertical quote),
+  \fbox{\t{`}} (backtick), and \fbox{\t{"}} (double vertical quote) may be
+  similar but they are all interpreted differently by the computer. Likewise
+  for \fbox{\t{l}} (the letter ell), \fbox{\t{1}} (the digit one),
+  \fbox{\t{|}} (pipe symbol), and so on.}
 
-\fillme{0.6in}{What is your name? What is your quest?}
+With \x the exception of the leading dollar signs and \p{sample text}, you'll
+get your best results if you \i{type every command exactly as shown in this
+  manual}.
 
-Please actually write down the answers that you and your partner come up with!
+Other actions you that you should perform on your computer are typeset like
+so:
 
-There's one more bit of preliminary work to do before we get started in
-earnest.
+\begin{noncli}
+  Start your code editor.
+\end{noncli}
 
+This manual also includes questions to can check your understanding. Let's
+start simple:
+
+\fillme{0.6in}{What is your name?}
+
+No one's going to grade you, but it will help learning if you actually think
+about these questions and write down your answers!
+
+
+\mypart{Command-Line Basics}
 
 \section{git config}
 
-Before we start using \git\ in earnest, we need to set up some important
-configuration. We can do this with the \git\ program itself.
+\xnote{The \git\ program that you run from the terminal is a sort of ``Swiss
+  Army knife'' tool that provides many \i{commands} that do all sorts of
+  different things. The command that sets up configuration is (quite sensibly)
+  \cmd{config}.}
 
-The \git\ program that you run from the terminal is a sort of ``Swiss Army
-knife'' tool that provides many \i{commands} that do all sorts of different
-things. The command that sets up configuration is (quite sensibly) known as
-\cmd{config}. Our first commands will set up some nice features that aren't
-turned on by default. Type the following commands in your terminal --- once
-again, you should leave out the initial dollar sign:
+Before \x we really get started, we need to set up some important
+configuration. We can do this with the \git\ program itself. Run these
+commands:
 
 \begin{typeme}
 git config --global color.ui auto & \b{Use colors in printed output.} \\
-git config --global core.editor nano & Use \t{nano} to edit files. \\
 git config --global alias.ci commit & A useful shorthand. \\
 git config --global alias.s status & A useful shorthand.
 \end{typeme}
 
-Next we will tell \git\ your name, which it will then embed in all of its logs
-of your activity. Remember that below, you should replace the sample text
-\p{your name} with your actual name. Remove the braces, but leave the double
-quotes.
+\xnote{\git\ will embed your name and email address in all of its logs of your
+  activity, so it's important to declare them! The values you enter here will
+  be preserved permanently. For email, it's best to use a long-lived, public
+  address.}
 
-\typeone{git config --global user.name "\p{your name}"}{Tell \git\ your name.}
+For \x the next two, remember to replace the sample text with real answers.
+Don't type the braces, but do type the double quotes.
 
-You also need to tell \git\ your email address. The value you enter here will
-be preserved permanently, so it is best to use a public address that will be
-long-lived.
-
-\typeone{git config --global user.email "\p{your email address}"}{Tell git your email.}
+\begin{typeme}
+git config --global user.name "\p{your name}" & Tell \git\ your name. \\
+git config --global user.email "\p{your email address}" & Tell git your email.
+\end{typeme}
 
 Now we can get started for real!
 
 
 \section{git clone}
 
-We'll get started by setting up a \i{git repository} to play with. This is the
-directory containing your actual content (\ie, files) as well as \git's
-supporting data.
+\xnote{There are two \git\ commands to set up a repository: \cmd{init}, which
+  creates a new, empty repository; and \cmd{clone}, which duplicates an
+  existing one. We use the latter so that we have some files to work with
+  right off the bat.}
 
-There are two \git\ commands to set up a repository: \cmd{init}, which creates
-a new, empty repository; and \cmd{clone}, which duplicates an existing one.
-We'll use the latter so that we have some files to work with right off the
-bat.
+We'll \x get started by setting up a \i{git repository} (``repo'') to play
+with. This is the directory containing your actual content (\ie, files) as
+well as \git's supporting data.
 
 \begin{typeme}
 cd & Move to home directory. \\
 mkdir gitlab & Create work directory. \\
 cd gitlab & Move into it. \\
-git clone https://github.com/pkgw/bloomdemo.git & \b{Clone an existing repository.}
+git clone https://github.com/pkgw/bloomdemo.git & \b{Clone an existing repo.}
 \end{typeme}
 
-Let's see what just happened. The sample text \p{dirname} below should be
-replaced with the name of a directory that the \cmd{clone} command creates ---
-the first \t{ls} that you run should reveal its name to you.
+What file(s) did \git\ just create?
 
 \begin{typeme}
-ls & Examine files. \\
-cd \p{dirname} & Enter repository directory. \\
+ls & Examine files.
+\end{typeme}
+
+Let's navigate into this directory and examine its contents.
+
+\xnote{The code here uses a tool called a \i{Bloom filter} to check whether
+  words that you specify as arguments (``barn,'' ``bern,'' etc.) are found in
+  the English dictionary. Bloom filters make mistakes, but in a one-sided way:
+  if a word is in the dictionary, a Bloom filter will never say that it isn't;
+  but sometimes a Bloom filter will think that a word is in the dictionary
+  when it really isn't. Why would you want that behavior? Bloom filters are
+  much faster than filters that are always correct, and sometimes it's good to
+  trade accuracy for speed. Don't worry: the details aren't important here. If
+  you have extra time and are curious, read the file \t{bloom.py}.}
+
+\x \begin{typeme}
+cd bloomdemo & Enter repository directory. \\
 ls & Examine files again. \\
 ls -la & Detailed listing of files.
 \end{typeme}
@@ -155,133 +191,79 @@ ls -la & Detailed listing of files.
 By the way, in the final command above, the letter after the dash is an ell,
 not a one.
 
-\fillme{0.4in}{Where do \git's supporting data seem to be stored?}
+\fillme{0.4in}{The detailed file listing should reveal a hidden directory,
+  used by \git\ to store its supporting data. What is this directory called?}
 
-It's worth emphasizing that this cloned repository is both self-contained and
-self-sufficient. You can do anything you want to it without having to talk to
-\s{GitHub} again (without even needing an internet connection, in fact),
-and nothing you do will affect the \s{GitHub} version unless you
-explicitly attempt to synchronize the two. (Which is a vitally important
-process for collaborative work, but not something that we're going to worry
-about just yet.)
+Your cloned repository is both self-contained and self-sufficient. You can do
+anything you want to it without having to talk to \github\ again (without even
+needing an internet connection, in fact), and nothing you do will affect the
+\github\ version unless you explicitly attempt to synchronize the two.
 
 You can see a gory listing of \git's housekeeping files with:
 
 \typeone{find . -print}{\b{Print all file names.}}
 
-\subsection*{Diversion: Getting Help and the Pager}
+\subsection*{Testing your Python}
 
-The \t{find} command above is a Unix program that you may not be familiar
-with. There will likely be more of these in the coming pages. If you'd like to
-learn more about a program, you can try reading its ``manual page'' with the
-\t{man} command:
+The repository we cloned is named \s{bloomdemo}. Let's learn a bit more about
+it:
 
-\typeone{man find}{\b{Learn about \t{find}.}}
+\typeone{cat README}{\b{Print the bloomdemo repository's \t{README}.}}
 
-When you run \t{man}, you enter a special subprogram called the \i{pager}. The
-pager is a tool for navigating lengthy textual output that offers more
-features than your terminal. Because \t{man}, \git, and many other Unix tools
-use it extensively, it is important to learn a bit about it. Different
-programs can do the job of the pager, but by default your system uses a Unix
-command called \t{less}. The \t{less} program is mainly controlled by commands
-that are single keystrokes. Some of these keys are:
-
-\begin{center}
-\label{l.lesskeys}
-\begin{tabular}{>{\ttfamily}cl}
-\rmfamily\i{Key} & \i{Effect} \\ \hline
-q & Quit the pager. \\
-\rmfamily(Arrow keys) & Navigate as you'd expect. \\
-\rmfamily(Spacebar) & Go forward a page. \\
-b & Go backwards a page. \\
-< & Go to the top. \\
-> & Go to the bottom. \\
-/ & Search (type in query, then hit Enter). \\
-n & Go to next search result. \\
-N & Go to previous search result. \\
-\& & Filter (type in query, then hit Enter). \\
-h & Print help information.
-\end{tabular}
-\end{center}
-
-Since we don't want to get too distracted, just press \fbox{\t{q}} to quit the
-pager and return to your main terminal prompt.
-
-%(As a double side note, the search and filter commands above use a special
-%formalism called \i{regular expressions} or \i{regexes} for matching text. In
-%general, you can just type what you're looking for and the right thing will
-%happen. \i{Many} Unix tools use regexes; they are just one of the many
-%interlocking technologies that constitute the overall Unix ecosystem.)
-
-The \t{man} program has its own manual page:
-
-\typeone{man man}{Learn about \t{man}.}
-
-Unix manual pages are notoriously uneven in their quality. This is especially
-true regarding \git\ itself, unfortunately. Google is often a better resource
-for beginners. The information on the
-\href{http://stackexchange.com/}{StackExchange.com} family of websites is
-usually very helpful.
-
-You can run the \t{less} pager program like any other Unix command if you want
-to read a file right in your terminal:
-
-\typeone{less README}{\b{Read the bloomdemo repository's \t{README}.}}
-
-\subsection*{Back on Track: Testing your Python}
-
-Let's get back to the \git-ing! Well, almost. We should verify that your
-Python setup is working. If you run the following command, you should get a
-report about whether certain words are in the dictionary. You should \i{not}
-get any big honking error messages. If you do, please call over a lab
-assistant.
+The \s{README} says that this repository contains Python code. Before you go
+any farther, let's check that your Python installation works:
 
 \typeone{./chkdict barn bern birn born burn}{\b{Check reality of words.}}
 
-This program uses a technique called a \i{Bloom filter} to examine the words
-that you specify as arguments (``barn,'' ``bern,'' etc.) and tell you whether
-they are found in the English dictionary. Bloom filters are unusual because
-they make mistakes in a one-sided way: if a word is in the dictionary, a Bloom
-filter will never say that it isn't; but sometimes a Bloom filter will think
-that a word is in the dictionary when it really is not. Why would you want
-that behavior? Bloom filters are much faster than filters that are always
-correct, and sometimes it makes sense to trade accuracy for speed.
-
-Don't worry: the details of Bloom filters aren't important here, and we won't
-go into them any further. If you have extra time and are curious, read the
-file \t{bloom.py}.
+When you run the above command, you should get a report about whether certain
+words are in the dictionary. You should \i{not} get any big honking error
+messages. If you do, please consult with an expert.
 
 
 \section{git status, git checkout}
 
-Fundamentally, all \git\ does is track changes to the files in your repository
-directory. It does this by comparing the files on disk, the \i{working tree},
-with a recent snapshot of their contents. \git\ stores many of these
-snapshots, each of which is called a \i{commit}. The most ``recent'' snapshot,
-in a sense, is known as the \i{HEAD} commit or just HEAD. Now, in some
-circumstances HEAD isn't chronologically the most recent, but for now that's
-the best way to think about it.
+\xnote{Now, in some circumstances HEAD isn't chronologically the most recent,
+  but for now that's the best way to think about it.}
 
-Let's modify one of the files that \git's tracking in the working tree. We'll
-use the \t{nano} command to edit files. Your first task is to edit the file
-\t{chkdict} and change the string value that includes the words \t{"MIGHT
-  BE"}. For now, just add the words \t{"... or it might not"} to the end of
-the string.
+Fundamentally, \x all \git\ does is track changes to the files in your
+repository. It compares the files on disk, the \i{working tree}, with a recent
+snapshot of their contents. \git\ stores many of these snapshots, each of
+which is called a \i{commit}. The most ``recent'' snapshot, in a sense, is
+known as the \i{HEAD} commit or just HEAD.
+
+\xnote{Not sure how to open files in a code editor? Ask your partner or one of
+  the experts!}
+
+Let's see how this process works.
+
+\x
+\begin{noncli}
+  Open the file \s{chkdict} in your code editor. Find the line that includes
+  the words \t{"MIGHT BE"}. Edit it to add the words \t{"... or it might not"}
+  within the quotation marks. Save the file when done.
+\end{noncli}
+
+If everything worked, the output of the program should change when you rerun
+the program:
 
 \begin{typeme}
-nano chkdict & \b{Make a change.} \\
 ./chkdict barn bern birn born burn & Check that change stuck.
 \end{typeme}
 
-The next command we'll learn is \cmd{status}, which tells you about your
-\i{local modifications} to the working tree compared to the most recent snapshot:
+Next we'll use \cmd{status} to learn about \i{local modifications} to the
+working tree compared to the most recent snapshot:
 
 \typeone{git status}{\b{Check modification status.}}
 
-The \cmd{status} command prints out several pieces of information --- ignore
-most of it for now. But you should see \git\ highlight that \t{chkdict} has
-been modified. It should also tell you how to discard your changes if you
-decide you don't like them. You do this with the \cmd{checkout} command:
+\xnote{Newer versions of \git\ use \cmd{restore} instead of \cmd{checkout}
+  here. The new name was created because \cmd{checkout} did two very different
+  jobs, as we'll see later. But not that many computers have a new enough
+  version of \git\ installed just yet.}
+
+The \cmd{status} \x command prints out several pieces of information. Ignore most
+of them for now. But you should see \git\ highlight that \t{chkdict} has been
+modified. It should also tell you how to discard your changes if you decide
+you don't like them. You can do this with the \cmd{checkout} command:
 
 \begin{typeme}
 git checkout chkdict & \b{Discard changes to chkdict.} \\
@@ -289,22 +271,25 @@ git checkout chkdict & \b{Discard changes to chkdict.} \\
 git status & Check modification status.
 \end{typeme}
 
-Your change should be gone, and \git\ should report that your working
-directory is \i{clean}. (If it's not, then it is, appropriately, \i{dirty}.)
+\xnote{If your working directory isn't clean, then it is, appropriately,
+  \i{dirty}.}
 
-\fillme{0.4in}{Does \git\ go so far as to restore the modification timestamp
+Your change should be gone, and \git\ should report that your working
+directory is \x \i{clean}.
+
+\fillme{0.6in}{Does \git\ go so far as to restore the modification timestamp
   of \t{chkdict}? You can use \t{ls -l} to check.}
 
-Let's pause for a second here. \i{The ability to discard your changes is in
-  fact profoundly important and immensely powerful.} A \i{huge} amount of
-progress in programming and scientific research stems from one basic
-operation: ``Let's try this and see if it works.'' If you have something that
-already works, the chief enemy of progress is the fear of breaking what you do
-have. \textit{Git makes it safe to try things.} You can make any insane kind
-of change to a file in a \git\ repository, and if you decide you don't like
-it, all you need to do is \cmd{checkout}. You will truly have mastered the Zen
-of Git when you gleefully shred your most precious files without a care in the
-world.
+\xnote{If you have something that already works, the chief enemy of progress
+  is the fear of breaking what you do have. You will truly have mastered the
+  Zen of Git when you gleefully shred your most precious files without a care
+  in the world.}
+
+Let's \x pause here. \i{The ability to discard your changes is profoundly
+  important and immensely powerful.} A \i{huge} amount of progress stems from
+one basic operation: ``Let's try this and see if it works.'' \textit{Git makes
+  it safe to try things} because it makes it easy to revert to known-working
+code.
 
 These snapshots also mean that \git\ is a nearly disaster-proof backup tool.
 If you have an up-to-date copy of your \t{.git} directory \i{somewhere}, you
@@ -323,15 +308,21 @@ git checkout . & Bring it all back. \\
 ls -la & Huzzah!
 \end{typeme}
 
-The saved commits in the \t{.git} directory guard against many kinds of
-blunders. When you add in \git's ability to synchronize repositories between
-different computers, you get almost complete invulnerability to loss of the
-data stored in the repository.
+\xnote{Many developers have a saying that inverts the point of view: \i{if it
+    isn't in Git, it didn't happen}.}
 
-Of course, \git\ needs to be tracking any file that you want to protect in
-this way. This doesn't happen automatically. The following commands create a
-new file called \t{mynewfile} and then delete it. Because we haven't told
-\git\ to track \t{mynewfile}, we cannot recover it:
+The saved commits in the \t{.git} directory guard against many kinds of
+blunders. \x When you add in \git's ability to synchronize repositories
+between different computers, you get almost complete invulnerability to loss
+of the data stored in the repository.
+
+
+\section{git add, git commit}
+
+If you want to protect a file, \git\ needs to be tracking it. This doesn't
+happen automatically. The following commands create a new file called
+\t{mynewfile} and then delete it. Because we haven't told \git\ to track
+\t{mynewfile}, we cannot recover it:
 
 \begin{typeme}
 echo hello >mynewfile & Create a new file. \\
@@ -340,44 +331,55 @@ rm mynewfile & Remove it. \\
 git checkout mynewfile & There's no saving that one.
 \end{typeme}
 
+\xnote{We won't go into \i{why} this two-phase approach was chosen, but there
+  are good reasons.}
 
-\section{git add, git commit}
+Commits are the way that \git\ remembers your files, so we should learn how to
+make them! Making commits in \git\ is a two-step \x process. First, you have
+to identify which changes you want to commit by \i{staging} them with the
+\cmd{add} command. Then you actually create the new commit with \cmd{commit}.
+We'll demonstrate this.
 
-Since commits are the way that \git\ remembers your files, we should learn how
-to make them! For reasons that we won't go into right now, making commits in
-\git\ is a two-step process. First, you have to identify which changes you
-want to commit by \i{staging} them with the \cmd{add} command. Then you
-actually create the new commit with \cmd{commit}.
+\begin{noncli}
+  Open the file \s{chkdict} in your code editor and recreate the change you
+  made before. Save the file when done.
+\end{noncli}
 
-To demonstrate this, re-create the modification to \t{chkdict} that you did
-before:
+\xnote{We'll see below that \cmd{add} can also teach \git\ about new files.
+  This is an example of a common annoyance with \git: the same command will
+  often do very different things depending on how exactly you run it.}
+
+Now \x run these commands:
 
 \begin{typeme}
-nano chkdict & Change the ``MIGHT BE'' line. \\
 ./chkdict barn bern birn born burn & Validate your change. \\
 git status & Check modification status. \\
 git add chkdict & \b{Stage the change.} \\
 git status & Note change in output. \\
-git commit & \b{Commit the staged changes.}
 \end{typeme}
 
-When you run \cmd{commit} you will be prompted to write a \i{commit
+\fillme{0.4in}{How does \git\ describe the status of \t{chkdict} after you
+  have ``added'' it?}
+
+To finalize the commit, run:
+
+\typeone{git commit}{\b{Commit the staged changes.}}
+
+\xnote{Generally speaking, more sophisticated and organized projects will have
+  more detailed policies about what should go in each message. I find it
+  helpful to identify the section or subsystem that the commit most strongly
+  affects --- that's the bit before the colon --- and then tersely summarize
+  what you did. Additional lines should report \i{why}. The rule of a
+  gold-plated commit message is that someone knowledgeable should be able to
+  recreate your changes based only on the message.}
+
+When \x you run \cmd{commit} you will be prompted to write a \i{commit
   message}. There are no rules about the message contents, but every commit
-must have one. Generally speaking, more sophisticated and organized projects
-will have more detailed policies about what should go in each message. For the
-kinds of projects you'll be working on, I suggest a one-line message of this
-form:
+must have one. Here, I suggest a one-line message of this form:
 
 \hspace{3em}\t{chkdict: change the "MIGHT BE" message for fun}
 
-I find it helpful to identify the section or subsystem that the commit most
-strongly affects --- that's the bit before the colon --- and then tersely
-summarize what you did.
-
 You \i{also} use \cmd{add} to tell \git\ to start keeping track of a new file.
-This is an example of a common annoyance with \git: the same command
-(\cmd{add}) will often do very different things, depending on how exactly you
-run it.
 
 \begin{typeme}
 date >mynewfile & Create a new file. \\
@@ -391,7 +393,7 @@ Here we've used a new option to \cmd{commit}: the \t{-m} option, which lets
 you write the commit message right on the command line. You'll probably be
 mostly writing short messages, so the \t{-m} option can be a big convenience.
 
-\fillme{1.0in}{Say you had done the above steps through \t{git add newfile}
+\fillme{1.4in}{Say you had done the above steps through \t{git add newfile}
   and then decided you actually didn't want to commit the new file. What
   command would you run to reset things? (Hint: \cmd{status} is
   informative.) What happens to \t{newfile} in this case?}
@@ -408,14 +410,16 @@ git status & Note change in output. \\
 git commit -m "\p{deletion message}" & Commit the staged changes.
 \end{typeme}
 
-An important point is that \i{\git\ never forgets anything, so even if you
-  delete a file from a repository, its contents are still stored and
-  recoverable}. This is \underline{very} important if, for example, you
-accidentally commit a password into a repository: even if you make a commit to
-remove the information, other people can still recover your password. There
-are ways to fully delete such information, but we won't get into them here.
+\xnote{This is \underline{very} important if, for example, you accidentally
+  commit a password into a repository: even if you make a commit to remove the
+  information, other people can still recover your password. There are ways to
+  fully delete such information, but we won't get into them here.}
 
-There's also a \cmd{mv} command that is the equivalent of an \t{add} and an
+An \x important point is that \i{\git\ never forgets anything, so even if you
+  delete a file from a repository, its contents are still stored and
+  recoverable}.
+
+There's also a \cmd{mv} command. It's the equivalent of an \t{add} and an
 \t{rm} together. Both this and \cmd{rm} will perform the specified moves
 and/or removals on relevant working-tree files if they haven't already
 happened.
@@ -431,42 +435,37 @@ date >>README & Modify the README. \\
 git commit -am "README: add a timestamp" & Add and commit.
 \end{typeme}
 
-Once you develop your finger memory, this is the quickest way to make commits.
+\xnote{Most people starting out with coding and \git'ing tend to evolve
+  towards writing shorter and shorter messages for larger and larger commits,
+  usually converging in one large commit made at the end of the day labeled
+  ``Update.'' I \i{strongly, strongly urge} you to try to get into the habit
+  of committing in small chunks with thought-out log messages, even if it may
+  take a while for the payoff to become clear. The fundamental reason is that
+  smaller commits are easier to understand. By breaking your work into smaller
+  pieces, it's easier to reason about its correctness and overall design. This
+  is true both as you write new code, and as you evaluate old code --- every
+  experienced programmer can tell you about revisiting \i{their own} year-old
+  work and having no idea what they were thinking when they wrote it. This
+  path also goes both ways: the effort that you spend reasoning about how to
+  break down your code into commits will help deepen your understanding of how
+  to structure software in general. The more you do it, the easier it will
+  get, and the better programmer you'll be.}
 
-\subsection*{Commentary: Commit Sizes and Messages}
-
-Most people starting out with coding and \git'ing tend to evolve towards
-writing shorter and shorter messages for larger and larger commits, usually
-converging in one large commit made at the end of the day labeled ``Update.''
-I \i{strongly, strongly urge} you to try to get into the habit of committing
-in small chunks with thought-out log messages, even if it may take a while for
-the payoff to become clear.
-
-The fundamental reason is that smaller commits are easier to understand. By
-breaking your work into smaller pieces, it's easier to reason about its
-correctness and overall design. This is true both as you write new code, and
-as you evaluate old code --- every experienced programmer can tell you about
-revisiting \i{their own} year-old work and having no idea what they were
-thinking when they wrote it.
-
-This path also goes both ways: the effort that you spend reasoning about how
-to break down your code into commits will help deepen your understanding of
-how to structure software in general. The more you do it, the easier it will
-get, and the better programmer you'll be.
+Once \x you develop your finger memory, this is the quickest way to make commits.
 
 
 \section{git log}
 
-If you do find yourself wanting to review your previous commits, \cmd{log}
-is the command to use.
+If you find yourself wanting to review your previous commits, \cmd{log} is the
+command to use.
 
 \typeone{git log}{\b{Show the commit history.}}
 
-The \cmd{log} command will open up the same pager program that we saw with the
-\t{man} command. But here, \cmd{log} shows you a series of commits, each
-associated with an author, a date, and a message. Each commit also has a
-\i{commit identifier}, which is the string of 40 random-looking characters.
-You should see your own recent commits at the top of the output.
+The \cmd{log} command will open up a ``pager'' program as described in an
+Appendix. It shows you a series of commits, each associated with an author, a
+date, and a message. Each commit also has a \i{commit identifier}, which is
+the string of 40 random-looking characters. You should see your own recent
+commits at the top of the output.
 
 \fillme{0.4in}{On what date was the very first commit made in this repository?
   You may want to consult the table of keystrokes that control \t{less} on
@@ -475,9 +474,11 @@ You should see your own recent commits at the top of the output.
 \fillme{0.4in}{Find a commit whose message contains the word ``consuming.'' On
   what date was it made?}
 
-An important aspect of \git\ is that every distinct commit in the universe has
-a unique identifier. The identifiers look random but are uniquely determined
-by the commit's files and history.
+Every distinct \git\ commit in the universe has a unique identifier. The
+identifiers look random but are uniquely determined by the commit's files and
+history.
+
+\pagebreak[4]
 
 \fillme{1.5in}{(Optional.) Commit identifiers are 40-character hexadecimal
   strings, with each character having 16 possible values (0--9, a--f). If you
@@ -485,13 +486,14 @@ by the commit's files and history.
   elapse before you used all possible identifiers? The Hubble time is about
   $4.3 \times 10^{17}$~s, and $2^{10} \approx 10^3$.}
 
-The \cmd{log} command can also show you which files were changed in each
-commit relative to the one before. This is an \i{enormously} important aspect
-of \git\ --- is that it makes it easy not just to view commits, but to
-understand the \i{changes} that happened between different commits. The
-\cmd{log} command presents change information in a compact form called a
-\i{diffstat} that we'll see more of later. It shows how many lines were added
-and removed from each file.
+\xnote{This is an \i{enormously} important aspect of \git\ --- it makes it
+  easy not just to view commits, but to understand the \i{changes} that
+  happened between different commits. \github's web interface makes these
+  things even easier.}
+
+The \x \cmd{log} command can also show you which files were changed in each
+commit relative to the one before. This \i{diffstat} mode shows how many lines
+were added and removed from each file.
 
 \typeone{git log --stat}{\b{Show log, with change statistics.}}
 
@@ -499,56 +501,62 @@ and removed from each file.
   how many lines were added? How many removed?}
 
 
-\section{git show, git grep, git diff}
+\section{git show, git diff, git grep}
 
-While the \cmd{log -{}-stat} command is useful, the most common commands for
-examining changes between commits are \cmd{show} and \cmd{diff}. The first of
-these will show the set of changes associated with any commit in \i{diff
-  format}, which is yet another convention that shows up throughout the Unix
-ecosystem. The format should be fairly intuitive to grasp, especially with the
-helpful colorful highlighting that \git\ gives you:
+\xnote{The diff format is yet another convention that shows up throughout the
+  Unix ecosystem.}
+
+The \x command \cmd{show} will show the set of changes associated with a
+commit in \i{diff format}. It should be fairly intuitive to grasp, especially
+with the helpful colorful highlighting that \git\ gives you:
 
 \typeone{git show 09933f}{\b{Show the named commit in the pager.}}
 
-Above, we've named a commit based on the beginning of its hexadecimal
-identifier. In any given project, five or six hexadecimal digits is almost
-always enough to uniquely name a commit. (Optional exercise: how many
-different combinations of six hexadecimal digits are there?) You already know
-the name of another commit: HEAD.
+\xnote{In any given project, five or six hexadecimal digits is almost always
+  enough to uniquely name a commit. Optional exercise: how many different
+  combinations of six hexadecimal digits are there?}
+
+Above, \x we've named a commit based on the beginning of its hexadecimal
+identifier. You already know the name of another commit: HEAD.
 
 \typeone{git show HEAD}{Show your most recent commit.}
 
-The diff for this commit will be fairly simple since it was a trivial example
-you authored just a little while ago.
+The diff for this commit is fairly simple since it was a trivial example you
+authored just a little while ago.
 
 \fillme{0.4in}{Use \cmd{log} to find the commit that adds code that uses
   \s{gzip} to compress the Bloom filter data file, then use \cmd{show} to view
   the commit diff. What Python module is needed to add \s{gzip} support?}
 
+\subsection*{The Bloom Filter False-Positive Rate}
+
 Rather than showing an existing commit, the \cmd{diff} command shows the
 difference between your working tree and \i{the staged set of changes} ---
 \i{not} the most recent commit. We'll demonstrate this with a longer example.
-For the sake of pedagogy, please run through the following commands exactly as
-presented on your first time through this section.
 
-\subsection*{The Bloom Filter False-Positive Rate}
+\begin{noncli}
+  Open the \t{chkdict} file in your code editor.
+\end{noncli}
 
-Read over the \t{chkdict} program. Towards the end you will see that it sets a
-variable named \t{fp}, which is the ``false-positive rate'' for the Bloom
-filter that it uses. The false-positive rate is the average frequency with
-which the Bloom filter will say that a word \i{is} in the dictionary when it
-really \i{isn't}. If \t{fp = 0.01}, the filter will think that 1\% of
-non-words are actually words, on average. If \t{fp = 0.9}, the filter will
-think that 90\% of non-words are actually words. (Once again, there's a
-tradeoff: filters with larger false-positive rates are less accurate but more
-efficient.)
+\xnote{The false-positive rate is the average frequency with which the
+  Bloom filter will say that a word \i{is} in the dictionary when it really
+  \i{isn't}. If \t{fp = 0.01}, the filter will think that 1\% of non-words are
+  actually words, on average. If \t{fp = 0.9}, the filter will think that 90\%
+  of non-words are actually words. This parameter is useful because there's a
+  tradeoff: filters with larger false-positive rates are less accurate but
+  more efficient.}
 
-Modify \t{chkdict} to print out this number before it reports the filter
-results for each word. To do this you should just need to add one line of code
-to the \t{chkdict} file.
+Towards \x the end of the file you will see that it sets a variable named
+\t{fp}. This variable is the ``false-positive rate'' for the program's Bloom
+filter.
+
+\begin{noncli}
+  Modify \t{chkdict} to print out \t{fp} before it reports the filter results
+  for each word. To do this you need to add one line of code to the
+  \t{chkdict} file. Save the file when done.
+\end{noncli}
 
 \begin{typeme}
-nano chkdict & Edit to print false-positive rate. \\
 ./chkdict \p{some words} & Check everything works. \\
 git diff & \b{Review unstaged changes.} \\
 git add chkdict & Stage for committing. \\
@@ -557,26 +565,30 @@ git diff & Review unstaged changes.
 
 \fillme{0.4in}{What is the reported false-positive rate?}
 
-But wait a minute!
+But wait a minute! A false-positive rate is a probability. Your program should
+have printed out a negative number, which is not a legal probability.
 
-\fillme{0.4in}{Given what you've been told, can the number that your program
-  printed possibly be the correct false positive rate?}
-
-\i{Spoiler alert:} No, it cannot.
+\xnote{Technically \cmd{grep} and the search feature of \t{less} use a Unix
+  formalism called \i{regular expressions} or \i{regexes}. These are powerful
+  and cool constructs, but for our purposes, you can just type what you're
+  looking for.}
 
 The false positive rate came from a function called \t{fprate}. You can use
-\cmd{grep} to locate its definition: this command searches for a string in the
-working tree files. (Technically \cmd{grep} and the search feature of \t{less}
-use a Unix formalism called \i{regular expressions} or \i{regexes}, but for
-our purposes, you can just type what you're looking for.) If you locate the
-function definition and read the surrounding source code, you will see that
-the current implementation of the \t{fprate} function is just plain wrong.
+\x \cmd{grep} to locate its definition: this command searches for a string in the
+working tree files.
 
-\begin{typeme}
-git grep fprate & \b{Locate instances of ``fprate''.} \\
-nano \p{buggy file} & Fix the bug. \\
-./chkdict \p{some words} & Check everything works.
-\end{typeme}
+\typeone{git grep 'def fprate'}{\b{Locate instances of ``fprate''.}}
+
+The repository that you checked out has had a bug intentionally inserted into
+this function.
+
+\begin{noncli}
+  Open the file identified by \cmd{grep}. Find the definition of the
+  \t{fprate} function. Remove the bug according to the instructions in the
+  file.
+\end{noncli}
+
+\typeone{./chkdict \p{some words}}{Check everything works.}
 
 \fillme{0.4in}{What is the correct false-positive rate?}
 
@@ -586,9 +598,9 @@ nano \p{buggy file} & Fix the bug. \\
   \cmd{help~blame} may come in handy.}
 
 The next set of commands will work through some of the permutations of having
-both staged and unstaged modifications in your working tree --- recall that
-above we ran \cmd{add} on our changes to \t{chkdict}, but didn't run
-\cmd{commit}.
+both staged and unstaged modifications in your working tree. Recall that above
+we ran \cmd{add} on our change to make \t{chkdict} print out the
+false-positive rate, but we didn't run \cmd{commit}.
 
 \begin{typeme}
 git status & Check modification status. \\
@@ -599,8 +611,7 @@ git commit & Commit staged changes.
 \fillme{0.4in}{What change(s) was/were just committed?}
 
 \fillme{0.6in}{If you were to run \cmd{diff} now, after the \cmd{commit}, what
-  would you see? (Please try to guess the answer without just running the
-  command!)}
+  would you see? Try to guess the answer without just running the command!}
 
 \begin{typeme}
 git diff & Review unstaged changes. \\
@@ -610,13 +621,14 @@ git commit & Commit staged changes. \\
 git status & Check modification status.
 \end{typeme}
 
-Here, \cmd{diff -{}-staged} is a different mode that examines the differences
-between the \i{staged changes} and {HEAD}, while, as we've seen, plain
-\cmd{diff} examines the differences between the \i{working tree} and the
-\i{staged changes}. If everything has gone well, you'll have a clean working
-tree, a new feature in \t{chkdict}, and a fixed bug. You can now muck about
-with the working tree however you want, confident that your important fixes
-won't be lost.
+\xnote{This contrasts with plain \cmd{diff}, which examines the differences
+  between the \i{working tree} and the \i{staged changes}.}
+
+Here, \x \cmd{diff -{}-staged} is a different mode that examines the
+differences between the staged changes and HEAD. If everything has gone well,
+you'll have a clean working tree, a new feature in \t{chkdict}, and a fixed
+bug. You can now muck about with the working tree however you want, confident
+that your important fixes won't be lost.
 
 \begin{typeme}
 pwd & Double-check your directory. \\
@@ -627,52 +639,21 @@ git checkout . & Bring them all back. \\
 \end{typeme}
 
 
+\mypart{Collaboration: Foundations}
+
 \section{git branch, git checkout (redux)}
 
-If you run \git\ without any arguments, you get a listing of its most commonly
-used commands:
+\xnote{A commit name is all you need to reconstruct the entire project history
+  back to its inception: the named commit embeds the unique identifier of its
+  parent(s), which embeds the identifier of \i{its} parent(s), and so on. A
+  branch's \i{history} is the set of all commits that have gone into it.}
 
-\typeone{git}{\b{Get help summary.}}
-
-Taking a look at this list, we've touched on almost all of them! The next big
-step is to start getting into \git's support for collaborative coding. The
-first thing we need to do is understand \i{branches}. And to understand those,
-we need to think about commits in a more careful, formal-math kind of way.
-
-In this lab you've made several commits and reviewed them with \cmd{log}. It
-would be reasonable to think of commits as coming in a time-ordered series:
-you start by making commit~\#1, then commit~\#2, then \#3, and so on, for as
-long as you keep on updating your project. For very profound reasons,
-\git\ does \i{not} identify commits this way. As we've seen, each \git\ commit
-has a random-looking unique identifier. How do we know that one commit comes
-``after'' another, then? In \git\ this is accomplished by having each records
-the unique identifier of the commit that it derived from --- its \i{parent}.
-
-\fillme{2in}{Try to think about this arrangement topologically. If you draw
-  commits as circles with arrows pointing to their parents, what structures
-  can you make that aren't simple linear chains? Keep in mind that we're
-  introducing the concept of \s{branches}.}
-
-It is true that in many cases your commits will form a linear chain in time
-order. However, they don't \i{have} to. In particular, you can create two
-different series of commits that diverge from the same parent --- this is
-called \i{forking} or \i{branching}. For now, we won't really deal with
-\i{why} you might want to do this: please take my word for it that it'll be
-important to understand the underlying process. In fact, \i{the core technical
-  breakthrough of \git\ is its ability to deal with branches efficiently.} If
-you get the hang of \git\ and then start dealing with branches in older tools
-such as Subversion, you'll see why \git\ has been so revolutionary.
-
-In \git, a ``branch'' is just a name that refers to some specific commit, the
-\i{branch head}. That's all you need to reconstruct the entire project history
-back to its inception: the named commit embeds the unique identifier of its
-parent, which embeds the identifier of \i{its} parent, and so on. A branch's
-\i{history} is the set of all commits that have gone into it.
-
-You can store data for many different branches at once, but there is only one
-\i{current branch}: the current branch is the one that the working tree and
-HEAD are synchronized with. The \cmd{branch} command prints out the names of
-the branches in your repository:
+You \x were just told that in \git, a ``branch'' is just name that refers to
+some specific commit, the \i{branch head}. You can store data for many
+different branches at once, but there is only one \i{current branch}: the
+current branch is the one that the working tree and HEAD are synchronized
+with. The \cmd{branch} command prints out the names of the branches in your
+repository:
 
 \typeone{git branch}{\b{List branches.}}
 
@@ -680,10 +661,15 @@ The current branch is denoted in the output of \cmd{branch} with an asterisk.
 
 \fillme{0.4in}{Our repository has only one branch. What is its name?}
 
-When you run \cmd{commit}, \git\ creates a new commit in its database that
-lists the current branch head as its parent, then it updates the record for
-the current branch to point to that new commit. These are both fairly
-straightforward operations. For instance, for each branch, the current
+\xnote{One of the reasons that \git\ is so reliable is that commits involve
+  \i{appending} new information to the repository but almost no \i{rewriting}
+  of existing information, which is generally more dangerous. When it does
+  rewrite a file, like the branch head file, the operation is isolated and
+  minimal. This is a design practice to keep in mind when writing your own
+  data-processing tools.}
+
+When \x you run \cmd{commit}, \git\ creates a new commit in its database, then
+updates the the current branch to point to that new commit. The current
 identity of the branch head is stored in a simple text file:
 
 \begin{typeme}
@@ -691,23 +677,21 @@ cat .git/refs/heads/master & \b{Manually print the master branch commit id.} \\
 cat .git/HEAD & Manually print out the branch that HEAD references.
 \end{typeme}
 
-(One of the reasons that \git\ is so reliable is that commits involve
-\i{appending} new information to the repository but almost no \i{rewriting} of
-existing information, which is generally more dangerous. This is something to
-keep in mind when writing your own data-processing tools.)
-
-It's simple to create new branches. Once you've done so, you can \i{switch
+Creating new branches is simple. Once you've done so, you can \i{switch
   branches} and alter the current branch with \cmd{checkout} --- another case
 of one command doing double duty, like \cmd{add} before. For example, let's
 make a new branch called \s{print-my-name}. For now, this branch will be
-identical to the one you originally cloned from \s{GitHub}. If you have any
+identical to the one you originally cloned from \github. If you have any
 uncommitted changes in your working tree, commit them or discard them before
 running the \cmd{checkout} command --- otherwise you may get errors.
+
+\xnote{\normalfont In newer versions of \git, this use of \cmd{checkout} is
+  superseded by \cmd{switch}.}
 
 \begin{typeme}
 git branch print-my-name \demohead & \b{Make new branch pointing to original files.} \\
 git status & Check modification status. \\
-git checkout print-my-name & \b{Switch to \t{print-my-name} branch.} \\
+\x git checkout print-my-name & \b{Switch to \t{print-my-name} branch.} \\
 git branch & List branches. \\
 ./chkdict \p{some words} & Verify that FP rate is not printed.
 \end{typeme}
@@ -716,25 +700,28 @@ git branch & List branches. \\
   (shortened) unique identifier of the commit that you started with when you
   initially cloned the repository.}
 
-Here, \cmd{checkout} has done two things: it's updated information to say that
-the current branch is now the one named \s{print-my-name}, not \s{master},
-\i{and} it's synchronized your working tree to match \s{print-my-name}. If you
-had any uncommitted changes, \cmd{checkout} would have either preserved them
-or refused to run if it couldn't.
+\xnote{If you had any uncommitted changes, \cmd{checkout} would have either
+  preserved them or refused to run if it couldn't.}
+
+Here, \cmd{checkout} has \x done two things: it's updated information to say
+that the current branch is now the one named \s{print-my-name}, not
+\s{master}, \i{and} it's synchronized your working tree to match
+\s{print-my-name}.
 
 Let's create a commit on this new branch. We can do so using the same commands
 we've been using all along --- because we've changed the active branch to
 \s{print-my-name}, that's the one that will be updated, not \s{master}.
 
-We'll make another silly change hinted at in the name of the branch. Edit the
-top of the \t{chkdict} to add a line that prints your name after all of the
-\t{import} statements. Below, we've started assuming that you're getting the
-hang of things and don't need to see every \cmd{add} and \cmd{commit} command
-written out.
+\begin{noncli}
+  Edit the top of the \t{chkdict} to add a line that prints your name after
+  all of the \t{import} statements. Save the file when done.
+\end{noncli}
+
+Below, we've started assuming that you're getting the hang of things and don't
+need to see every \cmd{add} and \cmd{commit} command written out.
 
 \begin{typeme}
-nano chkdict & Make the change. \\
-\p{review and commit your change} & Commit it. \\
+\p{review and commit your change} & Commit your change. \\
 git log --oneline & \b{Summarize history for current branch.} \\
 git log --oneline master & Summarize history for master branch. \\
 git checkout master & Switch to master. \\
@@ -753,64 +740,14 @@ common, but both branches include commits that the other doesn't.
 
 \section{git merge}
 
-You might be able come up with reasons why you'd want to create multiple
-branches in a repository. For instance, you might maintain a piece of software
-that has two version series, 1.x and 2.x --- even though your focus is on the
-2.x version, you might still make updates to 1.x to support users who aren't
-able to upgrade. In these situations it's convenient to maintain two
-\i{long-lived branches}.
+\xnote{Recall that \s{master} contains your change to print the correct Bloom
+  filter false positive rate, while \s{print-my-name} doesn't, because we
+  started it from the originally cloned snapshot. Instead, \s{print-my-name}
+  has a change to print out your name in the \t{chkdict} program.}
 
-If that were the only use case, branching wouldn't be such a big deal. But
-\git\ makes many things possible because you can not only create branches
-easily, but you can \i{merge} them back together later. Merging is a subtle
-concept but it is central to several common \git\ operations, so it's
-important to take the time to understand how it works.
-
-First, a technical perspective. Above, I wrote that each commit has a parent.
-That wasn't the whole truth. Really, each commit has \i{one or more parents}.
-When you merge two branches, you make a special commit that has \i{two}
-parents --- a \i{merge commit}.
-
-Mathematically, the history of a branch is therefore \i{not} necessarily just
-a linear sequence of commits going backwards from its head. The best way to
-visualize the history of a branch is actually as a mathematical \i{graph} ---
-specifically, a \i{directed acyclic graph} or DAG. We won't get into DAGs
-here, but they're very useful reasoning devices for certain problems. DAGs are
-also the underlying formalism for the legendary Unix tool \t{make}. The tools
-of set and graph theory provide the formal foundation for the operations we'll
-describe below.
-
-Now, let's think about what it \i{means} to merge two branches. It's best to
-focus on the ways in which the relevant branches differ, rather than what they
-have in common. Say, for instance, that I've started a project and ended up
-with two different branches derived from a common parent. One branch might be
-called \s{fix-typos}, and it might differ from the common parent in that it
-fixes some mistakes in the documentation. Another might be called
-\s{add-feature}, and it might differ from the common parent in that it adds an
-exciting new feature to the program. From this perspective, the merger of
-these two branches should clearly do \i{both} things: fix the typos \i{and}
-add the new feature.
-
-Next, let's focus on the mechanics of what's actually happening with your
-files. We have emphasized that every commit corresponds to a snapshot of all
-of the files in your repository. To merge two different branches, we therefore
-need to combine two different snapshots. How does that happen?
-
-In principle, you could examine the different snapshots corresponding to your
-two branches, identify the places where they differ from their common parent,
-figure out how to combine the changes, edit the files to combine the changes
-in both branches, and then \cmd{add} and \cmd{commit} the results. This would
-be an awfully tedious and error-prone process.
-
-Fortunately, the \cmd{merge} command automates this process just about as much
-as possible. For instance, let's merge your \s{print-my-name} branch into your
-\s{master} branch. Recall that \s{master} contains your change to print the
-correct Bloom filter false positive rate, while \s{print-my-name} doesn't,
-because we started it from the originally cloned snapshot. Instead,
-\s{print-my-name} has a change to print out your name in the \t{chkdict}
-program.
-
-Peforming the merge is just a matter of running:
+The \x \cmd{merge} command automates the process of merging one branch into
+another. Here we'll merge your \s{print-my-name} branch into your \s{master}
+branch.
 
 \begin{typeme}
 git checkout master & Switch to master. \\
@@ -818,35 +755,29 @@ git merge print-my-name & \b{Merge this branch into master.} \\
 \end{typeme}
 
 The \cmd{merge} command will prompt you to write a message for the merge
-commit; unless you're working in a sophisticated project, you can usually just
-leave it with the default.
+commit. You can usually just use the default.
 
-The above commands should have updated your \s{master} branch to contain not
-just your changes to print the Bloom filter false positive rate, but also your
-recent modifications to print your name. Running the merged code should
-demonstrate the effects of both sets of changes:
+Running the merged code should demonstrate the effects of both sets of
+changes:
 
 \typeone{./chkdict \p{some words}}{Verify that both your name and FP rate are printed.}
 
-Hopefully that went straightforwardly enough. What happened under the hood is
-that \git\ figured out what changes were contained in each branch relative to
-the common parent and decided that it could automatically apply both sets,
-\i{because the two sets of changes did not edit the same part of the same
-  file}.
+This merge could happen automatically because the two sets of changes \i{did
+  not edit the same part of the same file}.
 
 \subsection*{Resolving Merge Conflicts}
 
 If two different branches \i{do} modify the same part of the same file in
-different ways, you have a dreaded \i{merge conflict}. Because \git\ doesn't
-actually know how your software works, the only way to resolve a conflict is
-through human intervention.
+different ways, you have a dreaded \i{merge conflict}.
 
-If a conflict arises, \git\ leaves your working tree in a special funky state,
-with your files edited to point out where the conflicts are. You must decide
-how to resolve the conflicts, edit the files to implement the resolution, mark
-the files as dealt with using \cmd{add}, and then finally \cmd{commit} when
-everything is fixed. Things are a little bit simpler than you might fear since
-the various commands will tell you the necessary steps as you go through them.
+\xnote{Things are a little bit simpler than you might fear since the various
+  commands will tell you the necessary steps as you go through them.}
+
+If a conflict arises, \git\ leaves your working tree in a special funky state.
+The conflicting files have special markers inserted to point out where the
+conflicts are. \x You must decide how to resolve the conflicts, edit the files
+to implement the resolution, mark the files as dealt with using \cmd{add}, and
+then finally \cmd{commit} when everything is fixed.
 
 We'll work through a merge conflict using some secret branches that came along
 with our clone:
@@ -857,12 +788,6 @@ git checkout conflict-demo & Switch to \t{conflict-demo} branch. \\
 git show origin/goodbye-option & View changes in the specified branch. \\
 git show origin/no-skipmisses-option & Likewise.
 \end{typeme}
-
-Please pause here and think about what \i{changes} these two branches apply,
-relative to their common parent. The \s{origin/goodbye-option} branch adds a
-new option that prints ``Goodbye'' when the program is done running. The
-\s{origin/no-skipmisses-option} removes the \t{-s} option implemented in the
-original version of \t{chkdict}.
 
 Now let's try merging both branches into \s{conflict-demo}:
 
@@ -881,29 +806,36 @@ Behind the scenes, \git\ has edited the file \t{chkdict} and added \i{conflict
   markers} indicating the problematic region that was edited in both branches.
 These consist of a long row of ``\t{<<<<}'', the final text found in one
 branch, then ``\t{====}'', the final text from the other branch, and finally
-``\t{>>>>}''. Open up the file in \t{nano} and take a look:
+``\t{>>>>}''.
 
-\typeone{nano chkdict}{Locate and examine conflict regions.}
+\begin{noncli}
+  Open up \t{chkdict} in your code editor and search for these conflict
+  markers.
+\end{noncli}
 
-When a conflict happens, it's up to you to find \i{all} instances of these
-conflicts and edit the files to somehow do what \i{both} commits were
-attempting.
+\xnote{The example here tries to keep the conflict minimal. One branch adds a
+  command-line option, and another branch removes one, so they both edit the
+  same stanza of option-handling code at the beginning of \t{chkdict}. To
+  resolve the conflict, you first have to decide what the merged code
+  \i{should} do --- it seems clear that it should accept the new argument and
+  remove the old argument. You then need to \i{implement} that solution by
+  editing the code. To implement the solution you should use the sample text
+  from the two branches as a reference, but the best implementation might not
+  look exactly like \i{either} version. }
 
-The example here tries to keep the conflict minimal. One branch adds a
-command-line option, and another branch removes one, so they both edit the
-same stanza of option-handling code at the beginning of \t{chkdict}. To
-resolve the conflict, you first have to decide what the merged code \i{should}
-do --- it seems clear that it should accept the new argument and remove the
-old argument. You then need to \i{implement} that solution by editing the
-code. To implement the solution you should use the sample text from the two
-branches as a reference, but the best implementation might not look exactly
-like \i{either} version. After you're done, all of the conflict markers should
-be gone from your files. You can then \cmd{add} and \cmd{commit} as usual ---
-\git\ uses a special internal reminder to realize that this commit represents
-a merge and not just a regular commit.
+Your \x mission to find \i{all} conflict markers and edit the files to somehow
+do what \i{both} branches intended.
+
+\begin{noncli}
+  Resolve the conflict in \t{chkdict}. Save your work.
+\end{noncli}
+
+After you're done, all of the conflict markers should be gone from your files.
+You can then \cmd{add} and \cmd{commit} as usual --- \git\ uses an internal
+flag to realize that this commit represents a merge and not just a regular
+commit.
 
 \begin{typeme}
-nano chkdict & Fix the conflict. \\
 git add chkdict & Stage the fix. \\
 git diff --staged & Examine the changes of the final merge. \\
 git commit & Commit the fix. \\
@@ -913,69 +845,45 @@ git log & Review commit history.
 \fillme{1.5in}{What does the commit history of the \t{conflict-demo} branch now
   look like, as a graph?}
 
-\subsection*{Commentary: Well-definedness of merges}
+\subsection{Manipulating Branches}
 
-Some merges are not semantically possible. If one branch of a command-line
-program adds an option called \t{-s} to sort output, and another adds an
-option called \t{-s} to save inputs, there's just no way to merge the two
-branches while preserving their intent. When you make a merge commit, you're
-\i{asserting} to \git\ that it preserves the meanings of the two merged
-branches in some reasonable way, but it's impossible for \git, or any other
-objective analysis, to \i{prove} that this is the case. In fact, you could
-``resolve'' a merge conflict by replacing all the contents of every file in
-your project with Doctor Who fan fiction.
+The \cmd{branch} command provides tools for manipulating branches. You can do
+things like rename them, copy them, and so on.
 
-What underlies the way that \git's merge system works is an assumption that
-\i{modifications to different parts of different files are probably
-  independent} --- it will only flag a conflict if two commits modify the
-\i{same} part of the \i{same} file. But this assumption can fail. For
-instance, I could merge two branches where one renames a variable in file
-\t{A}, while the other references the old variable name in file \t{B}. There's
-no way to detect the problem without running the code. More broadly speaking,
-\i{a merge is not a well-defined, mechanical operation, and it can never be
-  entirely automated}. Fortunately, in the real world, the
-different-places-means-independence assumption is generally true, and most
-merges can proceed mechanically.
+A common workflow is to create a new branch for each feature that you work on
+--- called a ``feature branch.'' Once the feature branch is merged into the
+\s{master} branch, you can tidy things up by deleting it:
 
-Stepping back, the same general point is true of any kind of commit. Commits
-in a sequence are generally assumed to be related and not include enormous
-changes. But there's no reason that I can't make a single commit that deletes
-all of the source code to my project and replaces it with Doctor Who fan
-fiction. Fundamentally, every \git\ commit both encodes something very precise
-and something very nebulous. The precise thing is an exact, reproducible
-snapshot of a set of files in a repository. The nebulous thing is an assertion
-by a human that those files bear some useful relation to the ones found in the
-commits that came before.
+\typeone{git branch -d print-my-name}{Delete this branch.}
+
+\xnote{You can use the \t{-D} mode if you're sure that it's safe to delete a
+  branch.}
+
+The \x \t{-d} mode of \cmd{branch} won't let you delete a branch unless
+\git\ is confident that the commits of that branch are replicated elsewhere.
 
 
-\section{git remote, git fetch, git pull}
+\mypart{Collaboration: GitHub}
 
-Finally we get to the payoff. \i{The features of \git's branching system are
-  sufficient to allow collaborative work on a project by a distributed,
-  decentralized team.} Or, more prosaically, \git's ability to synchronize
-repositories between computers builds on its branching and merging
-infrastructure. So even if you're not planning on contributing to the Linux
-kernel any time soon, a solid understanding of the branching system is
-important for synchronizing your work between different machines and sharing
-your work with others.
+\section{git remote, git fetch}
+
+\xnote{Remotes can be in a different directory on the same machine, or
+  accessible over the network using any of several protocols. The simplest way
+  to collaborate using \git\ is to set up a central repository on the network
+  that everyone can push to --- which is exactly what
+  \href{https://github.com/}{GitHub} does and why it's so popular. It bears
+  emphasizing, however, that a key advantage of \git\ is that if
+  \href{https://github.com/}{GitHub} were to disappear tomorrow, we wouldn't
+  lose any data, because each repository is self-sufficient, and by setting up
+  new remotes we could start collaborating again almost seamlessly.}
 
 Each \git\ repository stores a list of other repositories that it knows about,
-known as \i{remotes}. These can be in a different directory on the same
-machine, or accessible over the network using any of several protocols. You
-can download updates from a remote and, as we'll see in the next section, also
-\i{push} updates to it. The simplest way to collaborate using \git\ is to set
-up a central repository on the network that everyone can push to --- which is
-exactly what \href{https://github.com/}{GitHub} does and why it's so popular.
-Other, less-centralized models are possible, but we won't discuss them here.
-It bear emphasizing, however, that a key advantage of \git\ is that if
-\href{https://github.com/}{GitHub} were to disappear tomorrow, we wouldn't
-lose any data, because each repository is self-sufficient, and by setting up
-new remotes we could start collaborating again almost seamlessly.
+known as \i{remotes}. You can download updates from remotes and \i{push}
+updates to them. Every cloned repository starts with a remote called
+\s{origin}, which you've probably been seeing mentioned by various tools over
+the course of the lab.
 
-Every cloned repository starts with a remote called \s{origin}, which you've
-probably been seeing mentioned by various tools over the course of the lab.
-You can learn about your remotes with, unsurprisingly, the \cmd{remote}
-command.
+You can learn about your remotes with the \cmd{remote} command.
 
 \begin{typeme}
 git remote & \b{List named remotes.} \\
@@ -995,104 +903,143 @@ see is silence, indicating that there are no new commits:
 
 \typeone{git fetch origin}{\b{Update remote branches for origin.}}
 
-If there \i{were} new commits, what would you do? Well, you've got a branch
-that you're working on (generally \s{master}, or \s{conflict-demo} here), and
-you've got one with commits that you want to import (\s{origin/master} ---
-note that the \s{remotes/} prefix isn't necessary). That sounds like time for
-a \cmd{merge}!
+\subsection*{Linking With Your GitHub Account}
+
+\xnote{The key thing about a fork is that you can do work on my code without
+  needing to ask me for permission to start making changes. If you later want
+  to submit your changes, the two repositories will nonetheless share a common
+  \git\ history so that they can be merged easily.}
+
+We'll \x now get your repository talking to your GitHub account. First, we need
+to \i{fork} --- duplicate --- the origin repository.
+
+\begin{noncli}
+  Navigate your browser to \url{https://github.com/pkgw/bloomdemo/}. Click the
+  ``Fork'' button at the top-right of the screen. Once you’re looking at your
+  fork, click the “Clone or Download” button and copy the clone address to
+  your computer’s clipboard.
+\end{noncli}
+
+Now we'll tell your repo about your fork on GitHub, registering it as a remote
+named \s{mine}:
 
 \begin{typeme}
-git checkout conflict-demo & Make sure we're on the right branch. \\
-git merge origin/master & Merge in (nonexistent) updates.
+  git remote add mine \p{GitHub clone address} & Register a new remote \\
+  git fetch mine & Pull down its current status
 \end{typeme}
-
-The command \cmd{pull} essentially does a \cmd{fetch} followed by a
-\cmd{merge}, though it has a few bells and whistles.
-
-\typeone{git pull origin master}{\b{Fetch and merge more nonexistent updates.}}
-
-We haven't discussed this, but it can be very difficult to work through merges
-if your working tree is dirty. Therefore, to synchronize your repository with
-the outside world, you should generally follow this procedure:
-
-\begin{enumerate}
-\item Run \cmd{status} to see if you have any uncommitted changes that need to
-  be tidied up.
-\item If you do: either commit your work or decide to throw it away; or
-  otherwise clean up your working tree.
-\item Finally, run \cmd{pull} to fetch and merge any updates
-  from your collaborators.
-\end{enumerate}
 
 
 \section{git push}
 
-Finally, there's the matter of \i{pushing} updates to a remote repository. In
-practice you'll generally be doing this by pushing updates to
-\href{https://github.com/}{GitHub}, but to keep the lab self-contained we're
-going to do everything on your local disk. \git\ does a good job of
-abstracting between different kinds of remotes, so the underlying steps are
-exactly the same in either case.
+To share changes we \i{push} them to a remote. We'll create yet another branch
+with some quasi-nonsense changes:
 
 \begin{typeme}
-mkdir ../sync.git & Create sync repo directory. \\
-cd ../sync.git & Move into it. \\
-git init --bare & \b{Create push-able repo.} \\
-ls & Examine files. \\
-cd ../bloomdemo & Back to working tree. \\
-git remote add localsync ../sync.git & \b{Register the new repo.} \\
-git push localsync master & \b{Publish our \t{master} branch.} \\
-git push localsync print-my-name & Publish our \t{print-my-name} branch. \\
-git remote show localsync & Show details about \t{localsync}.
+git branch graduation origin/master & New branch with pristine files. \\
+git checkout graduation & Switch to \t{conflict-demo} branch. \\
+mkdir alumni & Make a directory. \\
+date >alumni/\p{your-github-username}.txt & Create your very own file. \\
+git add alumni & Register new directory with \git. \\
+git commit -m "Git graduation." & Commit
 \end{typeme}
 
-This sequence of commands creates a local repository that we can push to. The
-\t{sync.git} directory is a \i{bare repository}: it has commit data, branches,
-and a HEAD, but no actual working tree! You can't push to a repository with a
-working tree since \git\ would need to be able to rewrite all the working
-files, which it can't safely do if there happen to be local modifications. The
-files in the \t{sync.git} directory are the same as those in your working
-tree's \t{.git} directory. It's conventional to give bare repositories names
-ending with \t{.git} even though they're directories.
+\xnote{Of course, \cmd{push} also uploads all of the needed backing data as
+  well.}
 
-The \cmd{push} command has somewhat-sophisticated syntax allowing you to remap
-branch names between repositories. For instance, to publish our \t{master}
-branch under the name \t{experiments} on \t{localsync}, you write:
+The \x command \cmd{push} copies a branch from your local repository to a
+remote. The syntax with a colon shown below can be used to change the name
+that the branch will be given on the remote.
 
 \begin{typeme}
 git branch -a & List all branches. \\
-git push localsync master:experiments & \b{Publish \t{master} as \t{experiments}.} \\
+git push mine graduation & \b{Publish the changes.} \\
+git push mine master:experiments & Publish our main work as \t{experiments}. \\
 git branch -a & List all branches. \\
-git remote show localsync & Show details about \t{localsync}. \\
-git push localsync :experiments & \b{Delete \t{experiments} on \t{localsync}.} \\
-git remote show localsync & Show details about \t{localsync}.
+git remote show mine & Show details about \t{mine}.
 \end{typeme}
 
 \fillme{0.4in}{What's different the second time you run \cmd{branch~-a}?}
 
-As we see above, the special syntax of pushing a blank branch name (``\t{git
-  push localsync :experiments}'') deletes the branch on the remote. Having
-successfully pushed our changes, we can now shred our files without worrying.
+You'll see that \git\ prints some messages about creating a pull request.
+We'll ignore them for now.
+
+\begin{noncli}
+  Reload the GitHub webpage for your fork of the \s{bloomdemo} repository. In
+  the ``Branch:'' dropdown menu, you should see your new \s{graduation}
+  branch. Click on the commit message (``Git graduation.'') to see your change
+  as displayed by GitHub.
+\end{noncli}
+
+Your changes are now available to the wide world!
+
+\subsection*{Issuing a Pull Request}
+
+\xnote{Actually, it would be more accurate to call them \i{merge requests}.}
+
+If you're just working on a personal project, GitHub already adds value: above
+all else, it backs up your repository offsite. Where it really shines,
+however, is how it enables decentralized development. Specifically, GitHub
+\i{pull requests} (PRs) \x let you submit changes to repositories that you
+don't own.
+
+\begin{noncli}
+  Click the big green ``Compare \& pull request'' button associated with your
+  \s{graduation} branch. You can attach a message to your pull request --- in
+  normal usage, this would summarize what changes are in your branch, and why.
+
+  Once the first few pull requests arrive, the lab leader will demonstrate how
+  they are reviewed and handled. In the meantime, you are encouraged to click
+  around the different elements of the GitHub PR user interface!
+\end{noncli}
+
+
+\section{git pull}
+
+There is a \cmd{pull} command that somewhat mirrors \cmd{push}. But really,
+\cmd{pull} is just a combination of \cmd{fetch} and \cmd{merge}.
+
+\begin{noncli}
+  Wait for the instructor to merge a few pull requests into the master
+  repository.
+\end{noncli}
+
+\xnote{It can be tricky to merge changes if your local tree is dirty. Before
+  pulling, we recomend doing a \cmd{status} and cleaning up any uncommitted or
+  unstaged changes.}
+
+Now \x that your \s{origin} repository has seen some changes, let's incorporate
+them locally:
+
+\begin{typeme}
+git checkout master & Switch to \t{master} branch. \\
+git pull origin & Fetch and merge any changes from \s{origin}. \\
+ls alumni & See who's graduated!
+\end{typeme}
+
+\subsection*{Grand Finale}
+
+Having successfully uploaded our work to the cloud, we can now shred our local
+files without worrying.
 
 \begin{typeme}
 cd .. & Move to \t{gitlab} directory. \\
 pwd & Confirm your directory. \\
 rm -rfv bloomdemo & Destroy all of your work! \\
 ls -la & Confirm it's gone. \\
-git clone https://github.com/pkgw/bloomdemo.git & Clone an existing repository. \\
+git clone https://github.com/pkgw/bloomdemo.git & Clone the main repository. \\
 cd bloomdemo & Move into it. \\
-git remote add localsync ../sync.git & Register our backup. \\
+git remote add mine \p{GitHub clone address} & Register our fork. \\
 git branch -a & List all branches. \\
-git fetch localsync & Fetch data from localsync. \\
+git fetch mine & Fetch our fork. \\
 git branch -a & List all branches. \\
-git merge localsync/master & Merge changes from backup. \\
+git merge mine/experiments & Restore our changes. \\
 ./chkdict \p{some words} & Confirm our changes.
 \end{typeme}
 
-With a few short commands, you were able to recover all of the work that you
-did during this lab --- not just the files themselves, but the \i{history} of
-what you did to them --- even though we completely erased the directory in
-which you did all of the work. I hope you're impressed!
+With a few short commands, you were able to recover the work that you did
+during this lab --- not just the files themselves, but the \i{history} of what
+you did to them --- even though we completely erased the directory in which
+you did all of the work. I hope you're impressed!
 
 
 \section*{Recap}
@@ -1117,6 +1064,74 @@ an electronic form? There is, and it's tracked in \git, of course:
 
 \bigskip
 {\large\centering\url{https://github.com/pkgw/git-lab}\par}
+
+
+\newpage
+
+\section*{Appendix: Unix Help\markboth{Unix Help}{}}
+
+To learn about command-line programs in Unix operating systems, you can try
+reading their ``manual page''s with the \t{man} command:
+
+\typeone{man find}{\b{Learn about \t{find}.}}
+
+When you run \t{man}, you enter a special subprogram called the \i{pager},
+described in the next Appendix.
+The \t{man} program has its own manual page:
+
+\typeone{man man}{Learn about \t{man}.}
+
+Unix manual pages are notoriously uneven in their quality. This is especially
+true regarding \git\ itself, unfortunately. Google is often a better resource
+for beginners. The information on the
+\href{http://stackexchange.com/}{StackExchange.com} family of websites is
+usually very helpful.
+
+
+\newpage
+
+\section*{Appendix: The Pager\markboth{The Pager}{}}
+
+\xnote{The search and filter commands in \t{less} use a special formalism
+  called \i{regular expressions} or \i{regexes} for matching text. In general,
+  you can just type what you're looking for and the right thing will happen.
+  \i{Many} Unix tools use regexes; they are just one of the many interlocking
+  technologies that constitute the overall Unix ecosystem.}
+
+The \i{pager} is a special Unix program for navigating lengthy textual
+output. It offers many more features than the bare terminal. Because \t{man},
+\git, and many other Unix tools use it extensively, it is valuable to learn a
+bit about it. Different programs can do the job of the pager, but by default
+your system uses a Unix command called \t{less}. \x The \t{less} program is
+mainly controlled by commands that are single keystrokes. Some of these keys
+are:
+
+\begin{center}
+\label{l.lesskeys}
+\begin{tabular}{>{\ttfamily}cl}
+\rmfamily\i{Key} & \i{Effect} \\ \hline
+q & Quit the pager. \\
+\rmfamily(Arrow keys) & Navigate as you'd expect. \\
+\rmfamily(Spacebar) & Go forward a page. \\
+b & Go backwards a page. \\
+< & Go to the top. \\
+> & Go to the bottom. \\
+/ & Search (type in query, then hit Enter). \\
+n & Go to next search result. \\
+N & Go to previous search result. \\
+\& & Filter (type in query, then hit Enter). \\
+h & Print help information.
+\end{tabular}
+\end{center}
+
+When in doubt, just press \fbox{\t{q}} to quit the pager and return to your
+main terminal prompt.
+
+You can run the \t{less} pager program like any other Unix command if you want
+to read a file right in your terminal:
+
+\typeone{less README}{\b{Page the file \t{README}.}}
+
 
 \newpage
 

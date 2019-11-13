@@ -1,69 +1,74 @@
 /* Custom reveal.js theme.
  *
- * Based off of the night/black theme, which is
- * copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ * Loosely based off of the white theme, which is copyright 2011-2015 Hakim El
+ * Hattab, http://hakim.se
  */
 
 @font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Montserrat-Bold'),
-    url(assets/googlewebfont-Montserrat-700.ttf) format('truetype');
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    src: url(assets/googlewebfont-Montserrat-700.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'),
-    url(assets/googlewebfont-Open-Sans-400.ttf) format('truetype');
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(assets/googlewebfont-Open-Sans-400.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'),
-    url(assets/googlewebfont-Open-Sans-700.ttf) format('truetype');
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: url(assets/googlewebfont-Open-Sans-700.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 400;
-  src: local('Open Sans Italic'), local('OpenSans-Italic'),
-    url(assets/googlewebfont-Open-Sans-400it.ttf) format('truetype');
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: 400;
+    src: url(assets/googlewebfont-Open-Sans-400it.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 700;
-  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'),
-    url(assets/googlewebfont-Open-Sans-700it.ttf) format('truetype');
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: 700;
+    src: url(assets/googlewebfont-Open-Sans-700it.ttf) format('truetype');
 }
 
 body {
-  background: #FFF;
-  background-color: #FFF; }
+    background: #fff;
+    background-color: #fff;
+}
 
 .reveal {
-  font-family: "Open Sans", sans-serif;
-  font-size: 30px;
-  font-weight: 200;
-  letter-spacing: -0.02em;
-  color: #111111; }
+    font-family: "Open Sans", sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: #222;
 
-.reveal .slides > section {
-    /* Force every slide to be full height so that footers work */
-    height: 100%;
+    /* I like to use this font with tighter letter spacing, but Webkit and Mozilla
+     * do it in different ways that leads to nontrivial layout changes between the
+     * browser and PDF versions of the slides. */
+    /*letter-spacing: -0.02em;*/
 }
 
 ::selection {
-  color: #fff;
-  background: #12347b;
-  text-shadow: none; }
+    color: #fff;
+    background: #e7ad52;
+    text-shadow: none;
+}
+
+.reveal .slides > section {
+    /* Force every slide to be full height so that footers work */
+    height: 720px;
+
+    /* reveal.js defaults to 20px vertically which makes things confusing */
+    padding: 0px;
+}
 
 .reveal h1,
 .reveal h2,
@@ -71,16 +76,19 @@ body {
 .reveal h4,
 .reveal h5,
 .reveal h6 {
-  color: #222;
-  font-family: "Montserrat", Impact, sans-serif;
-  line-height: 0.9em;
-  letter-spacing: -0.03em;
-  text-transform: none;
-  text-shadow: none;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  hyphens: none;
+    color: #222;
+    font-family: "Montserrat", Impact, sans-serif;
+    line-height: 0.9em;
+    letter-spacing: -0.03em;
+    text-transform: none;
+    text-shadow: none;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    hyphens: none;
+    word-wrap: break-word;
 }
+
+/* Headers */
 
 .reveal h1, .reveal h2, .reveal h3 {
     margin: 0 0 20px 0;
@@ -90,81 +98,33 @@ body {
     margin: 0 0 5px 0;
 }
 
-.reveal a:not(.image) {
-  color: #12347b;
-  text-decoration: none;
-  -webkit-transition: color .15s ease;
-  -moz-transition: color .15s ease;
-  -ms-transition: color .15s ease;
-  -o-transition: color .15s ease;
-  transition: color .15s ease; }
+.reveal h1.maintitle1 {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* black outline */
+  text-align: left;
+  color: #FFF;
+  font-size: 2.5em;
+  padding-top: 80px;
+  margin-left: 4rem;
+}
 
-.reveal a:not(.image):hover {
-  color: #4264ab;
-  text-shadow: none;
-  border: none; }
+.reveal h1.maintitle2 {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* black outline */
+  text-align: left;
+  color: #FFF;
+  font-size: 2em;
+  line-height: 1em;
+  margin-top: 0.4em;
+  margin-left: 4rem;
+}
 
-.reveal .roll span:after {
-  color: #000;
-  background: #d08a1d; }
-
-.reveal section img {
-  margin: 3px 0 3px;
-  -webkit-transition: all .2s linear;
-  -moz-transition: all .2s linear;
-  -ms-transition: all .2s linear;
-  -o-transition: all .2s linear;
-  transition: all .2s linear; }
-
-.reveal a:hover img {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: #12347b;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
-
-.reveal .controls div.navigate-left,
-.reveal .controls div.navigate-left.enabled {
-  border-right-color: #12347b; }
-
-.reveal .controls div.navigate-right,
-.reveal .controls div.navigate-right.enabled {
-  border-left-color: #12347b; }
-
-.reveal .controls div.navigate-up,
-.reveal .controls div.navigate-up.enabled {
-  border-bottom-color: #12347b; }
-
-.reveal .controls div.navigate-down,
-.reveal .controls div.navigate-down.enabled {
-  border-top-color: #12347b; }
-
-.reveal .controls div.navigate-left.enabled:hover {
-  border-right-color: #4264ab; }
-
-.reveal .controls div.navigate-right.enabled:hover {
-  border-left-color: #4264ab; }
-
-.reveal .controls div.navigate-up.enabled:hover {
-  border-bottom-color: #4264ab; }
-
-.reveal .controls div.navigate-down.enabled:hover {
-  border-top-color: #4264ab; }
-
-.reveal .progress {
-  background: rgba(0, 0, 0, 0.2); }
-
-.reveal .progress span {
-  background: #12347b;
-  -webkit-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
-  -moz-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
-  -ms-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
-  -o-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
-  transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
-
-/* Styling customizations for standard elements */
-
-.reveal h1 {
-    font-size: 2.5em;
-    margin-top: 40px; /* XXX hack for title slide */
+.reveal h1.titlecard {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  font-size: 2.5em;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .reveal h2 {
@@ -175,10 +135,13 @@ body {
     margin-bottom: 18px;
 }
 
+/* Other */
+
 .reveal p {
     text-align: left;
     margin-top: 0.2em;
     margin-bottom: 1em;
+    line-height: 1;
 }
 
 .reveal blockquote {
@@ -191,33 +154,19 @@ body {
     max-width: 100%;
 }
 
-/* Standard <ul>s are generously-spaced bullet lists. I can't find a better
-   way to set the bullet style than what's done below! <ol>s are
-   tighter-spaced since that's what makes sense when it's an actual ordered
-   list of steps or whatever. Extra padding makes nested lists look good.*/
-
 .reveal ul, .reveal ol {
+    text-align: left;
     margin-left: 2em;
-    margin-top: 0.2em; /* same as <p> */
-    margin-bottom: 1em;
+    margin-bottom: 10px; /* same as <p> */
     width: calc(100% - 2em); /* sigh, anything better? */
 }
 
 .reveal ul {
+    /* no better way to set the UL list bullet style nicely??? (next rule, too) */
     list-style-type: none;
 }
 
-.reveal ul > li {
-    margin-bottom: 0.8em;
-    line-height: 1em;
-}
-
-.reveal ol > li {
-    margin-bottom: 0em;
-    line-height: 1em;
-}
-
-.reveal ul > li:before {
+.reveal ul li:before {
     content: "•";
     display: block;
     height: 0;
@@ -226,14 +175,14 @@ body {
     left: -0.7em;
 }
 
-.reveal ul > li > ol, .reveal ul > li > ul {
-    padding-left: 1em;
+.reveal ul li, .reveal ol li {
+    margin-bottom: 0.8em;
+    line-height: 1em;
 }
 
-
 .reveal ul.squish li, .reveal ol.squish li {
-  margin-bottom: 0.2em;
-  line-height: 1em;
+    margin-bottom: 0.2em;
+    line-height: 1em;
 }
 
 .reveal sub {
@@ -243,28 +192,181 @@ body {
 
 .reveal sup {
   font-size: smaller;
-  vertical-align: super;
+  vertical-align: sup;
 }
 
-.reveal tt {
-  font-family: monospace;
+
+/* Links */
+
+.reveal a {
+    color: #12347b;
+    text-decoration: none;
+    -webkit-transition: color .15s ease;
+    -moz-transition: color .15s ease;
+    -ms-transition: color .15s ease;
+    -o-transition: color .15s ease;
+    transition: color .15s ease;
 }
 
-.reveal pre {
-  font-family: monospace;
-  text-align: left;
-  line-height: 1.2em;
-  width: 80%;
-  margin: 0.2em auto 1em auto;
+.reveal .wfg a {
+  color: #c0c0ee;
+}
+
+.reveal a:hover {
+    color: #4264ab;
+    text-shadow: none;
+    border: none;
+}
+
+.reveal .roll span:after {
+    color: #fff;
+    background: #1a54a1;
+}
+
+/* Images */
+
+.reveal section img {
+    margin: 3px 0 3px;
+}
+
+.reveal a img {
+    -webkit-transition: all 0.15s linear;
+    -moz-transition: all 0.15s linear;
+    -ms-transition: all 0.15s linear;
+    -o-transition: all 0.15s linear;
+    transition: all 0.15s linear;
+}
+
+.reveal a:hover img {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #2a76dd;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
+}
+
+/* Tables -- deriving from the "pure" CSS framework */
+
+.reveal table {
+  /* Remove spacing between table cells (from Normalize.css) */
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  border: 1px solid #cbcbcb;
+}
+
+.reveal table caption {
+  color: #000;
+  text-align: center;
+  padding-bottom: 0.2em;
+  /*font-weight: 700;
+  font-style: italic;
+  font-size: 1.2em;*/
+}
+
+.reveal td, .reveal th {
+  border-left: 1px solid #cbcbcb; /* inner column border */
+  border-width: 0 0 0 1px;
+  font-size: inherit;
+  margin: 0;
+  overflow: visible; /* to make <th>s where the title is really long work */
+  padding: 0.5em 1em; /* cell padding */
+}
+
+.reveal td:first-child,
+.reveal th:first-child {
+  /* "Consider removing this next declaration block, as it causes problems when
+   there's a rowspan on the first cell. Case added to the tests. issue#432 */
+  border-left-width: 0;
+}
+
+.reveal td {
+  background-color: transparent;
+}
+
+.reveal thead {
+  background-color: #e0e0e0;
+  color: #000;
+  text-align: center;
+  vertical-align: bottom;
+  font-weight: 700;
+}
+
+.reveal tbody tr:nth-child(2n-1) td {
+  background-color: #f2f2f2;
+}
+
+.reveal table.squish td, .reveal table.squish th {
+  padding: 0.1em 1em; /* cell padding */
+}
+
+.reveal .c1l tr > td:nth-child(1) { text-align: left }
+.reveal .c2l tr > td:nth-child(2) { text-align: left }
+.reveal .c2r tr > td:nth-child(2) { text-align: right }
+.reveal .c3r tr > td:nth-child(3) { text-align: right }
+
+/* PDF export tomfoolery */
+
+.reveal .slides section .slide-background {
+    position: absolute;
+}
+
+.reveal .slides section > *:first-child {
+    margin-top: 0px;
+}
+
+/* Fix KaTeX math styling. The default reveal.css applies "font: inherit" to
+ * almost all tags within .reveal, which overrides KaTeX's settings since the
+ * latter selects with ".katex", which is lower precedence than Reveal's CSS
+ * selector. */
+
+.reveal .kmath {
+    font: 400 1.21em KaTeX_Main;
 }
 
 /* Custom helper classes for layout */
 
-.reveal .ctr {
-    margin-left: auto;
-    margin-right: auto;
+.reveal .ctr { margin-left: auto; margin-right: auto; }
+.reveal .vctr {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
+.reveal .prel { position: relative; }
+
+.reveal .mb0 { margin-bottom: 0px; }
+.reveal .mb0p2 { margin-bottom: 0.2em; }
+.reveal .mb2 { margin-bottom: 2em; }
+.reveal .mt0 { margin-top: 0px; }
+.reveal .mt0p5 { margin-top: 0.5em; }
+.reveal .mt1 { margin-top: 1em; }
+.reveal .mt1p5 { margin-top: 1.5em; }
+.reveal .mt2 { margin-top: 2em; }
+.reveal .mt3 { margin-top: 3em; }
+.reveal .mt4 { margin-top: 4em; }
+.reveal .ml1 { margin-left: 1em; }
+.reveal .mr1 { margin-right: 1em; }
+.reveal .mr2 { margin-right: 2em; }
+.reveal .mr4 { margin-right: 4em; }
+.reveal .fl { float: left; }
+.reveal .fr { float: right; }
+.reveal .db { display: block; }
+.reveal .dib { display: inline-block; }
+.reveal .cb { clear: both; }
+
+.reveal .ptl { position: absolute; top: 2em; left: 0.5em }
+.reveal .ptr { position: absolute; top: 2em; right: 0.5em }
+.reveal .ptf { position: absolute; top: 2em; width: 100% }
+.reveal .pbl { position: absolute; bottom: 0.5em; left: 0.5em }
+.reveal .pbr { position: absolute; bottom: 0.5em; right: 0.5em }
+.reveal .pbf { position: absolute; bottom: 0.5em; width: 100% }
+
+.reveal .ptl0 { position: absolute; top: 0px; left: 0px }
+.reveal .ptr0 { position: absolute; top: 0px; right: 0px }
+.reveal .pbl0 { position: absolute; bottom: 0px; left: 0px }
+.reveal .pbr0 { position: absolute; bottom: 0px; right: 0px }
+
+.reveal .w15 { width: 15%; }
+.reveal .w20 { width: 20%; }
 .reveal .w25 { width: 25%; }
 .reveal .w30 { width: 30%; }
 .reveal .w35 { width: 35%; }
@@ -283,19 +385,44 @@ body {
 .reveal .w100 { width: 100%; }
 
 .reveal .wbg { background-color: white; }
+.reveal .wfg { color: white; }
 
 .reveal .tctr { text-align: center; }
-.reveal .tbig { font-size: larger; }
+.reveal .tleft { text-align: left; }
+.reveal .tright { text-align: right; }
+.reveal .tbig { font-size: 1.3em; }
+.reveal .tsmall { font-size: 0.7em; }
+.reveal .tital { font-style: italic; }
+.reveal .tbold { font-weight: 700; }
+
+.reveal em { font-style: italic; }
+.reveal b { font-weight: 700; }
+
+.reveal .squish {
+    /* This is mainly meant for <p> elements */
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+}
 
 .reveal .footer {
-    text-align: center;
-    font-size: 80% !important;
     position: absolute;
     bottom: 2em;
-    right: 0em;
-    width: 100%;
-    margin: 0;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    padding: 4px;
 }
+
+.reveal .footer p {
+    text-align: center;
+    margin-top: 0.2em;
+    margin-bottom: 0.1em;
+}
+
 
 .reveal .bgcred {
     text-align: right;
@@ -303,12 +430,12 @@ body {
     position: absolute;
     bottom: 1em;
     right: 1em;
-    width: 100%;
     margin: 0;
 }
 
 .reveal .lcred {
     text-align: left;
+    color: #555;
     font-size: 55% !important;
     margin-top: 0;
     margin-bottom: 5px;
@@ -316,6 +443,7 @@ body {
 
 .reveal .rcred {
     text-align: right;
+    color: #555;
     font-size: 55% !important;
     margin-top: 0;
     margin-bottom: 5px;
@@ -325,8 +453,235 @@ body {
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-/* for debugging; note that the border offsets the layout slightly.
-.reveal .slides section.present {
-    border: 2px solid red;
+.reveal .whtoutline {
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
 }
-*/
+
+/* "Spacious" layout for slides with just a bit of text */
+
+.reveal .spacious {
+  font-size: 120%;
+}
+
+.reveal .spacious li {
+  margin-bottom: 1.5em;
+}
+
+/* Sliders for Dulk 1985 */
+
+input[type=range]{
+  border: 1px solid white; /* fix for FF unable to apply focus style bug  */
+  width: 200px; /*required for proper track sizing in FF*/
+}
+
+input[type=range]::-moz-range-track {
+  width: 200px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: goldenrod;
+}
+
+input[type=range]:-moz-focusring { /* hide the outline behind the border */
+  outline: 1px solid white;
+  outline-offset: -1px;
+}
+
+input[type=range]:focus::-moz-range-track {
+  background: #ccc;
+}
+
+
+/* Styling for Dulk1985 interactive figure */
+
+#dulk1985 .dulk-line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+#dulk1985 .n33370b-line {
+  fill: none;
+  stroke: crimson;
+  stroke-width: 2px;
+}
+
+#dulk1985 .n33370b-dot {
+  stroke: none;
+  fill: crimson;
+}
+
+#dulk1985 .lp349-line {
+  fill: none;
+  stroke: forestgreen;
+  stroke-width: 2px;
+}
+
+#dulk1985 .lp349-dot {
+  stroke: none;
+  fill: forestgreen;
+}
+
+#dulk1985 .axis {
+  font: 24px sans-serif;
+}
+
+#dulk1985 .track,
+#dulk1985 .track-inset,
+#dulk1985 .track-overlay {
+  stroke-linecap: round;
+}
+
+#dulk1985 .track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+
+#dulk1985 .track-inset {
+  stroke: #ddd;
+  stroke-width: 8px;
+}
+
+#dulk1985 .track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  cursor: crosshair;
+}
+
+#dulk1985 .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1.25px;
+}
+
+.reveal .d85-controls td {
+  background-color: #fff !important; /* remove row striping */
+  border: 0px; /* remove column rules */
+}
+
+.reveal .d85-controls label {
+  width: 150px;
+  display: inline-block;
+  text-align: left;
+}
+
+/* Styling for xenia interactive figure */
+
+#xenia .outline {
+  fill: none;
+  stroke: #111;
+  stroke-width: 2px;
+}
+
+#xenia .equator {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+#xenia .prime-meridian {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+  stroke-dasharray: 3, 3;
+}
+
+#xenia .magnetic-north-cap {
+  fill: rgba(179, 179, 255, 0.7);
+  stroke: none;
+}
+
+#xenia .magnetic-south-cap {
+  fill: rgba(255, 128, 128, 0.7);
+  stroke: none;
+}
+
+#xenia .stokes-i {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+#xenia .stokes-v {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+  stroke-dasharray: 3, 3;
+}
+
+#xenia .current-cml {
+  fill: none;
+  stroke: rgba(240, 30, 30, 0.5);
+  stroke-width: 2px;
+}
+
+#xenia .lightcurve-zero-line {
+  fill: none;
+  stroke: rgba(30, 30, 30, 0.3);
+  stroke-width: 2px;
+}
+
+#xenia .lightcurve-hundred-line {
+  fill: none;
+  stroke: rgba(30, 30, 30, 0.3);
+  stroke-width: 2px;
+  stroke-dasharray: 3, 3;
+}
+
+#xenia .label {
+}
+
+#xenia .axis {
+  font: 24px sans-serif;
+}
+
+#xenia .track,
+#xenia .track-inset,
+#xenia .track-overlay {
+  stroke-linecap: round;
+}
+
+#xenia .track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+
+#xenia .track-inset {
+  stroke: #ddd;
+  stroke-width: 8px;
+}
+
+#xenia .track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  cursor: crosshair;
+}
+
+#xenia .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1.25px;
+}
+
+.reveal .xenia-controls td {
+  background-color: #fff !important; /* remove row striping */
+  border: 0px; /* remove column rules */
+}
+
+.reveal .xenia-controls label {
+  width: 150px;
+  display: inline-block;
+  text-align: left;
+}

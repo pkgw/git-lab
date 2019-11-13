@@ -1,12 +1,11 @@
-# A Laboratory Introduction to Git
+# A Laboratory Introduction to Git and GitHub
 
-To be delivered at the second HERA “CHAMP camp;” Santa Fe, NM, USA; June
-11–15, 2018.
+Delivered in CfA/Wolbach professional development series. 2 hours.
 
 Serve with:
 
 ```
-python -m http.server 23232
+npx httpserver 23232
 ```
 
 

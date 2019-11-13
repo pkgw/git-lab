@@ -1,45 +1,70 @@
-% Basic packages
-\usepackage{dblfloatfix, fixltx2e, graphicx}
-\usepackage[breaklinks, colorlinks, urlcolor=blue, citecolor=blue, linkcolor=blue]{hyperref}
-\usepackage{tabularx} % for \prompt
-\usepackage[table]{xcolor} % for \prompt
-\usepackage{changepage} % for indented paragraphs
+% Page setup. We use a landscape letter layout, since we want lots of room for
+% marginal notes since I want to provide commentary without overloading people
+% with too much to read. Margins are 1" except for 0.5" at the top, which gets
+% augmented with a nice header. The marginal paragraphs are 2.25" with a 0.25"
+% gutter, leaving 6.5" for the main body text.
+\usepackage[
+  letterpaper,
+  landscape,
+  includehead,
+  includemp,
+  margin = 1in,
+  marginparwidth = 2.25in,
+  marginparsep = 18pt,
+  top = 0.5in,
+  headheight = 15pt
+]{geometry}
 
-
-% Skips between pars rather than indents at their beginnings; works better for
-% this kind of document, I think:
-\usepackage[parfill]{parskip}
-
-
-% Page setup
-\usepackage[letterpaper, includehead, margin=1in, top=0.5in, headheight=15pt]{geometry}
+% Headers and footers.
 \usepackage{fancyhdr}
 \pagestyle{fancyplain}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage}
 \fancyhead[LO,RE]{\textsf{\leftmark}}
-
+\renewcommand\sectionmark[1]{\markboth{#1}{}} % needed for good headers.
 
 % Fonts. Note that EB Garamond has no bold, alas!
 \usepackage{fontspec}
-\newfontfeature{Microtype}{protrusion=default; expansion=default;}
+\setmainfont{EBGaramond12}[
+  Extension = .otf,
+  UprightFont = *-Regular,
+  ItalicFont = *-Italic
+]
+\setmonofont{SourceCodePro}[
+  Extension = .otf,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-It,
+  BoldItalicFont = *-BoldIt,
+  Scale = MatchLowercase
+]
 
-\setmainfont[
-  Microtype,
-  Ligatures = Common,
-  ItalicFont = EBGaramond12-Italic.otf
-]{EBGaramond12-Regular.otf}
+% Links
+\usepackage[
+  breaklinks,
+  colorlinks,
+  urlcolor=blue,
+  citecolor=blue,
+  linkcolor=blue
+]{hyperref}
 
-\setmonofont[
-  Scale = MatchLowercase,
-  Ligatures = Common, % needed for vertical quotes, etc.
-  BoldFont = SourceCodePro-Bold.otf,
-  ItalicFont = SourceCodePro-It.otf,
-  BoldItalicFont = SourceCodePro-BoldIt.otf,
-]{SourceCodePro-Regular.otf}
+% Skips between pars rather than indents at their beginnings; works better for
+% this kind of document, I think:
+\usepackage[parfill]{parskip}
 
+% Marginal notes. We'll use a lot of them.
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\small}
 
-% Sectioning
+% To get the right vertical positioning of the marginal notes, you need to put
+% the \marginnote command in the right place, but this messes up the textual
+% flow of paragraphs in the TeX file pretty badly. Here's a dumb
+% hack: \xnote{stuff} is an abbreviation for \def\x{\marginnote{stuff}}. Use
+% this command before a main-body paragraph, and then just put a little \x
+% inside the paragraph text instead of the contents of the full margin note.
+\newcommand{\xnote}[1]{\def\x{\marginnote{#1}}}
+
+% Sectioning.
 \usepackage{titlesec}
 \titleformat{\section} {\sffamily\Large\bfseries}{Topic \thesection:}{1ex}{}
 \titleformat{\subsection} {\sffamily\large\bfseries}{\thesubsection}{1em}{}
@@ -48,40 +73,23 @@
 \titlespacing*{\subsection} {0pt}{2ex plus 0.8ex minus 0.2ex}{1ex plus 0.1ex}
 \titlespacing*{\subsubsection} {0pt}{3.25ex plus 1ex minus 0.2ex}{1.5ex plus 0.2ex}
 
-\renewcommand\sectionmark[1]{\markboth{#1}{}} % needed for good headers.
-
-
-% Title formatting
+% Title formatting.
 \usepackage{titling}
 \pretitle{\begin{center}\Huge}
 \posttitle{\end{center}}
 
-
-% Lists
-%% \usepackage{enumitem}
-%% \setitemize{noitemsep,topsep=6pt,parsep=0pt,partopsep=0pt,leftmargin=*}
-%% \setenumerate{noitemsep,topsep=6pt,parsep=0pt,partopsep=0pt,leftmargin=*}
-
-
 % Miscellaneous small macros.
-
 \let\b=\textbf
 \let\i=\textit
 \let\s=\textsf
 \let\t=\texttt
-
 \newcommand\cmd[1]{\s{git~#1}}
-\newcommand\demohead{90984a} % NOTE! sync with bloomdemo.
 \newcommand\git{\s{git}}
+\newcommand\github{\s{GitHub}}
 \newcommand\ie{\i{i.e.}}
-
-
-\input gitversion % definition generated during build process
-
 
 % The question-to-answer environment. Derived from `leftbar` environment of
 % `framed` package. We just make the rule thinner.
-
 \usepackage{framed}
 
 \newcommand\fillme[2]{%
@@ -91,26 +99,64 @@
   \MakeFramed {\advance\hsize-\width \FrameRestore}%
   \i{#2}\rule[-#1]{0in}{#1}%
   \endMakeFramed%
+  \endgroup%
 }
 
-
-% The commands-to-type environment. Wow. Much magic.
+% The commands-to-type environment. Wow. Much magic. The table is set to 6.5"
+% width, matching the main body text size.
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
 
 \newenvironment{typeme}{%
-  \tabularx{6.5in}{>{\columncolor{lightgray}\ttfamily\$ }X>{\sffamily}l}
+  \tabularx{6.5in}{>{\columncolor{gray!20}\ttfamily\i{\$} }X>{\columncolor{gray!20}\sffamily}l}%
 }{%
   \endtabularx%
 }
 
+% Shorthand for a one-line command-to-type.
 \newcommand\typeone[2]{%
   \begin{typeme}%
   #1 & #2%
   \end{typeme}%
 }
 
-\newcommand\fillinparam[1]{\textsf{\textbf{\{#1\}}}}
+\newcommand\fillinparam[1]{\s{\b{\{#1\}}}}
 \let\p=\fillinparam
 
+% "Non-CLI" things to do -- namely, opening and editing files. I'm not sure
+% how best to convey this stuff.
+\usepackage{mdframed}
 
+\newenvironment{noncli}{%
+  \begin{mdframed}[%
+    hidealllines = true,
+    backgroundcolor = gray!20,
+    innerleftmargin = 3em,
+    innerrightmargin = 3em,
+    skipabove = \topskip,
+    skipbelow = \topskip,
+  ]
+  \centering
+  \itshape
+}{%
+  \end{mdframed}%
+}%
+  
 % Boxes around sample characters in the Introduction.
 \setlength{\fboxsep}{1pt}
+
+% Ragged page bottoms.
+\raggedbottom
+
+% I should use chapters or whatever, but meh.
+\newcounter{partnum}
+\stepcounter{partnum}  % start at 1!
+\newcommand{\mypart}[1]{%
+  \newpage
+  {\centering \sffamily\LARGE\bfseries Part~\thepartnum: #1 \par}%
+  \stepcounter{partnum}%
+}
+
+% Embedded versions
+\newcommand\demohead{90984a} % NOTE! sync with bloomdemo.
+\input{gitversion} % definition generated during build process

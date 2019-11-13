@@ -26,6 +26,9 @@ but tries not to assume much in the way of programming skills.
 * `handout/` contains `LaTeX` source for the printed lab manual. It uses
   `XeTeX` and a few nonstandard fonts and packages, so it might take a few
   tries to compile.
+* [PRESENTER-NOTES.md](./PRESENTER-NOTES.md) logs notes from times when I’ve
+  presented the tutorial, to serve as reminders for the next time I revise the
+  materials in preparation for another presentation.
 
 [reveal.js]: https://github.com/hakimel/reveal.js/
 [htmltalk]: https://github.com/pkgw/htmltalk/
