@@ -16,6 +16,10 @@ fresh in my mind. So, I jot down notes here.
   if you install Git Bash and then standard Python, they can't talk to each
   other. Conda is probably the way to go. This could/should also help with
   turnout.
+- Second-biggest: should update the handout to use Tectonic’s document model,
+  and see below about scripting font downloads! I used slightly different font
+  files this time and had to futz with spacing. Source Code Pro is in the
+  Tectonic 2022.0 bundle now. May need to undo those changes.
 - Addressed the magic commit ID for the `print-my-name` branch as logged last
   time. I think I didn't reference `origin/master` since we haven't defined
   remotes, etc. at that stage of the tutorial. Alternative approach is to have
