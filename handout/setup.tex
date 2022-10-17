@@ -23,18 +23,19 @@
 \fancyhead[LO,RE]{\textsf{\leftmark}}
 \renewcommand\sectionmark[1]{\markboth{#1}{}} % needed for good headers.
 
-% Fonts. Note that EB Garamond has no bold, alas!
 \usepackage{fontspec}
-\setmainfont{EBGaramond12}[
+\setmainfont{EBGaramond}[
   Extension = .otf,
   UprightFont = *-Regular,
-  ItalicFont = *-Italic
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+  BoldItalicFont = *-BoldItalic
 ]
 \setmonofont{SourceCodePro}[
   Extension = .otf,
   UprightFont = *-Regular,
   BoldFont = *-Bold,
-  ItalicFont = *-It,
+  ItalicFont = *-RegularIt,
   BoldItalicFont = *-BoldIt,
   Scale = MatchLowercase
 ]
@@ -66,12 +67,12 @@
 
 % Sectioning.
 \usepackage{titlesec}
-\titleformat{\section} {\sffamily\Large\bfseries}{Topic \thesection:}{1ex}{}
+\titleformat{\section} {\sffamily\Large\bfseries}{Topic \thesection:}{9pt}{}
 \titleformat{\subsection} {\sffamily\large\bfseries}{\thesubsection}{1em}{}
 \titleformat{\subsubsection} {\sffamily\normalsize\bfseries}{\thesubsubsection}{1em}{}
-\titlespacing*{\section} {0pt}{2.5ex plus 1ex minus 0.2ex}{1ex plus 0.2ex}
-\titlespacing*{\subsection} {0pt}{2ex plus 0.8ex minus 0.2ex}{1ex plus 0.1ex}
-\titlespacing*{\subsubsection} {0pt}{3.25ex plus 1ex minus 0.2ex}{1.5ex plus 0.2ex}
+\titlespacing*{\section} {0pt}{22pt plus 9pt minus 2pt}{9pt plus 2pt}
+\titlespacing*{\subsection} {0pt}{18pt plus 7pt minus 2pt}{9pt plus 0.9pt}
+\titlespacing*{\subsubsection} {0pt}{29pt plus 9pt minus 2pt}{14pt plus 2pt}
 
 % Title formatting.
 \usepackage{titling}
@@ -141,7 +142,7 @@
 }{%
   \end{mdframed}%
 }%
-  
+
 % Boxes around sample characters in the Introduction.
 \setlength{\fboxsep}{1pt}
 
@@ -158,5 +159,4 @@
 }
 
 % Embedded versions
-\newcommand\demohead{90984a} % NOTE! sync with bloomdemo.
 \input{gitversion} % definition generated during build process

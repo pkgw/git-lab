@@ -78,8 +78,8 @@ Often you'll have to fill in part of a command yourself. Substitute \p{sample
 \nopagebreak
 
 \begin{typeme}
-echo \p{the current year} & What's printed in this manual. \\
-echo \the\year & What you actually type.
+echo "\p{the current year}" & What's printed in this manual. \\
+echo "\the\year" & What you actually type.
 \end{typeme}
 
 Don't type the braces!
@@ -172,15 +172,15 @@ ls & Examine files.
 
 Let's navigate into this directory and examine its contents.
 
-\xnote{The code here uses a tool called a \i{Bloom filter} to check whether
-  words that you specify as arguments (``barn,'' ``bern,'' etc.) are found in
-  the English dictionary. Bloom filters make mistakes, but in a one-sided way:
-  if a word is in the dictionary, a Bloom filter will never say that it isn't;
-  but sometimes a Bloom filter will think that a word is in the dictionary
-  when it really isn't. Why would you want that behavior? Bloom filters are
-  much faster than filters that are always correct, and sometimes it's good to
-  trade accuracy for speed. Don't worry: the details aren't important here. If
-  you have extra time and are curious, read the file \t{bloom.py}.}
+\xnote{The code here uses a tool called a \i{Bloom filter} to let you check
+  whether a words is found in the English dictionary. Bloom filters make
+  mistakes, but in a one-sided way: if a word is in the dictionary, a Bloom
+  filter will never say that it isn't; but sometimes a Bloom filter will think
+  that a word is in the dictionary when it really isn't. Why would you want that
+  behavior? Bloom filters are much faster than filters that are always correct,
+  and sometimes it's good to trade accuracy for speed. Don't worry: the details
+  aren't important here. If you have extra time and are curious, read the file
+  \t{bloom.py}.}
 
 \x \begin{typeme}
 cd bloomdemo & Enter repository directory. \\
@@ -202,6 +202,11 @@ needing an internet connection, in fact), and nothing you do will affect the
 You can see a gory listing of \git's housekeeping files with:
 
 \typeone{find . -print}{\b{Print all file names.}}
+
+Finally, to prepare for some concepts that come later in this lab, run this
+command:
+
+\typeone{git branch print-my-name}{We'll come back to this later.}
 
 \subsection*{Testing your Python}
 
@@ -468,7 +473,7 @@ the string of 40 random-looking characters. You should see your own recent
 commits at the top of the output.
 
 \fillme{0.4in}{On what date was the very first commit made in this repository?
-  You may want to consult the table of keystrokes that control \t{less} on
+  You may want to consult the table of keystrokes that control the pager on
   \autopageref{l.lesskeys}.}
 
 \fillme{0.4in}{Find a commit whose message contains the word ``consuming.'' On
@@ -677,28 +682,22 @@ cat .git/refs/heads/master & \b{Manually print the master branch commit id.} \\
 cat .git/HEAD & Manually print out the branch that HEAD references.
 \end{typeme}
 
-Creating new branches is simple. Once you've done so, you can \i{switch
-  branches} and alter the current branch with \cmd{checkout} --- another case
-of one command doing double duty, like \cmd{add} before. For example, let's
-make a new branch called \s{print-my-name}. For now, this branch will be
-identical to the one you originally cloned from \github. If you have any
-uncommitted changes in your working tree, commit them or discard them before
-running the \cmd{checkout} command --- otherwise you may get errors.
+Creating new branches is simple. In fact, we've already done it --- remember how
+we ran \cmd{branch print-my-name} back when you checked out the repo? Now we'll
+follow up on that and \i{switch branches} to activate it with \cmd{checkout} ---
+another case of one command doing double duty, like \cmd{add} before. If you
+have any uncommitted changes in your working tree, commit them or discard them
+before running the \cmd{checkout} command --- otherwise you may get errors.
 
 \xnote{\normalfont In newer versions of \git, this use of \cmd{checkout} is
   superseded by \cmd{switch}.}
 
 \begin{typeme}
-git branch print-my-name \demohead & \b{Make new branch pointing to original files.} \\
 git status & Check modification status. \\
 \x git checkout print-my-name & \b{Switch to \t{print-my-name} branch.} \\
 git branch & List branches. \\
 ./chkdict \p{some words} & Verify that FP rate is not printed.
 \end{typeme}
-
-\fillme{0.4in}{(Optional.) Use \cmd{log} to verify that \t{\demohead} is the
-  (shortened) unique identifier of the commit that you started with when you
-  initially cloned the repository.}
 
 \xnote{If you had any uncommitted changes, \cmd{checkout} would have either
   preserved them or refused to run if it couldn't.}
@@ -707,6 +706,9 @@ Here, \cmd{checkout} has \x done two things: it's updated information to say
 that the current branch is now the one named \s{print-my-name}, not
 \s{master}, \i{and} it's synchronized your working tree to match
 \s{print-my-name}.
+
+\fillme{0.4in}{Use \cmd{log} to look at the history of your current branch. The
+  commits that you made in Part~1 shouldn't show up. Have they been lost?}
 
 Let's create a commit on this new branch. We can do so using the same commands
 we've been using all along --- because we've changed the active branch to
@@ -974,7 +976,8 @@ Your changes are now available to the wide world!
 
 \subsection*{Issuing a Pull Request}
 
-\xnote{Actually, it would be more accurate to call them \i{merge requests}.}
+\xnote{Really, it would be more accurate to call them \i{merge requests}.
+GitLab.com is a service very similar to GitHub that does this.}
 
 If you're just working on a personal project, GitHub already adds value: above
 all else, it backs up your repository offsite. Where it really shines,
@@ -1090,7 +1093,7 @@ usually very helpful.
 
 \newpage
 
-\section*{Appendix: The Pager\markboth{The Pager}{}}
+\section*{Appendix: The Pager, “less”\markboth{The Pager, “less”}{}}
 
 \xnote{The search and filter commands in \t{less} use a special formalism
   called \i{regular expressions} or \i{regexes} for matching text. In general,
@@ -1127,7 +1130,10 @@ h & Print help information.
 When in doubt, just press \fbox{\t{q}} to quit the pager and return to your
 main terminal prompt.
 
-You can run the \t{less} pager program like any other Unix command if you want
+\xnote{Long-time Unix users might be used to paging files with the \t{more}
+command. The symmetry in the names is not accidental --- \t{less} is \t{more}!.}
+
+\x You can run the \t{less} pager program like any other Unix command if you want
 to read a file right in your terminal:
 
 \typeone{less README}{\b{Page the file \t{README}.}}
