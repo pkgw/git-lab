@@ -1105,9 +1105,13 @@ The \i{pager} is a special Unix program for navigating lengthy textual
 output. It offers many more features than the bare terminal. Because \t{man},
 \git, and many other Unix tools use it extensively, it is valuable to learn a
 bit about it. Different programs can do the job of the pager, but by default
-your system uses a Unix command called \t{less}. \x The \t{less} program is
-mainly controlled by commands that are single keystrokes. Some of these keys
-are:
+your system uses a Unix command called \t{less}.
+
+Pager programs come from a time before the scrollbar was even invented. When
+using \t{less}, you should \b{not} scroll your terminal window, because it won't
+interact well with \t{less}'s internal scrolling. Instead, navigate using the
+keyboard --- \x \t{less} is controlled by commands that are mainly single
+keystrokes. Some of these keys are:
 
 \begin{center}
 \label{l.lesskeys}
@@ -1117,8 +1121,8 @@ q & Quit the pager. \\
 \rmfamily(Arrow keys) & Navigate as you'd expect. \\
 \rmfamily(Spacebar) & Go forward a page. \\
 b & Go backwards a page. \\
-< & Go to the top. \\
-> & Go to the bottom. \\
+< & Go to the top of the file. \\
+> & Go to the bottom of the file. \\
 / & Search (type in query, then hit Enter). \\
 n & Go to next search result. \\
 N & Go to previous search result. \\
@@ -1131,7 +1135,7 @@ When in doubt, just press \fbox{\t{q}} to quit the pager and return to your
 main terminal prompt.
 
 \xnote{Long-time Unix users might be used to paging files with the \t{more}
-command. The symmetry in the names is not accidental --- \t{less} is \t{more}!.}
+command. The symmetry in the names is not accidental --- \t{less} is \t{more}!}
 
 \x You can run the \t{less} pager program like any other Unix command if you want
 to read a file right in your terminal:
