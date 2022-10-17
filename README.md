@@ -16,7 +16,7 @@ available online.
 This tutorial is aimed at scientists. It brings up some mathematical concepts
 but tries not to assume much in the way of programming skills.
 
-[handoutpdf]: http://newton.cx/~peter/files/git-lab-handout.pdf
+[handoutpdf]: https://newton.cx/~peter/files/git-lab-handout.pdf
 
 
 ## Contents
@@ -35,7 +35,7 @@ but tries not to assume much in the way of programming skills.
 [Tectonic]: https://tectonic-typesetting.github.io/
 [reveal.js]: https://github.com/hakimel/reveal.js/
 [htmltalk]: https://github.com/pkgw/htmltalk/
-[slideblog]: http://newton.cx/~peter/2013/09/slides-for-scientific-talks-in-html/
+[slideblog]: https://newton.cx/~peter/2013/09/slides-for-scientific-talks-in-html/
 
 
 ## Contributions
