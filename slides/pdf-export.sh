@@ -20,4 +20,4 @@ exec docker run \
      --shm-size 2G \
      astefanutti/decktape:2.8.5 \
      -s 1600x1200 \
-     reveal http://localhost:23232/slides.html export.pdf
+     reveal http://localhost:8080/index.html export.pdf

@@ -1,18 +1,7 @@
 - venue updated on title slide
 - date updated on title slide
 - title synched in <title>, title slide
-- check out margins with hacked CSS -- then un-hack CSS!
-- PDF version created:
-
-  google-chrome --allow-file-access-from-files slides.html
-  change URL to .../slides.html?print-pdf#/
-  print, save as export.pdf *in correct directory*
+- PDF version created using `./pdf-export.sh`
 
 - phone silent
 - pockets emptied
-- popup blocker disabled
-- presenter console opened! (Press 's'.)
-
-
-NOTE: title-slide background looks funky in Chrome but prints to PDF
-correctly. Title page footer CSS needed some futzing to work out OK.
