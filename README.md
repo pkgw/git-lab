@@ -10,7 +10,7 @@ group, since people move at such different paces.
 [git]: https://git-scm.com/
 
 The tasks are described in a thorough “lab manual” handout. A
-[pre-built PDF][handoutpdf], likely corresponding to `master` here, is
+[pre-built PDF][handoutpdf], likely corresponding to `main` here, is
 available online.
 
 This tutorial is aimed at scientists. It brings up some mathematical concepts

@@ -678,7 +678,7 @@ updates the the current branch to point to that new commit. The current
 identity of the branch head is stored in a simple text file:
 
 \begin{typeme}
-cat .git/refs/heads/master & \b{Manually print the master branch commit id.} \\
+cat .git/refs/heads/main & \b{Manually print the main branch commit id.} \\
 cat .git/HEAD & Manually print out the branch that HEAD references.
 \end{typeme}
 
@@ -704,7 +704,7 @@ git branch & List branches. \\
 
 Here, \cmd{checkout} has \x done two things: it's updated information to say
 that the current branch is now the one named \s{print-my-name}, not
-\s{master}, \i{and} it's synchronized your working tree to match
+\s{main}, \i{and} it's synchronized your working tree to match
 \s{print-my-name}.
 
 \fillme{0.4in}{Use \cmd{log} to look at the history of your current branch. The
@@ -712,7 +712,7 @@ that the current branch is now the one named \s{print-my-name}, not
 
 Let's create a commit on this new branch. We can do so using the same commands
 we've been using all along --- because we've changed the active branch to
-\s{print-my-name}, that's the one that will be updated, not \s{master}.
+\s{print-my-name}, that's the one that will be updated, not \s{main}.
 
 \begin{noncli}
   Edit the top of the \t{chkdict} to add a line that prints your name after
@@ -725,8 +725,8 @@ need to see every \cmd{add} and \cmd{commit} command written out.
 \begin{typeme}
 \p{review and commit your change} & Commit your change. \\
 git log --oneline & \b{Summarize history for current branch.} \\
-git log --oneline master & Summarize history for master branch. \\
-git checkout master & Switch to master. \\
+git log --oneline main & Summarize history for main branch. \\
+git checkout main & Switch to main. \\
 ./chkdict \p{some words} & Verify that FP rate is printed. \\
 git checkout print-my-name & Switch to print-my-name. \\
 ./chkdict \p{some words} & Verify that your name is printed.
@@ -742,18 +742,18 @@ common, but both branches include commits that the other doesn't.
 
 \section{git merge}
 
-\xnote{Recall that \s{master} contains your change to print the correct Bloom
+\xnote{Recall that \s{main} contains your change to print the correct Bloom
   filter false positive rate, while \s{print-my-name} doesn't, because we
   started it from the originally cloned snapshot. Instead, \s{print-my-name}
   has a change to print out your name in the \t{chkdict} program.}
 
 The \x \cmd{merge} command automates the process of merging one branch into
-another. Here we'll merge your \s{print-my-name} branch into your \s{master}
+another. Here we'll merge your \s{print-my-name} branch into your \s{main}
 branch.
 
 \begin{typeme}
-git checkout master & Switch to master. \\
-git merge print-my-name & \b{Merge this branch into master.} \\
+git checkout main & Switch to main. \\
+git merge print-my-name & \b{Merge this branch into main.} \\
 \end{typeme}
 
 The \cmd{merge} command will prompt you to write a message for the merge
@@ -785,7 +785,7 @@ We'll work through a merge conflict using some secret branches that came along
 with our clone:
 
 \begin{typeme}
-git branch conflict-demo origin/master & New branch with pristine files. \\
+git branch conflict-demo origin/main & New branch with pristine files. \\
 git checkout conflict-demo & Switch to \t{conflict-demo} branch. \\
 git show origin/goodbye-option & View changes in the specified branch. \\
 git show origin/no-skipmisses-option & Likewise.
@@ -854,7 +854,7 @@ things like rename them, copy them, and so on.
 
 A common workflow is to create a new branch for each feature that you work on
 --- called a ``feature branch.'' Once the feature branch is merged into the
-\s{master} branch, you can tidy things up by deleting it:
+\s{main} branch, you can tidy things up by deleting it:
 
 \typeone{git branch -d print-my-name}{Delete this branch.}
 
@@ -937,7 +937,7 @@ To share changes we \i{push} them to a remote. We'll create yet another branch
 with some quasi-nonsense changes:
 
 \begin{typeme}
-git branch graduation origin/master & New branch with pristine files. \\
+git branch graduation origin/main & New branch with pristine files. \\
 git checkout graduation & Switch to \t{conflict-demo} branch. \\
 mkdir alumni & Make a directory. \\
 date >alumni/\p{your-github-username}.txt & Create your very own file. \\
@@ -955,7 +955,7 @@ that the branch will be given on the remote.
 \begin{typeme}
 git branch -a & List all branches. \\
 git push mine graduation & \b{Publish the changes.} \\
-git push mine master:experiments & Publish our main work as \t{experiments}. \\
+git push mine main:experiments & Publish our main work as \t{experiments}. \\
 git branch -a & List all branches. \\
 git remote show mine & Show details about \t{mine}.
 \end{typeme}
@@ -1002,7 +1002,7 @@ There is a \cmd{pull} command that somewhat mirrors \cmd{push}. But really,
 \cmd{pull} is just a combination of \cmd{fetch} and \cmd{merge}.
 
 \begin{noncli}
-  Wait for the instructor to merge a few pull requests into the master
+  Wait for the instructor to merge a few pull requests into the main
   repository.
 \end{noncli}
 
@@ -1014,7 +1014,7 @@ Now \x that your \s{origin} repository has seen some changes, let's incorporate
 them locally:
 
 \begin{typeme}
-git checkout master & Switch to \t{master} branch. \\
+git checkout main & Switch to \t{main} branch. \\
 git pull origin & Fetch and merge any changes from \s{origin}. \\
 ls alumni & See who's graduated!
 \end{typeme}
